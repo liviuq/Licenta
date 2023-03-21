@@ -7,7 +7,7 @@ RF24 radio(7, 8);  // nRF24L01(+) radio attached using Getting Started board
 RF24Network network(radio);  // Network uses that radio
  
 const uint16_t this_node = 01;   // Address of our node in Octal format
-const uint16_t other_node = 00;  // Address of the other node in Octal format
+const uint16_t base_station = 00;  // Address of the other node in Octal format
  
 const unsigned long interval = 2000;  // How often (in ms) to send 'hello world' to the other unit
  
@@ -30,7 +30,9 @@ void setup(void) {
   if (!radio.begin()) {
     Serial.println(F("Radio hardware not responding!"));
     while (1) {
-      // hold in infinite loop
+      /*
+        Flash in-built LED once per 500ms
+      */
     }
   }
   radio.setChannel(90);
@@ -49,7 +51,7 @@ void loop() {
  
     Serial.print(F("Sending... "));
     payload_t payload = { millis(), packets_sent++ };
-    RF24NetworkHeader header(/*to node*/ other_node);
+    RF24NetworkHeader header(/*to node*/ base_station);
     bool ok = network.write(header, &payload, sizeof(payload));
     Serial.println(ok ? F("ok.") : F("failed."));
   }
