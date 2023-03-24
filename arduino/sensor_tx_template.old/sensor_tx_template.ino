@@ -2,6 +2,8 @@
 #include <RF24.h>
 #include <RF24Network.h>
  
+
+// RADIO MODULE
 RF24 radio(7, 8);  // nRF24L01(+) radio attached using Getting Started board
  
 RF24Network network(radio);  // Network uses that radio
@@ -16,12 +18,38 @@ unsigned long packets_sent;  // How many have we sent already
  
  
 struct payload_t {  // Structure of our payload
-  unsigned long ms;
-  unsigned long counter;
+  unsigned char type;
+  unsigned long value;
 };
  
+
+// DISTANCE SENSOR
+const int trigPin = 4;
+const int echoPin = 3;
+long duration;
+unsigned long distance;
+
+void calculate_distance()
+{
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  // Sets the trigPin on HIGH state for 10 micro seconds
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  // Reads the echoPin, returns the sound wave travel time in microseconds
+  duration = pulseIn(echoPin, HIGH);
+  // Calculating the distance
+  distance = duration * 0.034 / 2;
+}
+
+
 void setup(void) {
   Serial.begin(115200);
+
+  pinMode(trigPin, OUTPUT); // Sets the trigPin as an Output
+  pinMode(echoPin, INPUT); // Sets the echoPin as an Input
+    
   while (!Serial) {
     // some boards need this because of native USB capability
   }
@@ -31,8 +59,12 @@ void setup(void) {
     Serial.println(F("Radio hardware not responding!"));
     while (1) {
       /*
-        Flash in-built LED once per 500ms
+        Flash in-built LED once per 500ms        
       */
+    digitalWrite(LED_BUILTIN, HIGH);
+    delay(500);
+    digitalWrite(LED_BUILTIN, LOW);
+    delay(500);           
     }
   }
   radio.setChannel(90);
@@ -40,19 +72,24 @@ void setup(void) {
 }
  
 void loop() {
- 
+
   network.update();  // Check the network regularly
  
   unsigned long now = millis();
  
   // If it's time to send a message, send it!
   if (now - last_sent >= interval) {
+    //Calculating the distance
+    calculate_distance();
+    Serial.print("Distance = ");
+    Serial.println(distance);
+  
     last_sent = now;
  
     Serial.print(F("Sending... "));
-    payload_t payload = { millis(), packets_sent++ };
+    payload_t payload = { 'D', distance };
     RF24NetworkHeader header(/*to node*/ base_station);
     bool ok = network.write(header, &payload, sizeof(payload));
-    Serial.println(ok ? F("ok.") : F("failed."));
+    Serial.println(ok ? F("ok.") : F("failed."));    
   }
 }
