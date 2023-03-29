@@ -32,7 +32,7 @@ network.begin(THIS_NODE)
 EXPECTED_SIZE = struct.calcsize("<BL")
 
 # create the thread to update the database
-update_db_thread = Thread(target=update_database, args=(db,))
+update_db_thread = Thread(target=update_database, args=(db, network, radio, EXPECTED_SIZE,))
 
 
 def create_app():
