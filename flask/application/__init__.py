@@ -5,7 +5,6 @@ import struct
 from threading import Thread
 from pyrf24 import RF24, RF24Network, RF24NetworkHeader
 
-from .update_db import update_database
 
 # creating the database
 db = SQLAlchemy()
@@ -31,9 +30,6 @@ network.begin(THIS_NODE)
 
 EXPECTED_SIZE = struct.calcsize("<BL")
 
-# create the thread to update the database
-update_db_thread = Thread(target=update_database, args=(db, network, radio, EXPECTED_SIZE,))
-
 
 def create_app():
     # create the flask app
@@ -56,6 +52,12 @@ def create_app():
     # before it creates the db
     from .models import Sensor
     create_db(app)
+
+    # importing the update function
+    from .update_db import update_database
+
+    # create the thread to update the database
+    update_db_thread = Thread(target=update_database, args=(db, network, radio, EXPECTED_SIZE,))
 
     # constantly update the database with new values
     update_db_thread.start()
