@@ -32,7 +32,7 @@ network.begin(THIS_NODE)
 EXPECTED_SIZE = struct.calcsize("<BL")
 
 # create the thread to update the database
-update_db_thread = Thread(update_database())
+update_db_thread = Thread(target=update_database, args=(db,))
 
 
 def create_app():
@@ -59,7 +59,7 @@ def create_app():
 
     # constantly update the database with new values
     update_db_thread.start()
-    
+
     # return the flask app
     return app
 

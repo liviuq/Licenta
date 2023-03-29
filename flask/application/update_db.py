@@ -1,9 +1,9 @@
 import struct
 
-from . import db, network, radio, EXPECTED_SIZE
+from . import network, radio, EXPECTED_SIZE
 from .models import Sensor
 
-def update_database():
+def update_database(db):
     try:
         while True:
             network.update()
