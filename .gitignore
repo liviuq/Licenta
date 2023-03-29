@@ -130,3 +130,11 @@ dmypy.json
 
 # Ignoring .vscode folder
 .vscode/
+
+# Ignoring database file
+flask/application/database.db
+
+# Ignoring PyCharm .idea folder
+flask/.idea/*
+flask/.idea/workspace.xml
+flask/.idea/workspace.xml
