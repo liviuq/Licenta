@@ -1,5 +1,6 @@
-from . import db
 from sqlalchemy.sql import func # gets current datetime
+
+from . import db
 
 
 class Sensor(db.Model):

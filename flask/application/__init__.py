@@ -20,6 +20,9 @@ def create_app():
     # let flask know of the database location (local db)
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
 
+    # supress warning nad overhead usage
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
     # initialize db with the flask app
     db.init_app(app)
 
@@ -33,7 +36,7 @@ def create_app():
     create_db(app)
 
     # return the flask app
-    return app
+    return app, db
 
 def create_db(app):
     if not path.exists('application/' + DB_NAME):

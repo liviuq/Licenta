@@ -1,4 +1,5 @@
 import struct
+import time
 from pyrf24 import RF24, RF24Network, RF24NetworkHeader
 
 from .models import Sensor
@@ -21,7 +22,7 @@ radio.channel = 90
 network.begin(THIS_NODE)
 
 EXPECTED_SIZE = struct.calcsize("<BL")
-def update_database():
+def update_database(app, db):
     try:
         while True:
             network.update()
@@ -32,39 +33,35 @@ def update_database():
                 address = header.to_string().split(' ')[3]
                 print(f'payload len: {len(payload)}, sensor type: {sensor_type}, value: {value}, header: {header.to_string()}')
 
-                # creating a db entry
-                sensor_db_entry = Sensor(address=address, type=sensor_type, value=value)
+                # getting the app db context
+                with app.app_context():
+                    # creating a db entry
+                    sensor_db_entry = Sensor(address=address, type=sensor_type, value=value)
 
-                # add to database
-                #db.session.add(sensor_db_entry)
+                    # add to database
+                    db.session.add(sensor_db_entry)
 
-                # commit the changes to the db
-                #db.session.commit()
+                    # commit the changes to the db
+                    db.session.commit()
     except KeyboardInterrupt:
         print("powering down radio and exiting.")
         radio.power = False
 
 
-def update_database_mock(db):
+def update_database_mock(app, db):
     try:
         while True:
 
-            #header, payload = network.read()
-            #sensor_type, value = struct.unpack("<BL", payload[:EXPECTED_SIZE])
-            value = 1337
+            value = 0
             sensor_type = 'D'
             address = '01'
-            #print(f'payload len: {len(payload)}, sensor type: {sensor_type}, value: {value}, header: {header.to_string()}')
 
-            # creating a db entry
-            sensor_db_entry = Sensor(address=address, type=sensor_type, value=value)
+            with app.app_context():
+                sensor_db_entry = Sensor(address=address, type=sensor_type, value=value)
+                db.session.add(sensor_db_entry)
+                db.session.commit()
 
-            # add to database
-            db.session.add(sensor_db_entry)
-
-            # commit the changes to the db
-            #db.session.commit()
-            print('hi')
+            value += 1
+            time.sleep(1)
     except KeyboardInterrupt:
         print("powering down radio and exiting.")
-        #radio.power = False
