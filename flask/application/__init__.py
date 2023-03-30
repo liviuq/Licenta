@@ -32,16 +32,6 @@ def create_app():
     from .models import Sensor
     create_db(app)
 
-    # importing the update function
-    #from application.update_db import update_database_mock
-
-    # create the thread to update the database
-    # update_db_thread = Thread(target=update_database, args=(db, network, radio, EXPECTED_SIZE,))
-    #update_db_thread = Thread(target=update_database_mock, args=(db,))
-    # constantly update the database with new values
-    #update_db_thread.start()
-
-
     # return the flask app
     return app
 
