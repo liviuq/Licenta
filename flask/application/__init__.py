@@ -27,8 +27,8 @@ def create_app():
     db.init_app(app)
 
     # register the blueprints to our app
-    from .views import views
-    app.register_blueprint(views, url_prefix='/sensors')
+    from .views import sensor_view
+    app.register_blueprint(sensor_view, url_prefix='/sensors')
 
     # make sure that we define the models
     # before it creates the db

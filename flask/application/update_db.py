@@ -31,7 +31,9 @@ def update_database(app, db):
                 sensor_type, value = struct.unpack("<BL", payload[:EXPECTED_SIZE])
                 sensor_type = chr(sensor_type)
                 address = header.to_string().split(' ')[3]
-                print(f'payload len: {len(payload)}, sensor type: {sensor_type}, value: {value}, header: {header.to_string()}')
+
+                if app.config['FLASK_DEBUG']:
+                    print(f'payload len: {len(payload)}, sensor type: {sensor_type}, value: {value}, header: {header.to_string()}')
 
                 # getting the app db context
                 with app.app_context():
@@ -51,16 +53,13 @@ def update_database(app, db):
 def update_database_mock(app, db):
     try:
         while True:
-
             value = 0
             sensor_type = 'D'
             address = '01'
-
             with app.app_context():
                 sensor_db_entry = Sensor(address=address, type=sensor_type, value=value)
                 db.session.add(sensor_db_entry)
                 db.session.commit()
-
             value += 1
             time.sleep(1)
     except KeyboardInterrupt:
