@@ -3,9 +3,9 @@ from flask import Blueprint, jsonify
 from .models import Sensor
 
 # creating a blueprint
-views = Blueprint('views', __name__)
+sensor_view = Blueprint('sensor_view', __name__)
 
-@views.route('/latest', methods=['GET'])
+@sensor_view.route('/latest', methods=['GET'])
 def get_latest():
     all_data = Sensor.query.order_by(Sensor.id.desc()).all()
     data_list = []
@@ -20,7 +20,7 @@ def get_latest():
         data_list.append(data_dict)
     return jsonify(data_list)
 
-@views.route('/latest/<int:number>', methods=['GET'])
+@sensor_view.route('/latest/<int:number>', methods=['GET'])
 def get_latest_number_entries(number):
     all_data = Sensor.query.order_by(Sensor.id.desc()).limit(number).all()
     data_list = []
@@ -35,7 +35,7 @@ def get_latest_number_entries(number):
         data_list.append(data_dict)
     return jsonify(data_list)
 
-@views.route('/<string:sensor_type>/latest/<int:number>', methods=['GET'])
+@sensor_view.route('/<string:sensor_type>/latest/<int:number>', methods=['GET'])
 def get_latest_entries_by_type(sensor_type, number):
     all_data = Sensor.query.filter_by(type=sensor_type).order_by(Sensor.id.desc()).limit(number).all()
     data_list = []
