@@ -32,8 +32,8 @@ def update_database(app, db):
                 sensor_type = chr(sensor_type)
                 address = header.to_string().split(' ')[3]
 
-                if app.config['FLASK_DEBUG']:
-                    print(f'payload len: {len(payload)}, sensor type: {sensor_type}, value: {value}, header: {header.to_string()}')
+                # if app.config['FLASK_DEBUG']:
+                #     print(f'payload len: {len(payload)}, sensor type: {sensor_type}, value: {value}, header: {header.to_string()}')
 
                 # getting the app db context
                 with app.app_context():
