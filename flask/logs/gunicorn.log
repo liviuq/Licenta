@@ -1,0 +1,2 @@
+192.168.0.103 - - [03/Apr/2023:13:14:25 +0100] "GET /sensors/latest HTTP/1.1" 200 64035 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/111.0"
+192.168.0.103 - - [03/Apr/2023:13:14:33 +0100] "GET /sensors/latest HTTP/1.1" 200 64641 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/111.0"
