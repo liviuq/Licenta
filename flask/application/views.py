@@ -5,6 +5,12 @@ from .models import Sensor
 # creating a blueprint
 sensor_view = Blueprint('sensor_view', __name__)
 
+# just  for the lulz
+@sensor_view.route('/', methods=['GET'])
+def lulz():
+    return '<h1> root route</h1>'
+
+
 @sensor_view.route('/latest', methods=['GET'])
 def get_latest():
     all_data = Sensor.query.order_by(Sensor.id.desc()).all()
