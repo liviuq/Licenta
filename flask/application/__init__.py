@@ -27,10 +27,10 @@ def create_app():
     db.init_app(app)
 
     # register the blueprints to our app
-    from .views import sensor_view
+    from .views import sensor_view, security_view
     app.register_blueprint(sensor_view, url_prefix='/')
     app.register_blueprint(security_view, url_prefix='/')
-    
+
     # make sure that we define the models
     # before it creates the db
     from .models import Sensor
