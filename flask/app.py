@@ -15,5 +15,5 @@ update_db.start()
 # flask run --host=0.0.0.0, we just need to
 # ignore a warning, as per flask documentation
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
 
