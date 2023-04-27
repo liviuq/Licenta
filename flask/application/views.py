@@ -1,9 +1,13 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 
 from .models import Sensor
 
-# creating a blueprint
+# creating the sensor blueprint blueprint
 sensor_view = Blueprint('sensor_view', __name__)
+
+# creating the login and register blueprint
+security_view = Blueprint('security_view', __name__)
+
 
 # just  for the lulz
 @sensor_view.route('/', methods=['GET'])
@@ -55,3 +59,12 @@ def get_latest_entries_by_type(sensor_type, number):
         }
         data_list.append(data_dict)
     return jsonify(data_list)
+
+@security_view.route('/login', methods=['POST'])
+def login():
+    # getting the data from the POST body
+    # The request must have the application/json content type
+    data = request.json
+
+    # debugging
+    print(data)
