@@ -4,6 +4,7 @@ accesslog = '-'
 errorlog = '-'
 loglevel = 'debug'
 timeout = 60
+capture_output = True
 
 # self-signed ssl certificate path
 certfile = '/home/andrew/ssl/cert.pem'
