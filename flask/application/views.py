@@ -69,4 +69,4 @@ def login():
     # debugging
     print(data)
 
-    return data
+    return jsonify(data)
