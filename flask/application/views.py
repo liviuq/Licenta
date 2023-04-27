@@ -68,3 +68,5 @@ def login():
 
     # debugging
     print(data)
+
+    return data
