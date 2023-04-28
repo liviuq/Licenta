@@ -102,7 +102,7 @@ def login():
             token = jwt.encode(
                 payload,
                 app.config.get('JWT_SECRET_KEY'),
-                algorithm='HS256'
+                algorithm='ES256'
             )
 
             # return the token
