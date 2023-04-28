@@ -17,6 +17,9 @@ def create_app():
     # set the encryption key
     app.config['SECRET_KEY'] = 'first version'
 
+    # set the encryption key for JWT
+    app.config['JWT_SECRET_KEY'] = 'second version'
+
     # let flask know of the database location (local db)
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
 
