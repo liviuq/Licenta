@@ -58,15 +58,8 @@ def get_latest_entries_by_type(sensor_type, number):
 
 @sensor_view.route('/types', methods=['GET'])
 def get_sensor_types():
-    all_data = Sensor.query.get(type=type).distinct().all()
+    all_data = Sensor.query.with_entities(Sensor.type).distinct().all()
     data_list = []
     for entry in all_data:
-        data_dict = {
-            'id': entry.id,
-            'address': entry.address,
-            'type': entry.type,
-            'value': entry.value,
-            'date': entry.date
-        }
-        data_list.append(data_dict)
-    return jsonify(data_list)
+        data_list.append(entry.type)
+    return jsonify({"types":data_list})
