@@ -58,7 +58,7 @@ def get_latest_entries_by_type(sensor_type, number):
 
 @sensor_view.route('/types', methods=['GET'])
 def get_sensor_types():
-    all_data = Sensor.query(Sensor.type).distinct().all()
+    all_data = Sensor.query.get(type).distinct().all()
     data_list = []
     for entry in all_data:
         data_dict = {
