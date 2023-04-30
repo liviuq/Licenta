@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 // ignore: unused_import
 import '../models/sensor.dart';
 // ignore: unused_import
-import '../utils/dummy_fetch.dart';
+import '../utils/fetch.dart';
 import '../widgets/custom_list_tile.dart';
 
 class MainMenu extends StatefulWidget {
