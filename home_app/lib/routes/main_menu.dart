@@ -31,31 +31,6 @@ class _MainMenuState extends State<MainMenu> {
             foregroundColor: Colors.grey,
             toolbarHeight: 30,
           ),
-          // body: ListView.builder(
-          //   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-          //   itemCount: 3,
-          //   itemBuilder: (context, index) => CustomListTile(
-          //     icon: Icons.home_rounded,
-          //     title: 'Ground floor',
-          //     subtitle: 'All lights on',
-          //     switchValue: switchValue,
-          //     onSwitchChange: (newSwitchValue) {
-          //       setState(() {
-          //         switchValue = newSwitchValue;
-          //       });
-          //     },
-          //     sliderValue: sliderValue,
-          //     onSliderChange: (newSliderValue) {
-          //       setState(() {
-          //         sliderValue = newSliderValue;
-          //       });
-          //     },
-          //     onTap: () {
-          //       // ignore: avoid_print
-          //       print('GO TO THE DETAILS PAGE');
-          //     },
-          //   ),
-          // ),
           body: FutureBuilder<List>(
             future: sensorTypesFuture,
             builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
