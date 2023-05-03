@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 
-// ignore: unused_import
-import '../models/sensor.dart';
-// ignore: unused_import
 import '../utils/fetch.dart';
-import '../widgets/custom_list_tile.dart';
+import '../widgets/sensor_category.dart';
 
 class MainMenu extends StatefulWidget {
   const MainMenu({super.key});
@@ -15,9 +12,9 @@ class MainMenu extends StatefulWidget {
 
 class _MainMenuState extends State<MainMenu> {
   // to display sensors based on categories
-  Future<List> sensorTypes = getSensorTypes();
+  Future<List> sensorTypesFuture = getSensorTypes();
 
-  //
+  // get current sensors
   bool switchValue = false;
   double sliderValue = 0;
   @override
@@ -34,30 +31,51 @@ class _MainMenuState extends State<MainMenu> {
             foregroundColor: Colors.grey,
             toolbarHeight: 30,
           ),
-          body: ListView.builder(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-            itemCount: 3,
-            itemBuilder: (context, index) => CustomListTile(
-              icon: Icons.home_rounded,
-              title: 'Ground floor',
-              subtitle: 'All lights on',
-              switchValue: switchValue,
-              onSwitchChange: (newSwitchValue) {
-                setState(() {
-                  switchValue = newSwitchValue;
-                });
-              },
-              sliderValue: sliderValue,
-              onSliderChange: (newSliderValue) {
-                setState(() {
-                  sliderValue = newSliderValue;
-                });
-              },
-              onTap: () {
-                // ignore: avoid_print
-                print('GO TO THE DETAILS PAGE');
-              },
-            ),
+          // body: ListView.builder(
+          //   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+          //   itemCount: 3,
+          //   itemBuilder: (context, index) => CustomListTile(
+          //     icon: Icons.home_rounded,
+          //     title: 'Ground floor',
+          //     subtitle: 'All lights on',
+          //     switchValue: switchValue,
+          //     onSwitchChange: (newSwitchValue) {
+          //       setState(() {
+          //         switchValue = newSwitchValue;
+          //       });
+          //     },
+          //     sliderValue: sliderValue,
+          //     onSliderChange: (newSliderValue) {
+          //       setState(() {
+          //         sliderValue = newSliderValue;
+          //       });
+          //     },
+          //     onTap: () {
+          //       // ignore: avoid_print
+          //       print('GO TO THE DETAILS PAGE');
+          //     },
+          //   ),
+          // ),
+          body: FutureBuilder<List>(
+            future: sensorTypesFuture,
+            builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
+              if (snapshot.hasData) {
+                // Create widgets using the data in the snapshot
+                return ListView.builder(
+                  itemCount: snapshot.data?.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    // in SensorCategory you can query for the /snapshot.data![index]/addresses
+                    // to list the addresses and then to display the cards
+                    return SensorCategory(
+                      title: '${snapshot.data![index]}',
+                    );
+                  },
+                );
+              } else {
+                // Show loading indicator while waiting for data
+                return const CircularProgressIndicator();
+              }
+            },
           ),
           bottomNavigationBar: BottomNavigationBar(
             items: const <BottomNavigationBarItem>[
