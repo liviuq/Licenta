@@ -98,10 +98,10 @@ class _SensorDataTileState extends State<SensorDataTile> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'Address: \n${snapshot.data?.address}',
+                                        'Address: ${snapshot.data?.address}',
                                       ),
                                       Text(
-                                        'Current value: \n${snapshot.data?.value}',
+                                        'Current value: ${snapshot.data?.value}',
                                       ),
                                       Text(
                                         'Last update: \n${snapshot.data?.date}',
