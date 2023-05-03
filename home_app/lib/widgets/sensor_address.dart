@@ -38,9 +38,6 @@ class _SensorAddressState extends State<SensorAddress> {
             itemBuilder: (BuildContext context, int index) {
               // in SensorCategory you can query for the /snapshot.data![index]/addresses
               // to list the addresses and then to display the cards
-
-              // type: widget.type
-              // address: ${snapshot.data![index]
               return SensorDataTile(
                 icon: Icons.sensors,
                 type: widget.type,

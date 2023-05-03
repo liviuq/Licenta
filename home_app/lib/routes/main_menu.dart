@@ -14,9 +14,6 @@ class _MainMenuState extends State<MainMenu> {
   // to display sensors based on categories
   Future<List> sensorTypesFuture = getSensorTypes();
 
-  // get current sensors
-  bool switchValue = false;
-  double sliderValue = 0;
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -29,7 +26,18 @@ class _MainMenuState extends State<MainMenu> {
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             foregroundColor: Colors.grey,
-            toolbarHeight: 30,
+            toolbarHeight: 40,
+            actions: [
+              Padding(
+                  padding: EdgeInsets.only(right: 20.0),
+                  child: GestureDetector(
+                    onTap: () {},
+                    child: Icon(
+                      Icons.replay,
+                      size: 26.0,
+                    ),
+                  )),
+            ],
           ),
           body: FutureBuilder<List>(
             future: sensorTypesFuture,
@@ -53,22 +61,20 @@ class _MainMenuState extends State<MainMenu> {
             },
           ),
           bottomNavigationBar: BottomNavigationBar(
-            items: const <BottomNavigationBarItem>[
+            items: const [
               BottomNavigationBarItem(
                 icon: Icon(Icons.home),
                 label: 'Home',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.business),
-                label: 'Business',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.school),
-                label: 'School',
+                icon: Icon(Icons.info_outline),
+                label: 'About',
               ),
             ],
             //currentIndex: _selectedIndex,
-            selectedItemColor: Colors.amber[800],
+            selectedItemColor: Colors.white,
+            unselectedItemColor: Colors.blue,
+            backgroundColor: const Color(0xff0f082c),
             onTap: (parameter) {},
           ),
         ),
