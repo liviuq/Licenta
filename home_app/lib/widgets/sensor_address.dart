@@ -46,7 +46,7 @@ class _SensorAddressState extends State<SensorAddress> {
                 type: widget.type,
                 address: snapshot.data![index],
                 switchValue: true,
-                onSwitchChange: (bool) {},
+                onSwitchChange: (value) {},
                 sliderValue: 0,
                 onSliderChange: (value) {},
                 onTap: () {},
