@@ -56,6 +56,29 @@ def get_latest_entries_by_type(sensor_type, number):
         data_list.append(data_dict)
     return jsonify(data_list)
 
+@sensor_view.route('/<string:sensor_type>/<string:sensor_address>/latest/<int:number>', methods=['GET'])
+def get_latest_entries_specific_sensor(sensor_address, sensor_type, number):
+    all_data = Sensor.query.filter_by(address=sensor_address, type=sensor_type).order_by(Sensor.id.desc()).limit(number).all()
+    data_list = []
+    for entry in all_data:
+        data_dict = {
+            'id': entry.id,
+            'address': entry.address,
+            'type': entry.type,
+            'value': entry.value,
+            'date': entry.date
+        }
+        data_list.append(data_dict)
+    return jsonify(data_list)
+
+@sensor_view.route('/<string:sensor_type>/addresses', methods=['GET'])
+def get_sensor_addresses_by_type(sensor_type):
+    all_data = Sensor.query.filter_by(type=sensor_type).with_entities(Sensor.address).distinct().all()
+    data_list = []
+    for entry in all_data:
+        data_list.append(entry.address)
+    return jsonify({"addresses":data_list})
+
 @sensor_view.route('/types', methods=['GET'])
 def get_sensor_types():
     all_data = Sensor.query.with_entities(Sensor.type).distinct().all()
