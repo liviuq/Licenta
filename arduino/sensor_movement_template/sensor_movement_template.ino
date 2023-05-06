@@ -1,7 +1,6 @@
 #include <SPI.h>
 #include <RF24.h>
 #include <RF24Network.h>
- 
 
 // radio module initialization
 RF24 radio(7, 8);
@@ -23,14 +22,14 @@ unsigned long packets_sent;
 // defining the payload
 struct payload_t
 {
-  unsigned char type[8];
+  unsigned char type[16];
   unsigned long value;
 };
 
 // movement sensor configuration
-const int outPin = 2;   // the pin that OUTPUT pin of sensor is connected to
-int pinStateCurrent   = LOW; // current state of pin
-int pinStatePrevious  = LOW; // previous state of pin
+const int outPin = 2;       // the pin that OUTPUT pin of sensor is connected to
+int pinStateCurrent = LOW;  // current state of pin
+int pinStatePrevious = LOW; // previous state of pin
 
 void setup(void)
 {
@@ -39,19 +38,21 @@ void setup(void)
 
   // movement sensor pin
   pinMode(outPin, INPUT);
-    
-  while (!Serial){} //required by some boards
+
+  while (!Serial)
+  {
+  } // required by some boards
 
   if (!radio.begin())
   {
     Serial.println(F("Radio hardware not responding!"));
     while (1)
     {
-      // flash in-built LED once per 500ms        
+      // flash in-built LED once per 500ms
       digitalWrite(LED_BUILTIN, HIGH);
       delay(500);
       digitalWrite(LED_BUILTIN, LOW);
-      delay(500);           
+      delay(500);
     }
   }
 
@@ -59,7 +60,6 @@ void setup(void)
   radio.setChannel(90);
   network.begin(this_node);
 }
-
 
 void loop()
 {
@@ -73,14 +73,14 @@ void loop()
   unsigned long now = millis();
 
   // check if we have to send message
-  if (now - last_sent >= interval) 
+  if (now - last_sent >= interval)
   {
     // movement sensor checking to see
     pinStatePrevious = pinStateCurrent;
     pinStateCurrent = digitalRead(outPin);
 
     if (pinStatePrevious == LOW && pinStateCurrent == HIGH)
-    {  
+    {
       // pin state change: LOW -> HIGH
       Serial.println("Motion detected!");
       isMoving = 1;
@@ -88,7 +88,7 @@ void loop()
     else
     {
       if (pinStatePrevious == HIGH && pinStateCurrent == LOW)
-      {   
+      {
         // pin state change: HIGH -> LOW
         Serial.println("Motion stopped!");
         isMoving = 0;
@@ -98,9 +98,9 @@ void loop()
     last_sent = now;
 
     Serial.print(F("Sending... "));
-    payload_t payload = { 'Motion##', isMoving};
+    payload_t payload = {"Motion", isMoving};
     RF24NetworkHeader header(base_station);
     bool ok = network.write(header, &payload, sizeof(payload));
-    Serial.println(ok ? F("ok.") : F("failed."));    
+    Serial.println(ok ? F("ok.") : F("failed."));
   }
 }
