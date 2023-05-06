@@ -32,7 +32,8 @@ try:
             header, payload = network.read()
             sensor_type, value = struct.unpack("<16sL", payload[:EXPECTED_SIZE])
             sensor_type = sensor_type.decode('utf-8')
-            print(f'payload len: {len(payload)}, sensor type: {sensor_type}, value: {value}, header: {header.to_string()}') 
+            sensor_type_clean = ''.join(letter for letter in sensor_type if letter.isalnum())
+            print(f'payload len: {len(payload)}, sensor type: {sensor_type_clean},{len(sensor_type_clean)}, value: {value}, header: {header.to_string()}') 
 except KeyboardInterrupt:
     print("powering down radio and exiting.")
     radio.power = False

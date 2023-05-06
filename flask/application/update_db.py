@@ -30,6 +30,7 @@ def update_database(app, db):
                 header, payload = network.read()
                 sensor_type, value = struct.unpack("<16sL", payload[:EXPECTED_SIZE])
                 sensor_type = sensor_type.decode('utf-8')
+                sensor_type_clean = ''.join(letter for letter in sensor_type if letter.isalnum())
                 address = header.to_string().split(' ')[3]
 
                 # if app.config['FLASK_DEBUG']:
@@ -38,7 +39,7 @@ def update_database(app, db):
                 # getting the app db context
                 with app.app_context():
                     # creating a db entry
-                    sensor_db_entry = Sensor(address=address, type=sensor_type, value=value)
+                    sensor_db_entry = Sensor(address=address, type=sensor_type_clean, value=value)
 
                     # add to database
                     db.session.add(sensor_db_entry)
