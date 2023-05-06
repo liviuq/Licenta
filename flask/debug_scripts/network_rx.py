@@ -23,14 +23,14 @@ radio.channel = 90
 network.begin(THIS_NODE)
 radio.print_pretty_details()
 
-EXPECTED_SIZE = struct.calcsize("8sL")
+EXPECTED_SIZE = struct.calcsize("<16sL")
 
 try:
     while True:
         network.update()
         while network.available():
             header, payload = network.read()
-            sensor_type, value = struct.unpack("8sL", payload[:EXPECTED_SIZE])
+            sensor_type, value = struct.unpack("<16sL", payload[:EXPECTED_SIZE])
             sensor_type = sensor_type.decode('utf-8')
             print(f'payload len: {len(payload)}, sensor type: {sensor_type}, value: {value}, header: {header.to_string()}') 
 except KeyboardInterrupt:
