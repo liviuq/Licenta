@@ -21,15 +21,15 @@ if not radio.begin():
 radio.channel = 90
 network.begin(THIS_NODE)
 
-EXPECTED_SIZE = struct.calcsize("<BL")
+EXPECTED_SIZE = struct.calcsize("<16sL")
 def update_database(app, db):
     try:
         while True:
             network.update()
             while network.available():
                 header, payload = network.read()
-                sensor_type, value = struct.unpack("<BL", payload[:EXPECTED_SIZE])
-                sensor_type = chr(sensor_type)
+                sensor_type, value = struct.unpack("<16sL", payload[:EXPECTED_SIZE])
+                sensor_type = sensor_type.decode('utf-8')
                 address = header.to_string().split(' ')[3]
 
                 # if app.config['FLASK_DEBUG']:
