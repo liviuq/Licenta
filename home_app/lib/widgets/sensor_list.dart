@@ -1,35 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:home_app/widgets/sensor_data_tile.dart';
 
-import '../utils/fetch.dart';
+import 'package:home_app/utils/fetch.dart';
 
-class SensorAddress extends StatefulWidget {
-  final String type;
+import 'sensor_data_tile.dart';
 
-  const SensorAddress({
-    super.key,
-    required this.type,
-  });
+class SensorList extends StatefulWidget {
+  const SensorList({super.key});
 
   @override
-  State<SensorAddress> createState() => _SensorAddressState();
+  State<SensorList> createState() => _SensorListState();
 }
 
-class _SensorAddressState extends State<SensorAddress> {
-  late Future<List> sensorAddressesFromTypeFuture;
+class _SensorListState extends State<SensorList> {
+  late Future<List> allData;
 
   @override
   void initState() {
+    allData = getSensorsFuture();
     super.initState();
-    sensorAddressesFromTypeFuture = getSensorAddressesFromType(widget.type);
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List>(
-      future: sensorAddressesFromTypeFuture,
+      future: allData,
       builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
         if (snapshot.hasData) {
+          List? sensorList = snapshot.data?.toList();
           // Create widgets using the data in the snapshot
           return ListView.builder(
             scrollDirection: Axis.vertical,
@@ -40,7 +37,7 @@ class _SensorAddressState extends State<SensorAddress> {
               // to list the addresses and then to display the cards
               return SensorDataTile(
                 icon: Icons.sensors,
-                type: widget.type,
+                type: snapshot.data![index],
                 address: snapshot.data![index],
                 onTap: () {},
                 date: '',

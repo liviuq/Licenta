@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:home_app/widgets/sensor_category.dart';
+import 'package:home_app/widgets/sensor_data_tile.dart';
 
+import '../models/sensor.dart';
 import '../utils/fetch.dart';
-import '../widgets/sensor_category.dart';
 
 class MainMenu extends StatefulWidget {
   const MainMenu({super.key});
@@ -11,8 +13,8 @@ class MainMenu extends StatefulWidget {
 }
 
 class _MainMenuState extends State<MainMenu> {
-  // to display sensors based on categories
-  Future<List> sensorTypesFuture = getSensorTypes();
+  // list with Sensors to display on main menu screen
+  Future<List> _sensors = getSensorsFuture();
 
   @override
   Widget build(BuildContext context) {
@@ -26,37 +28,78 @@ class _MainMenuState extends State<MainMenu> {
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             foregroundColor: Colors.grey,
-            toolbarHeight: 40,
+            toolbarHeight: 50,
             actions: [
               Padding(
-                  padding: EdgeInsets.only(right: 20.0),
-                  child: GestureDetector(
-                    onTap: () {},
-                    child: Icon(
-                      Icons.replay,
-                      size: 26.0,
-                    ),
-                  )),
+                padding: const EdgeInsets.only(right: 20.0),
+                child: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _sensors = getSensorsFuture();
+                    });
+                  },
+                  child: const Icon(
+                    Icons.replay,
+                    size: 26.0,
+                  ),
+                ),
+              ),
             ],
           ),
-          body: FutureBuilder<List>(
-            future: sensorTypesFuture,
-            builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
-              if (snapshot.hasData) {
-                // Create widgets using the data in the snapshot
-                return ListView.builder(
-                  itemCount: snapshot.data?.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    // in SensorCategory you can query for the /snapshot.data![index]/addresses
-                    // to list the addresses and then to display the cards
-                    return SensorCategory(
-                      title: '${snapshot.data![index]}',
-                    );
-                  },
+          body: FutureBuilder(
+            future: _sensors,
+            builder: (context, AsyncSnapshot snapshot) {
+              if (!snapshot.hasData) {
+                return const Center(
+                  child: CircularProgressIndicator(),
                 );
               } else {
-                // Show loading indicator while waiting for data
-                return const CircularProgressIndicator();
+                // reassign snapshot.data to a list of sensors
+                List<Sensor> sensors = snapshot.data;
+
+                // sort the list based on type
+                sensors.sort((a, b) => a.type.compareTo(b.type));
+
+                // declare current type
+                String type = '';
+
+                // if we discover a new sensor type, create the category
+                // and return the sensors of that category
+                return ListView.builder(
+                  itemCount: sensors.length,
+                  scrollDirection: Axis.vertical,
+                  itemBuilder: (BuildContext context, int index) {
+                    if (sensors[index].type != type) {
+                      type = sensors[index].type;
+                      return Column(
+                        children: [
+                          SensorCategory(
+                            title: sensors[index].type,
+                          ),
+                          SensorDataTile(
+                            icon: Icons.broadcast_on_home_rounded,
+                            address: sensors[index].address,
+                            date: sensors[index].date,
+                            id: sensors[index].id,
+                            type: sensors[index].type,
+                            value: sensors[index].value,
+                            onTap: () {},
+                          ),
+                        ],
+                      );
+                    } else {
+                      return SensorDataTile(
+                        icon: Icons.broadcast_on_home_rounded,
+                        address: sensors[index].address,
+                        date: sensors[index].date,
+                        id: sensors[index].id,
+                        type: sensors[index].type,
+                        value: sensors[index].value,
+                        onTap: () {},
+                      );
+                    }
+                  },
+                );
               }
             },
           ),

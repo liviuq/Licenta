@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'sensor_address.dart';
-
 class SensorCategory extends StatelessWidget {
   final String title;
   final Color textColor;
@@ -50,9 +48,6 @@ class SensorCategory extends StatelessWidget {
               ),
             ),
           ),
-        ),
-        SensorAddress(
-          type: title,
         ),
       ],
     );

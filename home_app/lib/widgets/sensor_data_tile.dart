@@ -1,17 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import '../models/sensor.dart';
-import '../utils/fetch.dart';
 
 class SensorDataTile extends StatefulWidget {
   final IconData icon;
-  final String type;
   final String address;
-  final bool switchValue;
-  final void Function(bool)? onSwitchChange;
-  final double sliderValue;
-  final void Function(double)? onSliderChange;
+  final String date;
+  final int id;
+  final String type;
+  final int value;
   final void Function()? onTap;
 
   final Color textColor;
@@ -19,12 +14,11 @@ class SensorDataTile extends StatefulWidget {
   const SensorDataTile({
     super.key,
     required this.icon,
-    required this.type,
     required this.address,
-    required this.switchValue,
-    required this.onSwitchChange,
-    required this.sliderValue,
-    required this.onSliderChange,
+    required this.date,
+    required this.id,
+    required this.type,
+    required this.value,
     required this.onTap,
     this.textColor = Colors.white,
   });
@@ -34,37 +28,21 @@ class SensorDataTile extends StatefulWidget {
 }
 
 class _SensorDataTileState extends State<SensorDataTile> {
-  // last sensor value
-  late Future<Sensor> lastSensorValueFuture;
-
-  @override
-  void initState() {
-    super.initState();
-    lastSensorValueFuture =
-        getLastSensorValueFuture(widget.type, widget.address);
-  }
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: widget.onTap,
       child: Card(
-        margin: const EdgeInsets.symmetric(vertical: 8),
+        margin: const EdgeInsets.all(8),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
-            gradient: const LinearGradient(
-              colors: [
-                Colors.purple,
-                Colors.pink,
-                Colors.red,
-                Colors.orange,
-                Colors.yellow,
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
+            border: Border.all(
+              color: Colors.white,
+              width: 3,
             ),
+            borderRadius: BorderRadius.circular(16),
+            color: Colors.black,
           ),
           child: Padding(
             padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
@@ -87,32 +65,23 @@ class _SensorDataTileState extends State<SensorDataTile> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            FutureBuilder<Sensor>(
-                              future: lastSensorValueFuture,
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<Sensor> snapshot) {
-                                if (snapshot.hasData) {
-                                  // Create widgets using the data in the snapshot
-                                  return Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Address: ${snapshot.data?.address}',
-                                      ),
-                                      Text(
-                                        'Current value: ${snapshot.data?.value}',
-                                      ),
-                                      Text(
-                                        'Last update: \n${snapshot.data?.date}',
-                                      ),
-                                    ],
-                                  );
-                                } else {
-                                  // Show loading indicator while waiting for data
-                                  return const CircularProgressIndicator();
-                                }
-                              },
+                            // Create widgets using the data in the snapshot
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Address: ${widget.address}',
+                                ),
+                                Text(
+                                  'Type: ${widget.type}',
+                                ),
+                                Text(
+                                  'Current value: ${widget.value}',
+                                ),
+                                Text(
+                                  'Last update: \n${widget.date}',
+                                ),
+                              ],
                             ),
                           ],
                         ),
