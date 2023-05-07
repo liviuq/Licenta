@@ -1,3 +1,4 @@
+from sqlalchemy.sql import func 
 from flask import Blueprint, jsonify
 
 from .models import Sensor
@@ -8,8 +9,7 @@ sensor_view = Blueprint('sensor_view', __name__)
 # just  for the lulz
 @sensor_view.route('/', methods=['GET'])
 def lulz():
-    return '<h1> root route</h1>'
-
+    return '<p>hi</p>'
 
 @sensor_view.route('/latest', methods=['GET'])
 def get_latest():
@@ -86,3 +86,18 @@ def get_sensor_types():
     for entry in all_data:
         data_list.append(entry.type)
     return jsonify({"types":data_list})
+
+@sensor_view.route('/sensors', methods=['GET'])
+def sensors():
+    all_data = Sensor.query.group_by(Sensor.address).having(func.max(Sensor.id)).order_by(Sensor.id).all()
+    data_list = []
+    for entry in all_data:
+        data_dict = {
+            'id': entry.id,
+            'address': entry.address,
+            'type': entry.type,
+            'value': entry.value,
+            'date': entry.date
+        }
+        data_list.append(data_dict)
+    return jsonify(data_list)
