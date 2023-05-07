@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SensorCategory extends StatelessWidget {
   final String title;
@@ -12,44 +13,35 @@ class SensorCategory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Card(
-          margin: const EdgeInsets.symmetric(vertical: 8),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              gradient: const LinearGradient(
-                colors: [
-                  Colors.purple,
-                  Colors.pink,
-                  Colors.red,
-                  Colors.orange,
-                  Colors.yellow,
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(6),
-              child: Padding(
-                padding: const EdgeInsets.all(8),
-                child: Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 50,
-                    fontWeight: FontWeight.bold,
-                    color: textColor,
-                  ),
-                ),
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: const Color(0xff5bc0be),
+            width: 3,
+          ),
+          color: Colors.black,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(6),
+          child: Padding(
+            padding: const EdgeInsets.all(8),
+            child: Text(
+              title,
+              style: GoogleFonts.roboto(
+                color: Colors.white,
+                fontSize: 50,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ),
         ),
-      ],
+      ),
     );
   }
 }

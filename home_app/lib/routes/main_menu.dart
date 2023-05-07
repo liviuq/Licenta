@@ -4,6 +4,7 @@ import 'package:home_app/widgets/sensor_data_tile.dart';
 
 import '../models/sensor.dart';
 import '../utils/fetch.dart';
+import 'sensor_page.dart';
 
 class MainMenu extends StatefulWidget {
   const MainMenu({super.key});
@@ -21,7 +22,7 @@ class _MainMenuState extends State<MainMenu> {
     return Stack(
       children: [
         Container(
-          color: const Color(0xff0f082c),
+          color: const Color(0xff1c2541),
         ),
         Scaffold(
           backgroundColor: Colors.transparent,
@@ -69,6 +70,8 @@ class _MainMenuState extends State<MainMenu> {
                   itemCount: sensors.length,
                   scrollDirection: Axis.vertical,
                   itemBuilder: (BuildContext context, int index) {
+                    // if the found a new category name, update it
+                    // and return a widget with the respective category
                     if (sensors[index].type != type) {
                       type = sensors[index].type;
                       return Column(
@@ -83,7 +86,19 @@ class _MainMenuState extends State<MainMenu> {
                             id: sensors[index].id,
                             type: sensors[index].type,
                             value: sensors[index].value,
-                            onTap: () {},
+                            // opens a new page with the sensor data
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SensorRoute(
+                                    address: sensors[index].address,
+                                    id: sensors[index].id,
+                                    type: sensors[index].type,
+                                  ),
+                                ),
+                              );
+                            },
                           ),
                         ],
                       );
@@ -95,7 +110,18 @@ class _MainMenuState extends State<MainMenu> {
                         id: sensors[index].id,
                         type: sensors[index].type,
                         value: sensors[index].value,
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SensorRoute(
+                                address: sensors[index].address,
+                                id: sensors[index].id,
+                                type: sensors[index].type,
+                              ),
+                            ),
+                          );
+                        },
                       );
                     }
                   },
