@@ -1,25 +1,323 @@
+import 'dart:math';
+
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import '../models/sensor.dart';
+import '../utils/fetch.dart';
 
 class SensorRoute extends StatefulWidget {
-  const SensorRoute(
-      {super.key,
-      required String address,
-      required int id,
-      required String type});
+  final String address;
+  final int id;
+  final String type;
+
+  const SensorRoute({
+    super.key,
+    required this.address,
+    required this.id,
+    required this.type,
+  });
 
   @override
   State<SensorRoute> createState() => _SensorRouteState();
 }
 
 class _SensorRouteState extends State<SensorRoute> {
+  // data for the chart
+  late List<FlSpot> line = List.generate(8, (index) {
+    return FlSpot(index.toDouble(), index * Random().nextDouble());
+  });
+
+  // slider to change the granularity of the chart
+  // default is 10
+  late double sliderValue = 10;
+
+  // threshold value
+  late double threshold;
+
+  // data points from server based on the slider ammount
+  late Future<List<Sensor>> _data;
+
+  @override
+  void initState() {
+    _data = getSensorDataFuture(widget.type, widget.address, sliderValue);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         Container(
           color: const Color(0xff1c2541),
+        ),
+        Scaffold(
+          backgroundColor: Colors.transparent,
+          body: Column(
+            children: [
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 40, horizontal: 10),
+                child: Card(
+                  margin: const EdgeInsets.symmetric(vertical: 8),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: const Color(0xff5bc0be),
+                        width: 3,
+                      ),
+                      color: const Color(0xff00171f),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(6),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Advanced data for',
+                              style: GoogleFonts.roboto(
+                                color: Colors.white,
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              '${widget.type}:${widget.address}',
+                              style: GoogleFonts.roboto(
+                                color: Colors.white,
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              FutureBuilder(
+                future: _data,
+                builder: (context, AsyncSnapshot snapshot) {
+                  if (!snapshot.hasData) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else {
+                    // generate points here
+                    List<Sensor> data = snapshot.data;
+
+                    // generate line here
+                    // X -> date
+                    // Y -> value
+
+                    double minY = 0, maxY = 0;
+                    line = List.generate(data.length, (index) {
+                      if (data[index].value > maxY) {
+                        maxY = data[index].value.toDouble();
+                      }
+                      if (data[index].value < minY) {
+                        minY = data[index].value.toDouble();
+                      }
+                      return FlSpot(
+                        index.toDouble(),
+                        data[index].value.toDouble(),
+                      );
+                    });
+
+                    // normalize minY and maxY
+                    // no idea at the moment how to normalize minY and maxY
+                    // so I will just add 10% to maxY and subtract 10% from minY
+                    minY = minY * 0.9;
+                    maxY = maxY * 1.1;
+
+                    double minX = 0;
+                    double maxX = sliderValue - 1;
+                    return SafeArea(
+                      child: Container(
+                        padding: const EdgeInsets.all(20),
+                        height: 250,
+                        width: double.infinity,
+                        child: LineChart(
+                          LineChartData(
+                            lineTouchData: LineTouchData(
+                              enabled: true,
+                              touchTooltipData: LineTouchTooltipData(
+                                tooltipBgColor:
+                                    Colors.blueGrey.withOpacity(0.8),
+                                getTooltipItems: (touchedSpots) => touchedSpots
+                                    .map(
+                                      (e) => LineTooltipItem(
+                                        '${e.y} @ \n${data[e.x.toInt()].date}',
+                                        const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    )
+                                    .toList(),
+                              ),
+                            ),
+                            minX: minX,
+                            maxX: maxX,
+                            minY: minY,
+                            maxY: maxY * 1.2,
+                            gridData: FlGridData(
+                              show: false,
+                              drawVerticalLine: true,
+                              horizontalInterval: 1,
+                              verticalInterval: 1,
+                              getDrawingHorizontalLine: (value) {
+                                return FlLine(
+                                  color: Colors.grey,
+                                  strokeWidth: 1,
+                                );
+                              },
+                              getDrawingVerticalLine: (value) {
+                                return FlLine(
+                                  color: Colors.grey,
+                                  strokeWidth: 1,
+                                );
+                              },
+                            ),
+                            titlesData: FlTitlesData(
+                              show: true,
+                              rightTitles: AxisTitles(
+                                sideTitles: SideTitles(showTitles: false),
+                              ),
+                              topTitles: AxisTitles(
+                                sideTitles: SideTitles(showTitles: false),
+                              ),
+                              leftTitles: AxisTitles(
+                                axisNameWidget: Text(
+                                  'Value',
+                                  style: GoogleFonts.roboto(
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              bottomTitles: AxisTitles(
+                                axisNameWidget: Text(
+                                  'Date',
+                                  style: GoogleFonts.roboto(
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            borderData: FlBorderData(
+                              show: true,
+                              border:
+                                  Border.all(color: const Color(0xff37434d)),
+                            ),
+                            lineBarsData: [
+                              LineChartBarData(
+                                spots: line,
+                                isCurved: false,
+                                gradient: const LinearGradient(
+                                  colors: [
+                                    Colors.cyan,
+                                    Colors.blue,
+                                  ],
+                                ),
+                                barWidth: 2,
+                                isStrokeCapRound: true,
+                                dotData: FlDotData(
+                                  show: true,
+                                ),
+                                belowBarData: BarAreaData(
+                                  show: true,
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Colors.cyan,
+                                      Colors.blue,
+                                    ]
+                                      ..map((color) => color.withOpacity(0.3))
+                                      ..toList(),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+                },
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: const Color(0xff5bc0be),
+                      width: 3,
+                    ),
+                    color: const Color(0xff00171f),
+                  ),
+                  child: Column(
+                    children: [
+                      Slider(
+                        min: 0,
+                        max: 100,
+                        value: sliderValue,
+                        label: 'Granularity',
+                        thumbColor: Colors.cyan,
+                        activeColor: Colors.red.withOpacity(0.5),
+                        inactiveColor: Colors.cyan.withOpacity(0.15),
+                        onChanged: (newSliderValue) {
+                          // WILL CAUSE MULTIPLE RELOADS
+                          setState(() {
+                            sliderValue = newSliderValue;
+                          });
+                        },
+                        // onChanged is called on eery value in the interval [startValue, endValue]
+                        // so just in onChangeEnd we call the API, it will make just 1 call
+                        // instead of abs(startValue - endValue) calls
+                        onChangeEnd: (newSliderValue) {
+                          setState(() {
+                            // setting the new granularity
+                            sliderValue = newSliderValue;
+
+                            // retrieve sliderValue data points from server
+                            _data = getSensorDataFuture(
+                                widget.type, widget.address, sliderValue);
+
+                            // regenerate the graph line
+                            line = List.generate(8, (index) {
+                              return FlSpot(index.toDouble(),
+                                  index * Random().nextDouble());
+                            });
+                          });
+                        },
+                      ),
+                      Text(
+                        'Fetching ${sliderValue.toInt()} data points',
+                        style: GoogleFonts.roboto(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ],
     );

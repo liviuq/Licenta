@@ -26,7 +26,6 @@ class _SensorListState extends State<SensorList> {
       future: allData,
       builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
         if (snapshot.hasData) {
-          List? sensorList = snapshot.data?.toList();
           // Create widgets using the data in the snapshot
           return ListView.builder(
             scrollDirection: Axis.vertical,

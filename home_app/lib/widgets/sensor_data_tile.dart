@@ -91,7 +91,7 @@ class _SensorDataTileState extends State<SensorDataTile> {
               width: 3,
             ),
             borderRadius: BorderRadius.circular(16),
-            color: Colors.black,
+            color: const Color(0xff00171f),
           ),
           child: Padding(
             padding: const EdgeInsets.all(5),

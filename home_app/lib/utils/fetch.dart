@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/rendering.dart';
-
 import '../models/sensor.dart';
 import 'package:http/http.dart' as http;
 
@@ -54,7 +52,6 @@ Future<List<String>> getSensorAddressesFromType(String type) async {
     List<String> addresses =
         typesJson != null ? List.from(typesJson) : List.empty();
 
-    print(addresses);
     // return the list
     return addresses;
   } else {
@@ -80,6 +77,28 @@ Future<Sensor> getLastSensorValueFuture(String type, String address) async {
 // get data of all sensors in one API call
 Future<List<Sensor>> getSensorsFuture() async {
   final response = await http.get(Uri.parse('https://andr3w.ddns.net/sensors'));
+
+  if (response.statusCode == 200) {
+    final jsonList = jsonDecode(response.body);
+
+    List<Sensor> sensorList = [];
+
+    for (var json in jsonList) {
+      sensorList.add(Sensor.fromJson(json));
+    }
+
+    return sensorList;
+  } else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to load last sensor data');
+  }
+}
+
+Future<List<Sensor>> getSensorDataFuture(
+    String type, String address, double sliderValue) async {
+  final response = await http.get(Uri.parse(
+      'https://andr3w.ddns.net/$type/$address/latest/${sliderValue.toInt()}'));
 
   if (response.statusCode == 200) {
     final jsonList = jsonDecode(response.body);

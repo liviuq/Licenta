@@ -25,7 +25,7 @@ class SensorCategory extends StatelessWidget {
             color: const Color(0xff5bc0be),
             width: 3,
           ),
-          color: Colors.black,
+          color: const Color(0xff5bc0be),
         ),
         child: Padding(
           padding: const EdgeInsets.all(6),
