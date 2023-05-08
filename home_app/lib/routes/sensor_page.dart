@@ -25,9 +25,11 @@ class SensorRoute extends StatefulWidget {
 
 class _SensorRouteState extends State<SensorRoute> {
   // data for the chart
-  late List<FlSpot> line = List.generate(8, (index) {
-    return FlSpot(index.toDouble(), index * Random().nextDouble());
-  });
+  late List<FlSpot> line;
+
+  // interval for the chart
+  double minY = 0, maxY = 0;
+  double minX = 0, maxX = 0;
 
   // slider to change the granularity of the chart
   // default is 10
@@ -42,6 +44,11 @@ class _SensorRouteState extends State<SensorRoute> {
   @override
   void initState() {
     _data = getSensorDataFuture(widget.type, widget.address, sliderValue);
+
+    // regenerate the graph line
+    line = List.generate(8, (index) {
+      return FlSpot(index.toDouble(), index * Random().nextDouble());
+    });
     super.initState();
   }
 
@@ -118,7 +125,6 @@ class _SensorRouteState extends State<SensorRoute> {
                     // X -> date
                     // Y -> value
 
-                    double minY = 0, maxY = 0;
                     line = List.generate(data.length, (index) {
                       if (data[index].value > maxY) {
                         maxY = data[index].value.toDouble();
@@ -137,9 +143,9 @@ class _SensorRouteState extends State<SensorRoute> {
                     // so I will just add 10% to maxY and subtract 10% from minY
                     minY = minY * 0.9;
                     maxY = maxY * 1.1;
+                    minX = 0;
+                    maxX = data.length.toDouble();
 
-                    double minX = 0;
-                    double maxX = sliderValue - 1;
                     return SafeArea(
                       child: Container(
                         padding: const EdgeInsets.all(20),
@@ -168,7 +174,7 @@ class _SensorRouteState extends State<SensorRoute> {
                             minX: minX,
                             maxX: maxX,
                             minY: minY,
-                            maxY: maxY * 1.2,
+                            maxY: maxY,
                             gridData: FlGridData(
                               show: false,
                               drawVerticalLine: true,
@@ -272,7 +278,7 @@ class _SensorRouteState extends State<SensorRoute> {
                     children: [
                       Slider(
                         min: 0,
-                        max: 100,
+                        max: 300,
                         value: sliderValue,
                         label: 'Granularity',
                         thumbColor: Colors.cyan,
