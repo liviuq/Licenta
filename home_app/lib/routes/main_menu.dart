@@ -14,8 +14,22 @@ class MainMenu extends StatefulWidget {
 }
 
 class _MainMenuState extends State<MainMenu> {
+  // bool to force a server fetch instead of a local fetch
+  bool forceServerFetch = true;
+
   // list with Sensors to display on main menu screen
-  Future<List> _sensors = getSensorsFuture();
+  late Future<List> _sensors;
+
+  @override
+  void initState() {
+    // upon initialization, get the sensors from the server
+    _sensors = getSensorsFuture(forceServerFetch);
+
+    // set forceServerFetch to false so that the next time
+    // the data is loaded locally
+    forceServerFetch = false;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +50,8 @@ class _MainMenuState extends State<MainMenu> {
                 child: GestureDetector(
                   onTap: () {
                     setState(() {
-                      _sensors = getSensorsFuture();
+                      // force fetching from the server
+                      _sensors = getSensorsFuture(true);
                     });
                   },
                   child: const Icon(

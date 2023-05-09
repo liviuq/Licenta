@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:hive/hive.dart';
+
 import '../models/sensor.dart';
 import 'package:http/http.dart' as http;
 
@@ -75,24 +77,43 @@ Future<Sensor> getLastSensorValueFuture(String type, String address) async {
 }
 
 // get data of all sensors in one API call
-Future<List<Sensor>> getSensorsFuture() async {
-  final response = await http.get(Uri.parse('https://andr3w.ddns.net/sensors'));
+Future<List<Sensor>> getSensorsFuture(bool forceServerFetch) async {
+  // open the box
+  var box = await Hive.openBox<List>('home_page_data');
 
-  if (response.statusCode == 200) {
-    final jsonList = jsonDecode(response.body);
+  if (forceServerFetch) {
+    final response =
+        await http.get(Uri.parse('https://andr3w.ddns.net/sensors'));
 
-    List<Sensor> sensorList = [];
+    if (response.statusCode == 200) {
+      final jsonList = jsonDecode(response.body);
 
-    for (var json in jsonList) {
-      sensorList.add(Sensor.fromJson(json));
+      List<Sensor> sensorList = [];
+
+      for (var json in jsonList) {
+        sensorList.add(Sensor.fromJson(json));
+      }
+
+      // adding the list to the database
+      await box.put('cards', sensorList);
+
+      // return the data
+      return sensorList;
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load last sensor data');
     }
-
-    return sensorList;
   } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
-    throw Exception('Failed to load last sensor data');
+    // check if the data is in the box
+    if (box.containsKey('cards')) {
+      // return the data
+      List<Sensor> cards = box.get('cards')!.cast();
+
+      return Future<List<Sensor>>.value(cards);
+    }
   }
+  throw Exception('Failed to load last sensor data: thrown at the end');
 }
 
 Future<List<Sensor>> getSensorDataFuture(

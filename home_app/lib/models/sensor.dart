@@ -1,8 +1,21 @@
+import 'package:hive/hive.dart';
+part 'sensor.g.dart';
+
+@HiveType(typeId: 0)
 class Sensor {
+  @HiveField(0)
   final String address;
+
+  @HiveField(1)
   final String date;
+
+  @HiveField(2)
   final int id;
+
+  @HiveField(3)
   final String type;
+
+  @HiveField(4)
   final int value;
 
   const Sensor({
