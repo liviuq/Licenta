@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive/hive.dart';
 import 'package:home_app/widgets/date.dart';
 
 class SensorDataTile extends StatefulWidget {
@@ -32,6 +33,13 @@ class SensorDataTile extends StatefulWidget {
 class _SensorDataTileState extends State<SensorDataTile> {
   String? location;
   TextEditingController locationContoller = TextEditingController();
+
+  @override
+  void initState() {
+    // self explanatory
+    loadLocationFromBox();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +75,11 @@ class _SensorDataTileState extends State<SensorDataTile> {
                 TextButton(
                   onPressed: () {
                     setState(() {
+                      // add the sensor location to it's database
+                      Hive.box(widget.address)
+                          .put('location', locationContoller.text);
+
+                      // update the location variable
                       location = locationContoller.text;
                       locationContoller.clear();
                     });
@@ -175,6 +188,7 @@ class _SensorDataTileState extends State<SensorDataTile> {
                             ),
                             Text(
                               location!,
+                              overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.roboto(
                                 color: Colors.white,
                                 fontSize: 15,
@@ -192,5 +206,14 @@ class _SensorDataTileState extends State<SensorDataTile> {
         ),
       ),
     );
+  }
+
+  void loadLocationFromBox() {
+    var box = Hive.openBox(widget.address);
+    box.whenComplete(() {
+      setState(() {
+        location = Hive.box(widget.address).get('location');
+      });
+    });
   }
 }

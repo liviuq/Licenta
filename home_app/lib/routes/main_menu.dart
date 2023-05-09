@@ -23,7 +23,7 @@ class _MainMenuState extends State<MainMenu> {
   @override
   void initState() {
     // upon initialization, get the sensors from the server
-    _sensors = getSensorsFuture(forceServerFetch);
+    _sensors = getSensorsFuture(forceServerFetch: true);
 
     // set forceServerFetch to false so that the next time
     // the data is loaded locally
@@ -51,7 +51,9 @@ class _MainMenuState extends State<MainMenu> {
                   onTap: () {
                     setState(() {
                       // force fetching from the server
-                      _sensors = getSensorsFuture(true);
+                      _sensors = getSensorsFuture(
+                        forceServerFetch: true,
+                      );
                     });
                   },
                   child: const Icon(

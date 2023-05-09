@@ -63,7 +63,10 @@ Future<List<String>> getSensorAddressesFromType(String type) async {
   }
 }
 
-Future<Sensor> getLastSensorValueFuture(String type, String address) async {
+Future<Sensor> getLastSensorValueFuture({
+  required String type,
+  required String address,
+}) async {
   final response = await http
       .get(Uri.parse('https://andr3w.ddns.net/$type/$address/latest/1'));
 
@@ -77,7 +80,7 @@ Future<Sensor> getLastSensorValueFuture(String type, String address) async {
 }
 
 // get data of all sensors in one API call
-Future<List<Sensor>> getSensorsFuture(bool forceServerFetch) async {
+Future<List<Sensor>> getSensorsFuture({required bool forceServerFetch}) async {
   // open the box
   var box = await Hive.openBox<List>('home_page_data');
 
