@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:hive/hive.dart';
 import 'package:home_app/widgets/sensor_category.dart';
 import 'package:home_app/widgets/sensor_data_tile.dart';
 
@@ -14,6 +16,9 @@ class MainMenu extends StatefulWidget {
 }
 
 class _MainMenuState extends State<MainMenu> {
+  // secure mode variable
+  late bool _secureMode = false;
+
   // bool to force a server fetch instead of a local fetch
   bool forceServerFetch = true;
 
@@ -25,9 +30,14 @@ class _MainMenuState extends State<MainMenu> {
     // upon initialization, get the sensors from the server
     _sensors = getSensorsFuture(forceServerFetch: true);
 
+    // get the secure mode from the box
+    setSecureModeFromDatabase(
+      boxName: 'settings',
+    );
     // set forceServerFetch to false so that the next time
     // the data is loaded locally
     forceServerFetch = false;
+
     super.initState();
   }
 
@@ -45,22 +55,66 @@ class _MainMenuState extends State<MainMenu> {
             foregroundColor: Colors.grey,
             toolbarHeight: 50,
             actions: [
-              Padding(
-                padding: const EdgeInsets.only(right: 20.0),
-                child: GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      // force fetching from the server
-                      _sensors = getSensorsFuture(
-                        forceServerFetch: true,
-                      );
-                    });
-                  },
-                  child: const Icon(
-                    Icons.replay,
-                    size: 26.0,
+              Row(
+                children: [
+                  Text(
+                    'Left home?',
+                    style: GoogleFonts.roboto(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
+                  Switch(
+                    activeColor: Colors.green,
+                    inactiveThumbColor: Colors.red,
+                    value: _secureMode,
+                    onChanged: (bool value) {
+                      setState(() {
+                        _secureMode = value;
+
+                        // save the secure mode to the box
+                        // so that it can be retrieved later
+                        saveSecureModeToDatabase(
+                          boxName: 'settings',
+                          value: value,
+                        );
+                      });
+                    },
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Text(
+                    'Reload data',
+                    style: GoogleFonts.roboto(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 20.0),
+                    child: InkWell(
+                      splashColor: Colors.blue, // optional splash color
+                      highlightColor: Colors.transparent,
+                      borderRadius: BorderRadius.circular(100.0),
+                      onTap: () {
+                        setState(() {
+                          // force fetching from the server
+                          _sensors = getSensorsFuture(
+                            forceServerFetch: true,
+                          );
+                        });
+                      },
+                      child: const Icon(
+                        Icons.replay,
+                        size: 26.0,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -154,6 +208,10 @@ class _MainMenuState extends State<MainMenu> {
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.info_outline),
+                label: 'Logs',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.info_outline),
                 label: 'About',
               ),
             ],
@@ -166,5 +224,36 @@ class _MainMenuState extends State<MainMenu> {
         ),
       ],
     );
+  }
+
+  void setSecureModeFromDatabase({
+    required String boxName,
+  }) async {
+    // open the box
+    await Hive.openBox(boxName);
+    var box = Hive.box(boxName);
+
+    // check for secureMode key
+    if (box.containsKey('secureMode')) {
+      setState(() {
+        _secureMode = box.get('secureMode') as bool;
+      });
+    } else {
+      setState(() {
+        _secureMode = false;
+      });
+    }
+  }
+
+  void saveSecureModeToDatabase({
+    required String boxName,
+    required bool value,
+  }) async {
+    // open the box
+    await Hive.openBox(boxName);
+    var box = Hive.box(boxName);
+
+    // save the value
+    box.put('secureMode', value);
   }
 }
