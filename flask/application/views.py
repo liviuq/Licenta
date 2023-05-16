@@ -1,10 +1,35 @@
+from . import app_reference, db_reference
+
 from sqlalchemy.sql import func 
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 
-from .models import Sensor
-
-# creating a blueprint
+from .models import Sensor, AdvancedSensor
+# creating the blueprints
 sensor_view = Blueprint('sensor_view', __name__)
+advanced_view = Blueprint('advanced_view', __name__)
+
+@advanced_view.route('/put', methods=['PUT'])
+def put_advanced_sensor():
+    global app_reference, db_reference
+
+    sensor_data = request.get_json(force=True)
+    
+    # checking if the same ip address is found in the table AdvancedSensor
+    sensor_db = AdvancedSensor.query.all()
+    for sen in sensor_db:
+        print(f'ip:{sen.ip},date:{sen.date}') 
+    if sensor_db is None:
+        # add to database
+        with app_reference.app_context():
+
+            # create an AdvancedSensor object
+            sensor_db_entry = AdvancedSensor(ip=sensor_data['ip'], name=sensor_data['name'], endpoints=sensor_data['endpoints'])
+            db_reference.session.add(sensor_db_entry)
+            db_reference.session.commit()
+
+        return sensor_data
+    else:
+        return 'ye'
 
 # just  for the lulz
 @sensor_view.route('/', methods=['GET'])
