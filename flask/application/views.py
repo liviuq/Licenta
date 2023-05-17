@@ -178,9 +178,13 @@ def get_sensor_types():
 
 @sensor_view.route('/sensors', methods=['GET'])
 def sensors():
-    all_data = Sensor.query.group_by(Sensor.address).having(func.max(Sensor.id)).order_by(Sensor.id).all()
-    data_list = []
-    for entry in all_data:
+    all_static = Sensor.query.group_by(Sensor.address).having(func.max(Sensor.id)).order_by(Sensor.id).all()
+    list_static = []
+
+    all_advanced = AdvancedSensor.query.all()
+    list_advanced = []
+
+    for entry in all_static:
         data_dict = {
             'id': entry.id,
             'address': entry.address,
@@ -188,5 +192,15 @@ def sensors():
             'value': entry.value,
             'date': entry.date
         }
-        data_list.append(data_dict)
-    return jsonify(data_list)
+        list_static.append(data_dict)
+
+    for entry in all_advanced:
+        data_dict = {
+             'ip': entry.ip,
+             'name': entry.name,
+             'endpoints': entry.endpoints,
+             'date': entry.date
+        }
+        list_advanced.append(data_dict)
+
+    return jsonify({'static':list_static, 'advanced':list_advanced})
