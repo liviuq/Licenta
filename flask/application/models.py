@@ -9,3 +9,9 @@ class Sensor(db.Model):
     type = db.Column(db.String(16))
     value = db.Column(db.Integer)
     date = db.Column(db.DateTime(timezone=True), default=func.now())
+
+class AdvancedSensor(db.Model):
+    ip = db.Column(db.String(16), primary_key=True)
+    name = db.Column(db.String(64))
+    endpoints = db.Column(db.String(512))
+    date = db.Column(db.DateTime(timezone=True), default=func.now())
