@@ -26,7 +26,7 @@ def advanced_sensor_root():
             data_list.append(data_dict)
         return jsonify(data_list)
     
-    if request.method == 'PUT':
+    elif request.method == 'PUT':
 
         # force the request to be json
         sensor_data = request.get_json(force=True)
@@ -56,7 +56,26 @@ def advanced_sensor_root():
                 sensor_db.date = func.now()
                 db_reference.session.commit()
             return 'updated sensor', 200 # updated resource
+        
+    elif request.method == 'DELETE':
 
+        # force the request to be json
+        sensor_data = request.get_json(force=True)
+
+        # retrieve the IP address from the request parameters or JSON payload
+        ip_address = sensor_data['ip']
+
+        # checking if the sensor exists
+        sensor_db = AdvancedSensor.query.get(ip_address)
+        if sensor_db is None:
+            return 'Sensor not found', 404  # not Found
+
+        # Delete the sensor from the database
+        with app_reference.app_context():
+            db_reference.session.delete(sensor_db)
+            db_reference.session.commit()
+        return 'Sensor deleted', 200  # Success
+    
 # @advanced_view.route('/get', methods=['GET'])
 # def get_advanced_sensors():
 #     all_data = AdvancedSensor.query.all()
