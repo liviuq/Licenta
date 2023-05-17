@@ -8,49 +8,68 @@ from .models import Sensor, AdvancedSensor
 sensor_view = Blueprint('sensor_view', __name__)
 advanced_view = Blueprint('advanced_view', __name__)
 
-@advanced_view.route('/put', methods=['PUT'])
-def put_advanced_sensor():
+@advanced_view.route('/', methods=['GET','PUT'])
+def advanced_sensor_root():
     global app_reference, db_reference
 
-    sensor_data = request.get_json(force=True)
+    # check if the request is a GET request
+    if request.method == 'GET':
+        all_data = AdvancedSensor.query.all()
+        data_list = []
+        for entry in all_data:
+            data_dict = {
+                'ip': entry.ip,
+                'name': entry.name,
+                'endpoints': entry.endpoints,
+                'date': entry.date
+            }
+            data_list.append(data_dict)
+        return jsonify(data_list)
     
-    # checking if the same ip address is found in the table AdvancedSensor
-    sensor_db = AdvancedSensor.query.get(sensor_data['ip'])
-    
-    if sensor_db is None:
-        # add to database
-        with app_reference.app_context():
+    if request.method == 'PUT':
 
-            # create an AdvancedSensor object
-            sensor_db_entry = AdvancedSensor(ip=sensor_data['ip'], name=sensor_data['name'], endpoints=sensor_data['endpoints'])
-            db_reference.session.add(sensor_db_entry)
-            db_reference.session.commit()
-            print(f'added to db')
-        return sensor_data, 201 # created new resource
+        # force the request to be json
+        sensor_data = request.get_json(force=True)
+        
+        # checking if the same ip address is found in the table AdvancedSensor
+        sensor_db = AdvancedSensor.query.get(sensor_data['ip'])
+        
+        # if there are no sensors with the same ip address
+        if sensor_db is None:
 
-    else:
-        with app_reference.app_context():
-            #  sensor exists in database, update it
-            sensor_db.endpoints = sensor_data['endpoints']
-            sensor_db.date = func.now()
-            db_reference.session.commit()
+            # add to database
+            with app_reference.app_context():
 
-        return 'updated sensor', 200 # updated resource
+                # create an AdvancedSensor object
+                sensor_db_entry = AdvancedSensor(ip=sensor_data['ip'], name=sensor_data['name'], endpoints=sensor_data['endpoints'])
+                db_reference.session.add(sensor_db_entry)
+                db_reference.session.commit()
+            return sensor_data, 201 # created new resource
 
-@advanced_view.route('/get', methods=['GET'])
-def get_advanced_sensors():
-    all_data = AdvancedSensor.query.all()
-    data_list = []
-    for entry in all_data:
-        data_dict = {
-            'ip': entry.ip,
-            'name': entry.name,
-            'endpoints': entry.endpoints,
-            'date': entry.date
-        }
-        data_list.append(data_dict)
-    return jsonify(data_list)
+        # if there is a sensor with the same ip address
+        else:
+            with app_reference.app_context():
 
+                #  update it's fields
+                sensor_db.name = sensor_data['name']
+                sensor_db.endpoints = sensor_data['endpoints']
+                sensor_db.date = func.now()
+                db_reference.session.commit()
+            return 'updated sensor', 200 # updated resource
+
+# @advanced_view.route('/get', methods=['GET'])
+# def get_advanced_sensors():
+#     all_data = AdvancedSensor.query.all()
+#     data_list = []
+#     for entry in all_data:
+#         data_dict = {
+#             'ip': entry.ip,
+#             'name': entry.name,
+#             'endpoints': entry.endpoints,
+#             'date': entry.date
+#         }
+#         data_list.append(data_dict)
+#     return jsonify(data_list)
 
 # just  for the lulz
 @sensor_view.route('/', methods=['GET'])
