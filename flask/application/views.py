@@ -32,6 +32,7 @@ def put_advanced_sensor():
         with app_reference.app_context():
             #  sensor exists in database, update it
             sensor_db.endpoints = sensor_data['endpoints']
+            sensor_db.date = func.now()
             db_reference.session.commit()
 
         return 'updated sensor', 200 # updated resource
