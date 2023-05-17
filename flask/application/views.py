@@ -85,7 +85,10 @@ def advanced_sensor_request():
     sensor_endpoint = request.args.get('endpoint')
 
     # make a GET request to sensor_ip/sensor_endpoint
-    response = requests.get(f"http://{sensor_ip}/{sensor_endpoint}")
+    try:
+        response = requests.get(f"http://{sensor_ip}/{sensor_endpoint}")
+    except requests.exceptions.RequestException as e:
+        return f'GET request received with IP: {sensor_ip} and endpoint: {sensor_endpoint}. Error: {e}', 500
 
     # Process the response as needed
     response_content = response.text
