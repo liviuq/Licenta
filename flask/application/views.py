@@ -15,9 +15,8 @@ def put_advanced_sensor():
     sensor_data = request.get_json(force=True)
     
     # checking if the same ip address is found in the table AdvancedSensor
-    sensor_db = AdvancedSensor.query.all()
-    for sen in sensor_db:
-        print(f'ip:{sen.ip},date:{sen.date}') 
+    sensor_db = AdvancedSensor.query.get(sensor_data['ip'])
+    
     if sensor_db is None:
         # add to database
         with app_reference.app_context():
@@ -26,10 +25,31 @@ def put_advanced_sensor():
             sensor_db_entry = AdvancedSensor(ip=sensor_data['ip'], name=sensor_data['name'], endpoints=sensor_data['endpoints'])
             db_reference.session.add(sensor_db_entry)
             db_reference.session.commit()
+            print(f'added to db')
+        return sensor_data, 201 # created new resource
 
-        return sensor_data
     else:
-        return 'ye'
+        with app_reference.app_context():
+            #  sensor exists in database, update it
+            sensor_db.endpoints = sensor_data['endpoints']
+            db_reference.session.commit()
+
+        return 'updated sensor', 200 # updated resource
+
+@advanced_view.route('/get', methods=['GET'])
+def get_advanced_sensors():
+    all_data = AdvancedSensor.query.all()
+    data_list = []
+    for entry in all_data:
+        data_dict = {
+            'ip': entry.ip,
+            'name': entry.name,
+            'endpoints': entry.endpoints,
+            'date': entry.date
+        }
+        data_list.append(data_dict)
+    return jsonify(data_list)
+
 
 # just  for the lulz
 @sensor_view.route('/', methods=['GET'])
