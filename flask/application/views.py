@@ -1,3 +1,4 @@
+import requests
 from . import app_reference, db_reference
 
 from sqlalchemy.sql import func 
@@ -76,21 +77,22 @@ def advanced_sensor_root():
             db_reference.session.commit()
         return 'Sensor deleted', 200  # Success
     
-# @advanced_view.route('/get', methods=['GET'])
-# def get_advanced_sensors():
-#     all_data = AdvancedSensor.query.all()
-#     data_list = []
-#     for entry in all_data:
-#         data_dict = {
-#             'ip': entry.ip,
-#             'name': entry.name,
-#             'endpoints': entry.endpoints,
-#             'date': entry.date
-#         }
-#         data_list.append(data_dict)
-#     return jsonify(data_list)
+@advanced_view.route('/request', methods=['GET'])
+def advanced_sensor_request():
 
-# just  for the lulz
+    # retrieve the IP address and endpoint from the request parameters
+    sensor_ip = request.args.get('ip')
+    sensor_endpoint = request.args.get('endpoint')
+
+    # make a GET request to sensor_ip/sensor_endpoint
+    response = requests.get(f"http://{sensor_ip}/{sensor_endpoint}")
+
+    # Process the response as needed
+    response_content = response.text
+    response_code = response.status_code
+    
+    return f'GET request received with IP: {sensor_ip} and endpoint: {sensor_endpoint}. Response Code: {response_code}. Response Content: {response_content}', response_code
+
 @sensor_view.route('/', methods=['GET'])
 def lulz():
     return '<p>hi</p>'
