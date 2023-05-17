@@ -8,7 +8,7 @@ from .models import Sensor, AdvancedSensor
 sensor_view = Blueprint('sensor_view', __name__)
 advanced_view = Blueprint('advanced_view', __name__)
 
-@advanced_view.route('/', methods=['GET','PUT'])
+@advanced_view.route('/', methods=['GET','PUT', 'DELETE'])
 def advanced_sensor_root():
     global app_reference, db_reference
 
