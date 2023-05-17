@@ -26,7 +26,7 @@ unsigned long postDelay = 5000;   // replace with 300000 for 5 minutes
 ESP8266WebServer server(80);
 
 // data for identification
-String name = "Wifi Lights";
+String name = "Green LED controller";
 String local_ip = "";
 
 // vector of endpoints
@@ -80,7 +80,7 @@ void setup(void) {
 
   // populate json
   doc["name"] = name.c_str();
-  doc["local_ip"] = WiFi.localIP().toString();
+  doc["ip"] = WiFi.localIP().toString();
 
   // adding custom endpoints with handlers
   endpoints.push_back("/turnOnLED");
@@ -100,7 +100,16 @@ void setup(void) {
 
   // write to json the data structure
   bytesWritten = serializeJson(doc, json, 1024);
+  Serial.println("Final json: " + String(json));
 
+  // create a WifiClientSecure instance
+  std::unique_ptr<BearSSL::WiFiClientSecure> client(new BearSSL::WiFiClientSecure);
+  HTTPClient https;
+  client->setInsecure();
+  String sensors_path = base_url + "/advanced/";
+  if (https.begin(*client, sensors_path.c_str())) {
+    int httpCode = https.PUT(json);
+  }
   // start the server
   server.begin();
 }

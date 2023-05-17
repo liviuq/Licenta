@@ -127,7 +127,7 @@ class _SensorDataTileState extends State<SensorDataTile> {
                             style: GoogleFonts.roboto(
                               color: Colors.black,
                               fontSize: 20,
-                              fontWeight: FontWeight.w400,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),

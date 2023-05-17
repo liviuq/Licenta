@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:hive/hive.dart';
 
+import '../models/advanced_sensor.dart';
 import '../models/sensor.dart';
 import 'package:http/http.dart' as http;
 
@@ -80,7 +81,7 @@ Future<Sensor> getLastSensorValueFuture({
 }
 
 // get data of all sensors in one API call
-Future<List<Sensor>> getSensorsFuture({required bool forceServerFetch}) async {
+Future<List<List>> getSensorsFuture({required bool forceServerFetch}) async {
   // open the box
   var box = await Hive.openBox<List>('home_page_data');
 
@@ -89,13 +90,52 @@ Future<List<Sensor>> getSensorsFuture({required bool forceServerFetch}) async {
         await http.get(Uri.parse('https://andr3w.ddns.net/sensors'));
 
     if (response.statusCode == 200) {
-      final jsonList = jsonDecode(response.body);
+      // final jsonList = jsonDecode(response.body);
 
-      List<Sensor> sensorList = [];
+      // List<Sensor> sensorList = [];
 
-      for (var json in jsonList) {
-        sensorList.add(Sensor.fromJson(json));
-      }
+      // for (var json in jsonList) {
+      //   sensorList.add(Sensor.fromJson(json));
+      // }
+
+      // // adding the list to the database
+      // await box.put('cards', sensorList);
+
+      // // return the data
+      // return sensorList;
+
+      // parse the JSON string into a Map
+      Map<String, dynamic> jsonMap = jsonDecode(response.body);
+
+      // retrieve the "advanced" list from the JSON Map
+      List<dynamic> advancedList = jsonMap['advanced'];
+
+      // Create a list of Advanced Sensors
+      List<AdvancedSensor> advancedSensors = advancedList.map((sensorJson) {
+        return AdvancedSensor(
+          date: sensorJson['date'],
+          endpoints: sensorJson['endpoints'],
+          ip: sensorJson['ip'],
+          name: sensorJson['name'],
+        );
+      }).toList();
+
+      // Retrieve the "static" list from the JSON Map
+      List<dynamic> staticList = jsonMap['static'];
+
+      // Create a list of Static Sensors
+      List<Sensor> staticSensors = staticList.map((sensorJson) {
+        return Sensor(
+          address: sensorJson['address'],
+          date: sensorJson['date'],
+          id: sensorJson['id'],
+          type: sensorJson['type'],
+          value: sensorJson['value'],
+        );
+      }).toList();
+
+      // creating the list of lists
+      List<List> sensorList = [staticSensors, advancedSensors];
 
       // adding the list to the database
       await box.put('cards', sensorList);
@@ -103,7 +143,7 @@ Future<List<Sensor>> getSensorsFuture({required bool forceServerFetch}) async {
       // return the data
       return sensorList;
     } else {
-      // If the server did not return a 200 OK response,
+      // if the server did not return a 200 OK response,
       // then throw an exception.
       throw Exception('Failed to load last sensor data');
     }
@@ -111,12 +151,12 @@ Future<List<Sensor>> getSensorsFuture({required bool forceServerFetch}) async {
     // check if the data is in the box
     if (box.containsKey('cards')) {
       // return the data
-      List<Sensor> cards = box.get('cards')!.cast();
+      List<List> sensorList = box.get('cards')!.cast();
 
-      return Future<List<Sensor>>.value(cards);
+      return sensorList;
     }
   }
-  throw Exception('Failed to load last sensor data: thrown at the end');
+  throw Exception('Failed to load last sensor data, no data in database');
 }
 
 Future<List<Sensor>> getSensorDataFuture(

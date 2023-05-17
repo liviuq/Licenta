@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 
+import 'models/advanced_sensor.dart';
 import 'models/sensor.dart';
 import 'routes/splash.dart';
 
@@ -25,7 +26,9 @@ void main() async {
   await Hive.initFlutter();
 
   // registering custom objects to be stored in the database
-  Hive.registerAdapter(SensorAdapter());
+  Hive
+    ..registerAdapter(SensorAdapter())
+    ..registerAdapter(AdvancedSensorAdapter());
 
   // running the app
   runApp(

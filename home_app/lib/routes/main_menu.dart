@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
+import 'package:home_app/models/advanced_sensor.dart';
 import 'package:home_app/widgets/sensor_category.dart';
 import 'package:home_app/widgets/sensor_data_tile.dart';
 
 import '../models/sensor.dart';
 import '../utils/fetch.dart';
+import '../widgets/advanced_sensor_data_tile.dart';
+import 'advanced_sensor_page.dart';
 import 'sensor_page.dart';
 
 class MainMenu extends StatefulWidget {
@@ -23,7 +26,7 @@ class _MainMenuState extends State<MainMenu> {
   bool forceServerFetch = true;
 
   // list with Sensors to display on main menu screen
-  late Future<List> _sensors;
+  late Future<List<List>> _sensors;
 
   @override
   void initState() {
@@ -127,74 +130,119 @@ class _MainMenuState extends State<MainMenu> {
                 );
               } else {
                 // reassign snapshot.data to a list of sensors
-                List<Sensor> sensors = snapshot.data;
+                List<Sensor> staticSensors = snapshot.data[0];
+                List<AdvancedSensor> advancedSensors = snapshot.data[1];
+
+                // list of widgets to create using listview.builder
+                List<Widget> widgets = [];
 
                 // sort the list based on type
-                sensors.sort((a, b) => a.type.compareTo(b.type));
+                staticSensors.sort((a, b) => a.type.compareTo(b.type));
 
                 // declare current type
                 String type = '';
-
-                // if we discover a new sensor type, create the category
-                // and return the sensors of that category
-                return ListView.builder(
-                  itemCount: sensors.length,
-                  scrollDirection: Axis.vertical,
-                  itemBuilder: (BuildContext context, int index) {
-                    // if the found a new category name, update it
-                    // and return a widget with the respective category
-                    if (sensors[index].type != type) {
-                      type = sensors[index].type;
-                      return Column(
+                for (var sensor in staticSensors) {
+                  if (sensor.type != type) {
+                    type = sensor.type;
+                    widgets.add(
+                      Column(
                         children: [
                           SensorCategory(
-                            title: sensors[index].type,
+                            title: sensor.type,
+                            textColor: Colors.black,
                           ),
                           SensorDataTile(
                             icon: Icons.broadcast_on_home_rounded,
-                            address: sensors[index].address,
-                            date: sensors[index].date,
-                            id: sensors[index].id,
-                            type: sensors[index].type,
-                            value: sensors[index].value,
+                            address: sensor.address,
+                            date: sensor.date,
+                            id: sensor.id,
+                            type: sensor.type,
+                            value: sensor.value,
                             // opens a new page with the sensor data
                             onTap: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => SensorRoute(
-                                    address: sensors[index].address,
-                                    id: sensors[index].id,
-                                    type: sensors[index].type,
+                                    address: sensor.address,
+                                    id: sensor.id,
+                                    type: sensor.type,
                                   ),
                                 ),
                               );
                             },
                           ),
                         ],
-                      );
-                    } else {
-                      return SensorDataTile(
+                      ),
+                    );
+                  } else {
+                    widgets.add(
+                      SensorDataTile(
                         icon: Icons.broadcast_on_home_rounded,
-                        address: sensors[index].address,
-                        date: sensors[index].date,
-                        id: sensors[index].id,
-                        type: sensors[index].type,
-                        value: sensors[index].value,
+                        address: sensor.address,
+                        date: sensor.date,
+                        id: sensor.id,
+                        type: sensor.type,
+                        value: sensor.value,
                         onTap: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => SensorRoute(
-                                address: sensors[index].address,
-                                id: sensors[index].id,
-                                type: sensors[index].type,
+                                address: sensor.address,
+                                id: sensor.id,
+                                type: sensor.type,
                               ),
                             ),
                           );
                         },
-                      );
-                    }
+                      ),
+                    );
+                  }
+                }
+
+                // add the separator for the advanced sensors
+                widgets.add(
+                  const Center(
+                    child: SensorCategory(
+                      title: 'Advanced',
+                      textColor: Colors.black,
+                    ),
+                  ),
+                );
+
+                for (var sensor in advancedSensors) {
+                  widgets.add(
+                    AdvancedSensorDataTile(
+                      icon: Icons.broadcast_on_home_rounded,
+                      ip: sensor.ip,
+                      name: sensor.name,
+                      endpoints: sensor.endpoints,
+                      date: sensor.date,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AdvancedSensorRoute(
+                              ip: sensor.ip,
+                              name: sensor.name,
+                              endpoints: sensor.endpoints,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                }
+                // if we discover a new sensor type, create the category
+                // and return the sensors of that category
+                return ListView.builder(
+                  itemCount: widgets.length,
+                  scrollDirection: Axis.vertical,
+                  itemBuilder: (BuildContext context, int index) {
+                    // if the found a new category name, update it
+                    // and return a widget with the respective category
+                    return widgets[index];
                   },
                 );
               }

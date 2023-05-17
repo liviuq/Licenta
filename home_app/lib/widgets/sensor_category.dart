@@ -34,7 +34,7 @@ class SensorCategory extends StatelessWidget {
             child: Text(
               title,
               style: GoogleFonts.roboto(
-                color: Colors.white,
+                color: textColor,
                 fontSize: 50,
                 fontWeight: FontWeight.bold,
               ),
