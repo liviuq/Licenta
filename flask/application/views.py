@@ -1,3 +1,4 @@
+import json
 import requests
 from . import app_reference, db_reference
 
@@ -41,8 +42,9 @@ def advanced_sensor_root():
             # add to database
             with app_reference.app_context():
 
+                parsed_endpoint = json.dumps(sensor_data['endpoints'].__str__())
                 # create an AdvancedSensor object
-                sensor_db_entry = AdvancedSensor(ip=sensor_data['ip'], name=sensor_data['name'], endpoints=sensor_data['endpoints'])
+                sensor_db_entry = AdvancedSensor(ip=sensor_data['ip'], name=sensor_data['name'], endpoints=parsed_endpoint)
                 db_reference.session.add(sensor_db_entry)
                 db_reference.session.commit()
             return sensor_data, 201 # created new resource
@@ -51,9 +53,10 @@ def advanced_sensor_root():
         else:
             with app_reference.app_context():
 
+                parsed_endpoint = json.dumps(sensor_data['endpoints'].__str__())
                 #  update it's fields
                 sensor_db.name = sensor_data['name']
-                sensor_db.endpoints = sensor_data['endpoints']
+                sensor_db.endpoints = parsed_endpoint
                 sensor_db.date = func.now()
                 db_reference.session.commit()
             return 'updated sensor', 200 # updated resource
