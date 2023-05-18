@@ -52,9 +52,24 @@ void handleNotFound();
 void turnOnLED();
 void turnOffLED();
 
+int ledPin = 16;
+int dotDelay = 50;
+//For letters
+char* letters[] = {
+  ".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..",    // A-I
+  ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.",  // J-R
+  "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--.."          // S-Z
+};
+
+//For Numbers
+char* numbers[] = {
+  "-----", ".----", "..---", "...--", "....-", ".....",
+  "-....", "--...", "---..", "----."
+};
+
 void setup(void) {
   // set D0 as output pin for a green status LED
-  pinMode(16, OUTPUT);
+  pinMode(ledPin, OUTPUT);
 
   // begin serial communication on 115200 baud (14.4 KB/s)
   Serial.begin(115200);
@@ -96,7 +111,7 @@ void setup(void) {
   for (auto endpoint : endpoints) {
     doc_endpoints.add(endpoint);
   }
-  
+
   // creating the json string
   char* json = (char*)malloc(1024);
 
@@ -128,78 +143,53 @@ void loop(void) {
   */
   // listen for http requests
   server.handleClient();
-
-  // // do this once per 5 seconds
-  // if ((millis() - lastTime) > timerDelay) {
-
-  //   // checking to see if we are still connected to the network
-  //   if (WiFi.status() == WL_CONNECTED) {
-
-  //     // create a WifiClientSecure instance
-  //     std::unique_ptr<BearSSL::WiFiClientSecure> client(new BearSSL::WiFiClientSecure);
-
-  //     // create a httpClient
-  //     HTTPClient https;
-
-  //     // ignore SSL certificate validation
-  //     client->setInsecure();
-
-  //     // create the path for the URL
-  //     String sensors_path = base_url + "/sensors";
-
-  //     // make a GET request to the specified URL
-  //     if (https.begin(*client, sensors_path.c_str())) {
-  //       //Serial.print("[HTTPS] GET...\n");
-
-  //       // send the request
-  //       int httpCode = https.GET();
-
-  //       if (httpCode > 0) {
-
-  //         // HTTP header has been send and Server response header has been handled
-  //         //Serial.printf("[HTTPS] GET... code: %d\n", httpCode);
-
-  //         // file found at server
-  //         if (httpCode == HTTP_CODE_OK || httpCode == HTTP_CODE_MOVED_PERMANENTLY) {
-  //           String payload = https.getString();
-  //           Serial.println(payload);
-
-  //           // post the data to url
-  //           WiFiClient clientpost;
-  //           HTTPClient httpClientpost;
-  //           httpClientpost.begin(clientpost, "http://192.168.0.106:5000/post");
-  //           int httpCodePost = httpClientpost.POST(payload);
-  //           httpClientpost.end();
-
-  //           Serial.flush();
-  //           blink_led(100);
-  //         } else {
-  //           Serial.printf("[HTTPS] GET... failed, error: %s\n", https.errorToString(httpCode).c_str());
-  //           blink_led(500);
-  //         }
-  //       }
-
-
-  //       https.end();
-  //     } else {
-  //       Serial.println("WiFi not connected");
-  //     }
-  //     delay(3000);
-  //   }
-  // }
 }
 
 void turnOnLED() {
-  digitalWrite(16, HIGH);
-  server.send(200);
+  //digitalWrite(ledPin, HIGH);
+  String bobi = "bobi e gay";
+  server.send(200, "text/plain", "LED is on");
+  for (auto ch : bobi) {
+    if (ch >= 'a' && ch <= 'z') {
+      flashSequence(letters[ch - 'a']);
+    } else if (ch >= 'A' && ch <= 'Z') {
+      flashSequence(letters[ch - 'A']);
+    } else if (ch >= '0' && ch <= '9') {
+      flashSequence(numbers[ch - '0']);
+    } else if (ch == ' ') {
+      delay(dotDelay * 4);
+    }
+  }
 }
 
 void turnOffLED() {
-  digitalWrite(16, LOW);
-  server.send(200);
+  digitalWrite(ledPin, LOW);
+  server.send(200, "text/plain", "LED is off");
 }
 
 // Handlers
 void handleNotFound() {
   server.send(404, "text/plain", "404: Not found");
+}
+
+void flashSequence(char* sequence) {
+  int i = 0;
+  while (sequence[i] != NULL) {
+    flashDotOrDash(sequence[i]);
+    i++;
+  }
+  delay(dotDelay * 3);
+}
+
+
+void flashDotOrDash(char dotOrDash) {
+  digitalWrite(ledPin, HIGH);
+  if (dotOrDash == '.') {
+    delay(dotDelay);
+  } else  // must be a -
+  {
+    delay(dotDelay * 3);
+  }
+  digitalWrite(ledPin, LOW);
+  delay(dotDelay);
 }
