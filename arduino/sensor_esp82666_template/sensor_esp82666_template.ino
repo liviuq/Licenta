@@ -83,18 +83,20 @@ void setup(void) {
   doc["ip"] = WiFi.localIP().toString();
 
   // adding custom endpoints with handlers
-  endpoints.push_back("/turnOnLED");
+  endpoints.push_back("turnOnLED");
   server.on("/turnOnLED", HTTP_GET, turnOnLED);
-  endpoints.push_back("/turnOffLED");
+  endpoints.push_back("turnOffLED");
   server.on("/turnOffLED", HTTP_GET, turnOffLED);
 
   server.onNotFound(handleNotFound);  // unknown uri
+
+
 
   // creating the json for the POST to the server
   for (auto endpoint : endpoints) {
     doc_endpoints.add(endpoint);
   }
-
+  
   // creating the json string
   char* json = (char*)malloc(1024);
 

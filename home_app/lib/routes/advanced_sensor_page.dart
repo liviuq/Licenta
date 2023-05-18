@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
@@ -28,7 +29,11 @@ class _AdvancedSensorRouteState extends State<AdvancedSensorRoute> {
   @override
   void initState() {
     super.initState();
-    endpoints = List<String>.from(json.decode(widget.endpoints));
+    // clean the string
+    String cleanedString = widget.endpoints.replaceAll('"', '');
+    cleanedString = cleanedString.replaceAll('\'', '"');
+    endpoints = List<String>.from(json.decode(cleanedString));
+    //endpoints = jsonDecode(cleanedString).cast<String>();
   }
 
   @override
@@ -126,7 +131,10 @@ class _AdvancedSensorRouteState extends State<AdvancedSensorRoute> {
                         color: Colors.blueAccent,
                       ),
                       onPressed: () {
-                        makeGetRequest('sensor_ip', 'sensor_endpoint');
+                        makeGetRequest(
+                          widget.ip,
+                          endpoints[index],
+                        );
                       },
                     );
                   },
