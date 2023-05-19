@@ -49,7 +49,18 @@ class _MainMenuState extends State<MainMenu> {
     return Stack(
       children: [
         Container(
-          color: const Color(0xff1c2541),
+          // create a gradient background
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color(0xff0f082c),
+                Colors.blue,
+              ],
+            ),
+          ),
+          //color: const Color(0xff1c2541),
         ),
         Scaffold(
           backgroundColor: Colors.transparent,
@@ -80,6 +91,7 @@ class _MainMenuState extends State<MainMenu> {
                         // so that it can be retrieved later
                         saveSecureModeToDatabase(
                           boxName: 'settings',
+                          timeStamp: DateTime.now().toString(),
                           value: value,
                         );
                       });
@@ -171,6 +183,11 @@ class _MainMenuState extends State<MainMenu> {
                                 ),
                               );
                             },
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(
+                              vertical: 20,
+                            ),
                           ),
                         ],
                       ),
@@ -296,6 +313,7 @@ class _MainMenuState extends State<MainMenu> {
   void saveSecureModeToDatabase({
     required String boxName,
     required bool value,
+    required String timeStamp,
   }) async {
     // open the box
     await Hive.openBox(boxName);
@@ -303,5 +321,6 @@ class _MainMenuState extends State<MainMenu> {
 
     // save the value
     box.put('secureMode', value);
+    box.put('timeStamp', timeStamp);
   }
 }

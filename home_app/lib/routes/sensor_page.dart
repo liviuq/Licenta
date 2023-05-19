@@ -419,7 +419,9 @@ class _SensorRouteState extends State<SensorRoute> {
     );
   }
 
-  void setThresholdFromDatabase({required String boxName}) {
+  void setThresholdFromDatabase({
+    required String boxName,
+  }) {
     // get the box
     final box = Hive.box(boxName);
 

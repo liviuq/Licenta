@@ -180,3 +180,22 @@ Future<List<Sensor>> getSensorDataFuture(
     throw Exception('Failed to load last sensor data');
   }
 }
+
+void makeGetRequest(String ip, String endpoint) async {
+  // Create the URL with parameters
+  String url =
+      'https://andr3w.ddns.net/advanced/request?ip=$ip&endpoint=$endpoint';
+
+  // Make the GET request
+  final response = await http.get(Uri.parse(url));
+
+  // Handle the response
+  if (response.statusCode == 200) {
+    // Successful GET request
+    print('GET request successful');
+    print('Response body: ${response.body}');
+  } else {
+    // Error in GET request
+    print('Error: GET request failed with status code ${response.statusCode}');
+  }
+}

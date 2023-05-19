@@ -32,6 +32,8 @@ class SensorDataTile extends StatefulWidget {
 
 class _SensorDataTileState extends State<SensorDataTile> {
   String? location;
+  double height = 155;
+
   TextEditingController locationContoller = TextEditingController();
 
   @override
@@ -82,6 +84,8 @@ class _SensorDataTileState extends State<SensorDataTile> {
                       // update the location variable
                       location = locationContoller.text;
                       locationContoller.clear();
+
+                      height = 155;
                     });
                     // close the dialog box
                     Navigator.of(context).pop();
@@ -109,95 +113,138 @@ class _SensorDataTileState extends State<SensorDataTile> {
           child: Padding(
             padding: const EdgeInsets.all(5),
             child: SizedBox(
-              height: 110,
+              height: height,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 5),
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Padding(
                           padding: EdgeInsets.only(top: 4),
                         ),
-                        CircleAvatar(
-                          backgroundColor: const Color(0xff6fffe9),
-                          child: Text(
-                            widget.address,
-                            style: GoogleFonts.roboto(
-                              color: Colors.black,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.fromLTRB(5, 5, 20, 0),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(3.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Last sensor reading: ',
-                            style: GoogleFonts.roboto(
-                              color: Colors.white,
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            // if the date is today, show the time, otherwise show the date
-                            '${widget.value}',
-                            style: GoogleFonts.roboto(
-                              color: Colors.white,
-                              fontSize: 60,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          DateWidget(
-                            dateString: widget.date,
-                          ),
-                        ],
-                      ),
-                    ),
-                    // vertical line for separation
-                    const Padding(
-                      padding: EdgeInsets.all(3),
-                      child: VerticalDivider(
-                        color: Colors.white,
-                        thickness: 2,
-                      ),
-                    ),
-                    // prints the location if it exists
-                    if (location != null)
-                      Padding(
-                        padding: const EdgeInsets.all(4),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                        Row(
                           children: [
-                            // insert an icon
                             const Icon(
-                              Icons.location_on_rounded,
+                              Icons.laptop_outlined,
                               color: Colors.white,
                               size: 30,
                             ),
-                            Text(
-                              location!,
-                              overflow: TextOverflow.ellipsis,
-                              style: GoogleFonts.roboto(
-                                color: Colors.white,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
+                            const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 3),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.all(4.0),
+                              decoration: BoxDecoration(
+                                color: const Color(0xff6fffe9),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              child: Text(
+                                widget.address,
+                                style: GoogleFonts.roboto(
+                                  color: Colors.black,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ],
                         ),
-                      ),
+                        const Padding(
+                          padding: EdgeInsets.all(5),
+                        ),
+                        Row(
+                          children: [
+                            Icon(
+                              widget.icon,
+                              color: Colors.white,
+                              size: 30,
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 3),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.all(4.0),
+                              decoration: BoxDecoration(
+                                color: const Color(0xff6fffe9),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              child: Text(
+                                'Value : ${widget.value.toString()}',
+                                style: GoogleFonts.roboto(
+                                  color: Colors.black,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.all(5),
+                        ),
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.calendar_month_outlined,
+                              color: Colors.white,
+                              size: 30,
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 3),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.all(4.0),
+                              decoration: BoxDecoration(
+                                color: const Color(0xff6fffe9),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              child: Text(
+                                widget.date,
+                                style: GoogleFonts.roboto(
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        // prints the location if it exists
+                        const Padding(
+                          padding: EdgeInsets.all(4),
+                        ),
+                        if (location != null)
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.location_on_outlined,
+                                color: Colors.white,
+                                size: 30,
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 3),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.all(4.0),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xff6fffe9),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                child: Text(
+                                  location!,
+                                  style: GoogleFonts.roboto(
+                                    color: Colors.black,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -213,6 +260,11 @@ class _SensorDataTileState extends State<SensorDataTile> {
     box.whenComplete(() {
       setState(() {
         location = Hive.box(widget.address).get('location');
+        if (location != null) {
+          height = 155;
+        } else {
+          height = 125;
+        }
       });
     });
   }

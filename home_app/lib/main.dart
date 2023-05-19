@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hive_flutter/adapters.dart';
 
 import 'models/advanced_sensor.dart';
@@ -35,6 +36,12 @@ void main() async {
     const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: SplashScreen(),
+    ),
+  );
+
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
     ),
   );
 }
