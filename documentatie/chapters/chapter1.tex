@@ -1,11 +1,63 @@
 \chapter{Aplicații asemănătoare}
 
-Diam sit amet nisl suscipit adipiscing bibendum. Aliquet lectus proin nibh nisl condimentum id. Urna duis convallis convallis tellus id interdum velit laoreet. Amet tellus cras adipiscing enim eu turpis egestas pretium aenean. Tortor condimentum lacinia quis vel eros donec ac odio tempor. Volutpat ac tincidunt vitae semper. Urna cursus eget nunc scelerisque viverra mauris in aliquam. Aliquam id diam maecenas ultricies. Molestie a iaculis at erat. Tincidunt nunc pulvinar sapien et ligula ullamcorper malesuada proin. Consequat interdum varius sit amet. Eget est lorem ipsum dolor sit amet consectetur adipiscing. Pharetra diam sit amet nisl suscipit adipiscing bibendum. Maecenas sed enim ut sem viverra aliquet eget sit. Enim blandit volutpat maecenas volutpat blandit aliquam etiam erat velit.
+Acest capitol se focusează asupra prezentării unor soluții asemănătoare ca idee sau ca și tehnologie cu proiectul \textbf{Home Smartify}. 
 
-\section{Titlul secțiunii 1}
+În prezent, există numeroase astfel de platforme, fiind alese cele mai preferate în rândul utilizatorilor care doresc să își adapteze casa după preferințele personale într-o manieră \emph{Do it yourself (\textbf{DIY})}\footnote{\url{https://www.doityourself.com/}.}
 
-Id donec ultrices tincidunt arcu non sodales neque. Integer eget aliquet nibh praesent. Euismod in pellentesque massa placerat duis ultricies lacus sed. Mauris ultrices eros in cursus turpis massa. Integer quis auctor elit sed vulputate mi. Nibh ipsum consequat nisl vel pretium lectus quam id leo. Vel elit scelerisque mauris pellentesque pulvinar pellentesque. Suscipit tellus mauris a diam maecenas. Ultrices eros in cursus turpis massa tincidunt. Tristique senectus et netus et malesuada fames ac turpis egestas. Suspendisse interdum consectetur libero id faucibus nisl tincidunt eget. Sed risus pretium quam vulputate dignissim suspendisse in. Donec adipiscing tristique risus nec feugiat in fermentum posuere. A lacus vestibulum sed arcu non odio euismod lacinia at.
+\section{Home Assistant}
 
-\section{Titlul secțiunii 2}
+Home Assistant (Figura 1.1) este o platformă open-source\footnote{\url{https://opensource.com/resources/what-open-source}.} pentru controlul și automatizarea locuințelor smart. Oferind un mediu centralizat pentru gestionarea dispozitivelor și serviciilor, ea suportă peste 1000 de servicii și device-uri diferite pe care le identifică prin scanarea inițială a rețelei de internet la care sunt conectate.
 
-Pellentesque pulvinar pellentesque habitant morbi tristique senectus et. Ornare suspendisse sed nisi lacus sed viverra tellus in hac. Non sodales neque sodales ut etiam sit. In hendrerit gravida rutrum quisque non. Diam quam nulla porttitor massa id neque aliquam. Diam sit amet nisl suscipit adipiscing bibendum est ultricies integer. Cras fermentum odio eu feugiat pretium nibh ipsum. Egestas integer eget aliquet nibh praesent tristique magna. Porttitor eget dolor morbi non arcu risus quis varius quam. Gravida rutrum quisque non tellus orci. Diam volutpat commodo sed egestas egestas.
+Orice utilizator are asignat o \emph{amprentă digitală}\footnote{\url{https://www.kaspersky.com/resource-center/definitions/what-is-a-digital-footprint}.} care este folosită spre a îl identifica în mediul online. Confidențialitatea constituie unul din punctele forte ale aplicației Home Assistant, astfel că păstrează toate informațiile în domeniul local și evită pe cât posibil comunicarea cu alte servicii din cloud.
+
+Este recomandat ca acesta să fie instalat pe o platformă Raspberry Pi prin folosirea sistemului de operare pus la dispoziție pe website sau poate fi executat într-un \emph{container Docker}\footnote{\url{https://www.docker.com/}.}, metodă similară cu cea implementată în această licență.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth]{home_assistant}
+	\caption{Interfața meniului principal, temperatură, grafice, consum energie.
+			Credits: \url{https://rbx.dk/w/home-assistant/hvad-er-home-assistant.html}}
+	\label{fig:home_assistant}
+\end{figure}
+
+\section{Apple Home}
+
+Apple este una dintre primele companii care au încercat să integreze controlul casei smart într-o aplicație mobile, lansând HomeKit (Figura 1.2) integrat în IOS 8 care a apărut în septembrie 2014.
+
+Cu suport de peste 100 brand-uri de produse, printre care termostate, prize inteligente, lumini și jaluzele, utilizatorii de Mac, Iphone, Ipad își pot automatiza sarcinile, numite \emph{Scenes}(care pot fi separate pe zone), prin apăsarea unui buton din interfața ușor de înțeles sau pot opta pentru integrarea cu asistentul vocal Siri.
+
+Cristopher Null\footnote{\url{https://www.techhive.com/article/579157/essential-homekit-guide.html}.} de la TechHive afirmă că procesul de instalare este impresionant, dar folosirea acesui program zilnic poate fi \emph{mediocră}, fiind clasificată ultima când vine vorba de control din cauza pierderii semnalului și eșuarea executării task-urilor. Speră ca aplicația să primească update-uri și noi funcționalități, interacțiunea sa cu Apple Home lăsând mult de dorit. Se poate observa numărul de 10 ori mai mic de dispozitive suportate față de Home Assistant, fiind o barieră destul de observabilă atunci când se pune problema extinderii către alte funcționalități.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth]{apple_home}
+	\caption{Meniul principal împreună cu dispozitivele ce sunt în control.
+		Credits: \url{https://support.apple.com/en-us/HT208280}}
+	\label{fig:apple_home}
+\end{figure} 
+
+
+\section{IFTTT}
+
+Fie că dorești să fii notificat pe telefon cu o zi înaintea unui eveniment sau că vrei ca asistentul Google să îți schimbe intensitatea luminilor din garaj, acestea sunt exemplele de bază pe care platforma \emph{IF this then that} (prescurtat \textbf{IFTTT}) (Figura 1.3) le poate realiza.
+
+Acesta este un serviciu ce îți oferă posibilitatea de a conecta aplicații, servicii și dispozitive fără a fi preocupat de programarea lor. Website-ul IFTT și aplicația de telefon te ajută să construiești comenzi (pe care IFTTT obișnuia să le numească \emph{rețete}, acum sunt \emph{applets}) folosind card-uri colorate puternic pentru identificare.
+
+Odată intrat pe pagina de start, se pot vedea applet-urile care sunt conectate cu ajutorul informațiilor de la capătul cardului. Pentru crearea unui astfel de item, trebuie specificat serviciul ce declanșează automatizarea respectivă. Odată ce se întâmplă acel trigger (\emph{if this}), se vor executa acțiunile definite de către utilizator (\emph{then that}). Ex: dacă ai adăugat o melodie nouă într-un playlist pe Spotify, adaug-o și pe Apple Music.
+
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1\textwidth]{IFTTT}
+	\caption{Card-urile colorate pentru diferențiere, cu descriere, status și autorul informației.
+		Credits: Ben Moore @ \url{https://www.pcmag.com/reviews/ifttt}}
+	\label{fig:ifttt}
+\end{figure}
+
+\break
+
+\section{Concluzii}
+
+După cum se poate observa din exemplele oferite mai sus, soluțiile pentru o casă smart sunt din ce în ce mai populare deoarece este foarte probabil ca un utilizator să dețină dispozitive IoT pe care le poate inter-conecta să obțină o utilizare eficientizată a spațiului de lucru.
+
+Soluțiile pentru o casă smart oferă oportunități diverse de a îmbunătăți controlul și automatizarea locuinței. Fiecare platformă are propriile caracteristici și avantaje, iar utilizatorii pot alege în funcție de nevoile și preferințele lor specifice.

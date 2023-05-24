@@ -1,0 +1,24 @@
+# LaTeX project files
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.pdf
+*.synctex.gz
+*.toc
+
+# Build directories
+_build
+latex.out
+
+# IDE-specific files
+*.swp
+*.vscode
+*.sublime-workspace
+
+# Other generated files
+.DS_Store
+Thumbs.db
