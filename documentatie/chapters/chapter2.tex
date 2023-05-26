@@ -5,7 +5,7 @@
 
 Raspberry Pi este o familie de calculatoare, de mărimea unui card de credit sau mai mici, care au revoluționat industria cu prețul accesibil de doar \$25 al primei plăci. În ultimii 5 ani, acestea au dobândit o atenție foarte mare în rândul comunității \emph{Do it yourself (DIY)} datorită spectrului larg de utilizări în proiecte digitale și IoT.
 
-Comunitatea Raspberry a crescut mult și consistent. În momentul de față, în urma căutării "Raspberry pi projects", ne sunt returnate 47.2 milioane de pagini care conțin tutoriale despre imprimante 3D, sisteme de irigare, sisteme de luat vederi, ad-blocker pentru rețea și multe altele.
+Comunitatea Raspberry a crescut mult și consistent. În momentul de față, în urma căutării "Raspberry pi projects", ne sunt returnate 47.2 milioane de pagini care conțin tutoriale despre imprimante 3D, sisteme de irigare, de luat vederi, ad-blocker pentru rețea și multe altele.
 
 În contextul versiunii Zero W (Figura 2.1), avem disponibilă o placă de mărimea unui pachet de gume: 6.5 x 3 x 0.5 cm pe care poate fi instalat un sistem de operare bazat pe GNU/Linux numit Raspbian OS. Are un procesor single-core de 1GHz, 512 MB LPDDR2 RAM, iesire mini HDMI, două porturi micro USB, Bluetooth 4.0 și 2.4GHz 802.11n Wi-Fi.
 
@@ -39,7 +39,11 @@ Arduino Nano (Figura 2.2) este fratele mai mic al plăcii Uno cu care împărtă
 
 \subsection{ESP8266}
 
-Modulul ESP8266 (Figura 2.3) este un \textbf{SOC} (\emph{System on a chip}) ce folosește stack-ul TCP/IP cu ajutorul căruia se poate conecta la internet.
+Modulul ESP8266 (Figura 2.3) este un \textbf{SOC} (\emph{System on a chip}) produs de firma Espressif Systems ce folosește stack-ul TCP/IP cu ajutorul căruia se poate conecta la internet.
+
+Acesta a fost popularizat în anul 2014 de către alt SOC asemănător \textbf{ESP-01} al firmei \textbf{Ai-Thinker}. Chip-urile se pot conecta la rețele Wifi și să realizeze conexiuni prin utilizarea comenzilor de tipul \emph{Hayes}, \textbf{AT commands}.
+
+La început, nu existau documentații în limba engleză. Dat fiind faptul că SoC-ul este ieftin și deține un număr mic de componente externe, acesta poate fi produs în volume mari la preț mic, ceea ce a atras mulți hackeri să-l exploreze și să traducă documentația. 
 
 \begin{figure}[h]
 	\centering
@@ -50,6 +54,47 @@ Modulul ESP8266 (Figura 2.3) este un \textbf{SOC} (\emph{System on a chip}) ce f
 
 \break
 
-\section{Titlul secțiunii 3}
+\section{Module} 
 
-Faucibus ornare suspendisse sed nisi lacus sed. Mi in nulla posuere sollicitudin aliquam ultrices. Lacus suspendisse faucibus interdum posuere lorem ipsum dolor sit amet. Odio tempor orci dapibus ultrices in iaculis nunc sed augue. Congue eu consequat ac felis donec et odio. Enim ut sem viverra aliquet eget sit amet. Sit amet consectetur adipiscing elit duis tristique sollicitudin. Quis blandit turpis cursus in. Cras fermentum odio eu feugiat pretium nibh ipsum consequat nisl. Non curabitur gravida arcu ac tortor dignissim convallis aenean. Porta non pulvinar neque laoreet suspendisse interdum consectetur libero id. Lacus viverra vitae congue eu consequat ac felis. Vulputate dignissim suspendisse in est ante in nibh mauris. Amet mauris commodo quis imperdiet massa. Varius sit amet mattis vulputate enim nulla aliquet. Pellentesque diam volutpat commodo sed egestas egestas. Amet est placerat in egestas erat imperdiet sed euismod. Scelerisque varius morbi enim nunc faucibus a pellentesque sit. Ut sem viverra aliquet eget sit amet tellus cras. Sem integer vitae justo eget magna fermentum iaculis eu.
+Modulul este echipat cu 2 relee (Figura 2.4a) controlate individual. Acest modul poate fi utilizat împreună cu orice placă de dezvoltare care dispune de 2 pini digitali și un pin VCC de 5 V. Produsul este util în multe proiecte de electronică în care trebuie controlate diferite dispozitive care se alimentează cu o tensiune maximă de 250 V AC sau 30 V DC.
+
+Senzorul DHT22 (Figura 2.4b) este un senzor de umiditate și temperatură mic, ieftin și la îndemână. Folosește un senzor capacitiv de umiditate și un termistor pentru a măsura aerul din jur. Acesta oferă semnal digital pe pinul de date. Este ușor de folosit, dar este nevoie de atenție pentru citirea datelor la momentul potrivit.
+
+Senzorul infraroșu HC-SR501 (Figura 2.4c) este folosit pentru a detecta prezența oamenilor. Este des utilizat în aprinderea sau stingerea automată a luminii într-o încăpere atunci când o persoană ajunge sau părăsește o incintă. Suportă o tensiune de alimentare mai ridicată (5 – 20 V ) și are un consum mai mare. Are o rază de sensibilitate de 110\textdegree și detectează obiecte până la o distanță de 7m.
+
+Placa HC-SR04 (Figura 2.4d) deține un emițător și un receptor ultrasonic ce ne pot oferi distanșa până la cel mai apropiat obstacol într-un mod ușor de programat. E compatibilă cu o gamă variată de plăci de dezvoltare, având unele avantaje față de senzorii de distanță de tip analog: are nevoie doar de pini I/O digitali, are toleranță mai mare la zgomotul din circuit și precizie de până la 4.5 metri, toate la un consum continuu de maxim 2mA.
+
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}{0.45\textwidth}
+		\includegraphics[width=\linewidth]{relay}
+		\caption{Placă cu două relee pentru comutarea tensiunii prizei}
+		\label{fig:relay}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.45\textwidth}
+		\includegraphics[width=\linewidth]{temperature}
+		\caption{Senzor de temperatură și umiditate}
+		\label{fig:temperature}
+	\end{subfigure}
+	\begin{subfigure}{0.45\textwidth}
+		\includegraphics[width=\linewidth]{motion}
+		\caption{Senzor de detectarea mișcării}
+		\label{fig:motion}
+	\end{subfigure}
+	\hfill
+		\begin{subfigure}{0.45\textwidth}
+		\includegraphics[width=\linewidth]{distance}
+		\caption{Senzor de măsurare a distanței}
+		\label{fig:distance}
+	\end{subfigure}
+	\hfill
+	\caption{Senzorii folosiți în acest proiect}
+	\label{fig:all}
+\end{figure}
+
+\section{Concluzii}
+
+Domeniul Smart Home este foarte vast și oferă o gamă largă de oportunități creative. Tehnologia a evoluat rapid, permițând controlul și automatizarea diverselor aspecte ale locuinței, de la iluminat și securitate la gestionarea energiei și confortul locatarilor. 
+
+Moduluele și plăcile folosite se pliază destul de bine pentru aplicările descrise în viitorul capitol, dar întotdeauna acestea vor fi actualizate cu noi funcționalități. Prin urmare, în domeniul caselor inteligente, nu există limite, iar utilizatorii sunt încurajați să-și folosească imaginația și să exploreze noi soluții ce se pliază vieții personale.
