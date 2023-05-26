@@ -1,13 +1,54 @@
-\chapter{Titlul celui de-al doilea capitol}
-Facilisi nullam vehicula ipsum a arcu. Purus semper eget duis at tellus at. Adipiscing tristique risus nec feugiat. Eu volutpat odio facilisis mauris sit. Porta nibh venenatis cras sed. Penatibus et magnis dis parturient. Sollicitudin aliquam ultrices sagittis orci a. Senectus et netus et malesuada fames ac turpis egestas integer. Cras tincidunt lobortis feugiat vivamus at augue eget arcu dictum. Leo vel fringilla est ullamcorper eget nulla facilisi etiam dignissim. Nulla aliquet enim tortor at auctor urna nunc id cursus. Elit duis tristique sollicitudin nibh. Sagittis nisl rhoncus mattis rhoncus urna neque viverra. Convallis posuere morbi leo urna molestie at. Quisque egestas diam in arcu cursus euismod.
+\chapter{Tehnologii utilizate}
 
-\section{Titlul secțiunii 1}
 
-A diam sollicitudin tempor id eu nisl. Hac habitasse platea dictumst vestibulum. Integer enim neque volutpat ac tincidunt. Facilisi nullam vehicula ipsum a arcu cursus vitae congue. Vel turpis nunc eget lorem. Vestibulum mattis ullamcorper velit sed ullamcorper morbi tincidunt ornare. Nunc sed blandit libero volutpat. Sit amet luctus venenatis lectus magna fringilla urna porttitor. Hac habitasse platea dictumst quisque sagittis purus. Sed faucibus turpis in eu mi bibendum neque egestas. Vel orci porta non pulvinar neque laoreet suspendisse interdum consectetur. Erat nam at lectus urna duis convallis convallis tellus id. Tristique sollicitudin nibh sit amet commodo nulla facilisi nullam vehicula. Etiam dignissim diam quis enim lobortis scelerisque. Nunc congue nisi vitae suscipit tellus mauris a diam maecenas. Lacus viverra vitae congue eu consequat ac felis donec. Mauris sit amet massa vitae tortor condimentum. Mauris augue neque gravida in. Lorem ipsum dolor sit amet. Arcu dui vivamus arcu felis bibendum ut tristique et.
+\section{Raspberry Pi Zero W}
 
-\section{Titlul secțiunii 2}
+Raspberry Pi este o familie de calculatoare, de mărimea unui card de credit sau mai mici, care au revoluționat industria cu prețul accesibil de doar \$25 al primei plăci. În ultimii 5 ani, acestea au dobândit o atenție foarte mare în rândul comunității \emph{Do it yourself (DIY)} datorită spectrului larg de utilizări în proiecte digitale și IoT.
 
-Sit amet mauris commodo quis imperdiet massa tincidunt nunc pulvinar. Ligula ullamcorper malesuada proin libero nunc consequat interdum. Mauris a diam maecenas sed enim ut. Ut sem nulla pharetra diam sit amet nisl suscipit adipiscing. Leo duis ut diam quam nulla. Neque ornare aenean euismod elementum. Vitae sapien pellentesque habitant morbi tristique senectus. Lectus magna fringilla urna porttitor rhoncus dolor purus non enim. Egestas sed sed risus pretium quam vulputate dignissim suspendisse in. At quis risus sed vulputate odio ut enim. Hac habitasse platea dictumst quisque sagittis. Lectus vestibulum mattis ullamcorper velit sed. Massa vitae tortor condimentum lacinia quis vel eros donec ac. Vulputate dignissim suspendisse in est ante. Sed faucibus turpis in eu mi bibendum neque. Enim eu turpis egestas pretium aenean pharetra magna. Tellus mauris a diam maecenas.
+Comunitatea Raspberry a crescut mult și consistent. În momentul de față, în urma căutării "Raspberry pi projects", ne sunt returnate 47.2 milioane de pagini care conțin tutoriale despre imprimante 3D, sisteme de irigare, sisteme de luat vederi, ad-blocker pentru rețea și multe altele.
+
+În contextul versiunii Zero W (Figura 2.1), avem disponibilă o placă de mărimea unui pachet de gume: 6.5 x 3 x 0.5 cm pe care poate fi instalat un sistem de operare bazat pe GNU/Linux numit Raspbian OS. Are un procesor single-core de 1GHz, 512 MB LPDDR2 RAM, iesire mini HDMI, două porturi micro USB, Bluetooth 4.0 și 2.4GHz 802.11n Wi-Fi.
+
+Aspectul special al acestor computere constă în cei 40 pini \textbf{GPIO} (\emph{General purpose input-output}). Aceștia sunt folosiți pentru conectarea de senzori, fiind ușor programabili cu ajutorul limbajului Python, sau pentru audiențe tinere, Scratch.
+
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1\textwidth]{raspberrypi}
+	\caption{Fața și spatele plăcii Raspberri Pi Zero W
+		Credits: RPISpy @ \url{https://www.raspberrypi-spy.co.uk/}}
+	\label{fig:raspberrypi}
+\end{figure}
+
+\break
+
+\section{Microcontrollere folosite}
+
+Un microcontroller (abreviat \emph{MCU}) este un circuit integrat care combină funcționalitate microporcesorului (de obicei aflat sub un radiator de aluminiu pentru disiparea căldurii) cu componentele periferice: module \emph{Input/output}, memorie și interfețe de comunicare cu alte module. Dețin mai mulți pini de tip analog, digital și \textbf{PWM} (\emph{Pulse Width Modulation}) pentru conectarea cu alte module
+
+\subsection{Arduino Nano}
+
+Arduino Nano (Figura 2.2) este fratele mai mic al plăcii Uno cu care împărtășește majoritatea funcționalității: microcontroller ATmega328, 32KB memorie flash, viteză de 16MHz și 22 pini I/O.  Singurele diferențe sunt mărimea redusă și portul de USB mini. Este perfect pentru persoanele care doersc să învețe tainele electronicii și a programării, fiind potrivit pentru proiecte ce au constrângeri legate de spațiul disponibil.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.4\textwidth]{arduino}
+	\caption{Arduino Nano \newline\url{https://www.amazon.com/Arduino-A000005-ARDUINO-Nano/dp/B0097AU5OU}}
+	\label{fig:arduino}
+\end{figure}
+
+\subsection{ESP8266}
+
+Arduino Nano (Figura 2.2) este fratele mai mic al plăcii Uno cu care împărtășește majoritatea funcționalității. Singurele diferențe sunt mărimea redusă și portul de USB mini. Este perfect pentru persoanele care doersc să învețe tainele electronicii și a programării, fiind potrivit pentru proiecte ce au constrângeri legate de spațiul disponibil.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1\textwidth]{esp8266}
+	\caption{Microcontroller-ul ESP8266 (chip-ul argintiu) pe o placă de tipul \emph{Breakout} \newline\url{https://www.teachmemicro.com/esp8266-spiffs-web-server-nodemcu/}}
+	\label{fig:esp8266}
+\end{figure}
+
+\break
 
 \section{Titlul secțiunii 3}
 
