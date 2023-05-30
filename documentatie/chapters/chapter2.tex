@@ -1,6 +1,39 @@
 \chapter{Tehnologii utilizate}
 
+\section{Flutter}
 
+\textbf{Flutter} este o platformă pentru dezvoltare de aplicații publicată inițial în 2017. Cu ajutorul acestui \textbf{SDK} (\emph{Software Development Kit}), programatorii pot construi aplicații web, desktop și cross-platform pentru Android și IOS. Se folosește împreună cu limbajul de programare Dart.
+
+Pentru a dobândi o eficiență asemănătoare celei native, este folosită compilarea \textbf{AOT} (\emph{ahead-of-time}) pe toate platformele în afară de Web, unde codul este convertit în JavaScript.
+
+Fundația acestui SDK este scrisă în \textbf{C++}, oferă randare low-level folosind biblioteca \emph{Skia} de la Google sau un strat de abstractizare grafic \emph{Impeller}. Componenta de bază în Flutter este \emph{widget-ul} care poate conține și alte widget-uri. Acesta descrie logica, interacțiunea și design-ul unei componente UI. Flutter conține două pachete de elemente UI: Material Design (Google) și Cupertino (Apple).
+
+\begin{lstlisting}[language=C++, caption=Widget Scaffold]
+	return Scaffold(
+		body: Column(
+		children: [
+			Text('Acest text va fi pozitionat'),
+			Text('Deasupra acestui text'),
+			],
+		),
+	);
+\end{lstlisting}
+
+\section{Flask}
+
+Flask este un framework web ușor de utilizat și flexibil, scris în Python. A fost creat cu scopul de a fi simplu și minimalist, oferind totodată funcționalitățile esențiale necesare pentru dezvoltarea rapidă a aplicațiilor. Acesta permite definirea de rute pentru a mapa cererile HTTP/HTTPS primite către funcții. Prin intermediul adnotărilor, se pot atribui funcțiilor URL-uri și metode HTTP/S specifice, permițând astfel aplicației să proceseze cererea în funcție de parametrii primiți.
+
+Datorită abordării sale minimaliste și comunității active, Flask a devenit unul dintre cele mai populare framework-uri pentru dezvoltarea aplicațiilor web în Python.
+
+Figura 2.2 reprezintă un script ce expune o rută care returnează un paragraf HTML cu textul \emph{Hello, World!}.
+
+\begin{lstlisting}[language=Python, caption=Exemplu minimal de aplicație Flask]
+	from flask import Flask	
+	app = Flask(name)
+	@app.route("/")
+	def hello_world():
+		return "<p>Hello, World!</p>"
+\end{lstlisting}
 \section{Raspberry Pi Zero W}
 
 Raspberry Pi este o familie de calculatoare, de mărimea unui card de credit sau mai mici, care au revoluționat industria cu prețul accesibil de doar \$25 al primei plăci. În ultimii 5 ani, acestea au dobândit o atenție foarte mare în rândul comunității \emph{Do it yourself (DIY)} datorită spectrului larg de utilizări în proiecte digitale și IoT.
