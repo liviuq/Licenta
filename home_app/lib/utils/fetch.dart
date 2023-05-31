@@ -6,16 +6,19 @@ import '../models/advanced_sensor.dart';
 import '../models/sensor.dart';
 import 'package:http/http.dart' as http;
 
-Future<Sensor> fetchData() async {
+Future<List<Sensor>> fetchSensorData({required int resultCount}) async {
   final response =
-      await http.get(Uri.parse('https://andr3w.ddns.net/latest/1'));
+      await http.get(Uri.parse('https://andr3w.ddns.net/latest/$resultCount'));
 
   if (response.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
-    // ignore: avoid_print
-    print(jsonDecode(response.body));
-    return Sensor.fromJson(jsonDecode(response.body)[0]);
+    final jsonList = jsonDecode(response.body);
+    List<Sensor> sensorList = [];
+
+    for (var json in jsonList) {
+      sensorList.add(Sensor.fromJson(json));
+    }
+
+    return sensorList;
   } else {
     // If the server did not return a 200 OK response,
     // then throw an exception.
@@ -192,10 +195,13 @@ void makeGetRequest(String ip, String endpoint) async {
   // Handle the response
   if (response.statusCode == 200) {
     // Successful GET request
+    // ignore: avoid_print
     print('GET request successful');
+    // ignore: avoid_print
     print('Response body: ${response.body}');
   } else {
     // Error in GET request
+    // ignore: avoid_print
     print('Error: GET request failed with status code ${response.statusCode}');
   }
 }
