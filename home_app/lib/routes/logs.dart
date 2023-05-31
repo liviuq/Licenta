@@ -20,11 +20,19 @@ class _LogsRouteState extends State<LogsRoute> {
   // list of widgets to be displayed
   List<Widget> widgets = [];
 
+  // IMPLEMENT LEFT HOME CHECK
+  // secure mode variable
+  late bool _secureMode = false;
+  late DateTime _lastLeftHome = DateTime.now();
+
   @override
   void initState() {
     // get all resultCount sensor data points
     _sensorData = fetchSensorData(resultCount: 100);
 
+    getSecureModeFromDatabase(
+      boxName: 'settings',
+    );
     super.initState();
   }
 
@@ -88,9 +96,10 @@ class _LogsRouteState extends State<LogsRoute> {
                         padding: const EdgeInsets.all(4.0),
                         decoration: BoxDecoration(
                           // if the value is greater than the threshold, change the color
-                          color: sensorList[index].value <=
-                                  addressThresholdMap[
-                                      sensorList[index].address]!
+                          color: (sensorList[index].value <=
+                                      addressThresholdMap[
+                                          sensorList[index].address]!) &&
+                                  _secureMode
                               ? Colors.red
                               : Colors.blue,
 
@@ -135,6 +144,26 @@ class _LogsRouteState extends State<LogsRoute> {
       return box.get('threshold') as double;
     } else {
       return 0;
+    }
+  }
+
+  void getSecureModeFromDatabase({
+    required String boxName,
+  }) async {
+    // open the box
+    await Hive.openBox(boxName);
+    var box = Hive.box(boxName);
+
+    // check for secureMode key
+    if (box.containsKey('secureMode')) {
+      setState(() {
+        _secureMode = box.get('secureMode') as bool;
+        _lastLeftHome = DateTime.parse(box.get('timeStamp'));
+      });
+    } else {
+      setState(() {
+        _secureMode = false;
+      });
     }
   }
 }
