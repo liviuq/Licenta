@@ -85,7 +85,7 @@ class _MainMenuState extends State<MainMenu> {
             Row(
               children: [
                 Text(
-                  'Left home?',
+                  'Secure Mode',
                   style: GoogleFonts.roboto(
                     color: Colors.white,
                     fontSize: 15,
@@ -93,8 +93,8 @@ class _MainMenuState extends State<MainMenu> {
                   ),
                 ),
                 Switch(
-                  activeColor: Colors.green,
-                  inactiveThumbColor: Colors.red,
+                  activeColor: Colors.red,
+                  inactiveThumbColor: Colors.green,
                   value: _secureMode,
                   onChanged: (bool value) {
                     setState(() {
