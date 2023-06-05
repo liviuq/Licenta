@@ -39,13 +39,6 @@ DynamicJsonDocument doc(1024);  //allocates 1024 bytes of memory on the heap
 JsonArray doc_endpoints = doc.createNestedArray("endpoints");
 
 int bytesWritten = 0;
-/* 
-doc["sensor"] = "gps"; doc["time"] = 1351824120;
-  JsonArray data = doc.createNestedArray("data");
-  data.add(48.756080);
-  data.add(2.302038);
-  int bytesWritten = serializeJson(doc, json, 1024);
-*/
 
 // function prototypes
 void handleNotFound();
@@ -147,7 +140,7 @@ void loop(void) {
 
 void turnOnLED() {
   //digitalWrite(ledPin, HIGH);
-  String bobi = "bobi e gay";
+  String bobi = "bobi e un prieten bun";
   server.send(200, "text/plain", "LED is on");
   for (auto ch : bobi) {
     if (ch >= 'a' && ch <= 'z') {
