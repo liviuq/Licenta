@@ -30,28 +30,53 @@ Pe post de footer sunt alte două butoane care servesc pe post de notificări at
 Cărțile reprezintă principala sursă de informații pe care un utilizator o regăsește instant când accesează aplicația. Ele oferă date importante despre senzorul respectiv într-o formă ușor de înțeles și de citit rapid.
 
 În prima parte putem observa numele de identificare a senzorului. Acesta îi este asignat manual atunci când placa Arduino este programată și trebuie neapărat să fie unic în toată rețeaua. 
+
 \begin{wrapfigure}{r}{0.4\textwidth}
 	\includegraphics[width=0.5\textwidth]{3}
 	\caption{Valorile unui modul}
 	\label{fig:3}
 \end{wrapfigure}
+
 În cazul în care există multiple dispozitive cu același ID, stația de bază va crede că a primit două pachete de la același senzor, când defapt au fost trimise de către senzori care, foarte probabil, sunt programați să colecteze date diferite și astfel vor apărea discrepanțe vizibile între valorile trimise.
 
 După, putem observa valoarea primită de către aplicație la data și ora respectivă. Odată ce este reîmprospătată pagina, dacă device-ul este conectat la rețea, telefonul va primi cea mai recentă măsurătoare din baza de date care primește informații noi odată la două secunde.
 
 Și nu în ultimul rând, apare și locul fizic exact al senzorului, el fiind setat de către utilizator în aplicație. Inițial, acest câmp nu este vizibil deoarece senzorii nu au atașați un loc stabil, atașarea și schimbarea lui fiind făcute de către utilizator.
+
 \subsection{Locația senzorului}
 
-Cu un suport larg de diferite gesturi cu ajutorul clasei GestureDetector din Flutter, avem acces la o suită de detectări a mișcărilor degetetului care pot executa anumite funcții. În cazul aplicației, odată ce se ține apăsat pe un cartonaș, va apărea un dialog în care putem introduce locația fizică a senzorului.â
-
 \begin{wrapfigure}{r}{0.4\textwidth}
-	\includegraphics[width=0.5\textwidth]{2}
+	\includegraphics[width=0.4\textwidth]{2}
 	\caption{Pop-up pentru locație}
 	\label{fig:2}
 \end{wrapfigure}
 
-Aceasta este salvată în memoria locală a telefonului cu ajutorul bibliotecii de gestionare a bazelor de date NoSQL (non-relaționale). Am ales biblioteca respectivă datorită performanței ridicate, simplitatea oferită și compatibilitatea cross-platform care este critică deoarece aplicația aceasta poate fi compilată pentru majoritatea device-urilor populare. 
+Cu un suport larg de diferite gesturi cu ajutorul clasei GestureDetector din Flutter, avem acces la o suită de detectări a mișcărilor degetetului care pot executa anumite funcții. În cazul aplicației, odată ce se ține apăsat pe un cartonaș, va apărea un dialog în care putem introduce locația fizică a senzorului.
 
+Aceasta este salvată în memoria locală a telefonului cu ajutorul bibliotecii de gestionare a bazelor de date NoSQL (non-relaționale). Am ales biblioteca respectivă datorită performanței ridicate, simplitatea oferită și compatibilitatea cross-platform care este critică deoarece aplicația aceasta poate fi compilată pentru majoritatea device-urilor populare. 
+\break
+
+\subsection{Modul de securitate} 
+
+\begin{wrapfigure}{r}{0.4\textwidth}
+	\includegraphics[width=0.45\textwidth]{4}
+	\caption{Interfață secure mode}
+	\label{fig:4}
+\end{wrapfigure}
+
+În ultimii ani, numărul de furturi din locuințe se află pe un trend descrescător, conform informațiilor oferite de către Inspectoratul General al Poliției Române (\textbf{IGPR}). Așadar, în anul 2019 au fost înregistrate 22341 de furturi, iar în 2020 infracțiunile au ajuns la 18060, cu 19\% mai puține față de anul precedent. Chiar și în aceste circumstanțe, acest număr se datorează mentalității defensive în continuă dezvoltare și a sistemelor de alarmă care devin tot mai sofisticate. Am decis că introducerea unei astfel de abilități va contribui pozitiv la securizarea locuinței în care sistemul este instalat.
+
+Modul de securitate se încadrează la categoria de bariere \emph{psihice} deoarece \emph{"descurajează infractorii sau detectează în faza incipientă o tentativă de pătrundere prin efracţie (sisteme de securitate perimetrală, antiefracţie, control al accesului sau sisteme de supraveghere şi înregistrare video)"}\footnote{\url{https://www.politiaromana.ro/ro/prevenire/furturi-din-locuinte}.}
+
+Este recomandat ca, atunci când utilizatorul pleacă din incinta în care este instalată soluția smart home, să activeze modul de securitate. Fiecărui senzor îi poate fi atribuit o limită astfel încât orice valoare preluată  care scade sub acest prag (numit și \emph{Threshold}), va apărea sub forma unei notificări pe pagina de \emph{Logs}.
+
+Odată ce este activat, utilizatorului îi este făcut prezent acest fapt prin schimbarea culorii de background. Valoarea acestui buton este salvată în baza de date Hive, împreună cu data și ora la care a fost schimbată. Aceasta din urmă va fi folosită la filtrarea alarmelor false.
+
+\subsection{Butonul de refresh}
+
+Funcționalitatea sa este intuitivă, întrucât apăsarea lui rezultă în re-împrospătarea valorilor din aplicație cu cele mai recente citiri ale tuturor senzorilor sistemului. Deoarece tot backend-ul este hostat pe un procesor cu un singur nucleu, am decis să implementez o metodă de \emph{caching} a datelor pentru sesiunea curentă. În acest mod salvăm serverul de la multe request-uri și economisim datele mobile.
+
+Una din limitările sistemului este că informațiile afișate nu sunt actualizate constant. Acest lucru duce la discrepanțe între valorile pe care utilizatorul le vede și cele pe care senzorii le trimit. Vom vorbi despre aceasta în capitolul dedicat viziunii pe viitor.
 
 \section{Senzori statici}
 
