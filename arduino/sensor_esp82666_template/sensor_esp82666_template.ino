@@ -26,7 +26,7 @@ unsigned long postDelay = 5000;   // replace with 300000 for 5 minutes
 ESP8266WebServer server(80);
 
 // data for identification
-String name = "Green LED controller";
+String name = "Lamp controller";
 String local_ip = "";
 
 // vector of endpoints
@@ -45,24 +45,12 @@ void handleNotFound();
 void turnOnLED();
 void turnOffLED();
 
-int ledPin = 16;
-int dotDelay = 50;
-//For letters
-char* letters[] = {
-  ".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..",    // A-I
-  ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.",  // J-R
-  "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--.."          // S-Z
-};
+int lampPin = 16;
 
-//For Numbers
-char* numbers[] = {
-  "-----", ".----", "..---", "...--", "....-", ".....",
-  "-....", "--...", "---..", "----."
-};
 
 void setup(void) {
   // set D0 as output pin for a green status LED
-  pinMode(ledPin, OUTPUT);
+  pinMode(lampPin, OUTPUT);
 
   // begin serial communication on 115200 baud (14.4 KB/s)
   Serial.begin(115200);
@@ -91,10 +79,10 @@ void setup(void) {
   doc["ip"] = WiFi.localIP().toString();
 
   // adding custom endpoints with handlers
-  endpoints.push_back("turnOnLED");
-  server.on("/turnOnLED", HTTP_GET, turnOnLED);
-  endpoints.push_back("turnOffLED");
-  server.on("/turnOffLED", HTTP_GET, turnOffLED);
+  endpoints.push_back("turnOnLamp");
+  server.on("/turnOnLamp", HTTP_GET, turnOnLamp);
+  endpoints.push_back("turnOffLamp");
+  server.on("/turnOffLamp", HTTP_GET, turnOffLamp);
 
   server.onNotFound(handleNotFound);  // unknown uri
 
@@ -138,51 +126,16 @@ void loop(void) {
   server.handleClient();
 }
 
-void turnOnLED() {
-  //digitalWrite(ledPin, HIGH);
-  String bobi = "bobi e un prieten bun";
-  server.send(200, "text/plain", "LED is on");
-  for (auto ch : bobi) {
-    if (ch >= 'a' && ch <= 'z') {
-      flashSequence(letters[ch - 'a']);
-    } else if (ch >= 'A' && ch <= 'Z') {
-      flashSequence(letters[ch - 'A']);
-    } else if (ch >= '0' && ch <= '9') {
-      flashSequence(numbers[ch - '0']);
-    } else if (ch == ' ') {
-      delay(dotDelay * 4);
-    }
-  }
+void turnOnLamp() {
+  digitalWrite(lampPin, HIGH);
 }
 
-void turnOffLED() {
-  digitalWrite(ledPin, LOW);
+void turnOffLamp() {
+  digitalWrite(lampPin, LOW);
   server.send(200, "text/plain", "LED is off");
 }
 
 // Handlers
 void handleNotFound() {
   server.send(404, "text/plain", "404: Not found");
-}
-
-void flashSequence(char* sequence) {
-  int i = 0;
-  while (sequence[i] != NULL) {
-    flashDotOrDash(sequence[i]);
-    i++;
-  }
-  delay(dotDelay * 3);
-}
-
-
-void flashDotOrDash(char dotOrDash) {
-  digitalWrite(ledPin, HIGH);
-  if (dotOrDash == '.') {
-    delay(dotDelay);
-  } else  // must be a -
-  {
-    delay(dotDelay * 3);
-  }
-  digitalWrite(ledPin, LOW);
-  delay(dotDelay);
 }

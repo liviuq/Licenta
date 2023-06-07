@@ -342,6 +342,7 @@ class _SensorRouteState extends State<SensorRoute> {
                                 color: Colors.red,
                                 spots: [
                                   FlSpot(minX, threshold),
+                                  FlSpot((maxX - 1) / 2, threshold),
                                   FlSpot(maxX - 1, threshold),
                                 ],
                                 isCurved: false,
