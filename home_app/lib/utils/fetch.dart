@@ -184,6 +184,37 @@ Future<List<Sensor>> getSensorDataFuture(
   }
 }
 
+Future<List<Sensor>> getReportData(String startDate, String endDate) async {
+  print("Start date: $startDate, end date: $endDate");
+  final url = Uri.parse('https://andr3w.ddns.net/report');
+
+  final jsonBody = jsonEncode({
+    'start_date': startDate,
+    'end_date': endDate,
+  });
+
+  final response = await http.post(
+    url,
+    headers: {'Content-Type': 'application/json'},
+    body: jsonBody,
+  );
+
+  if (response.statusCode == 200) {
+    final jsonList = jsonDecode(response.body);
+
+    List<Sensor> sensorList = [];
+
+    for (var json in jsonList) {
+      sensorList.add(Sensor.fromJson(json));
+    }
+    return sensorList;
+  } else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to load last sensor data');
+  }
+}
+
 void makeGetRequest(String ip, String endpoint) async {
   // Create the URL with parameters
   String url =

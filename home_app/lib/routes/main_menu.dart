@@ -12,6 +12,7 @@ import '../widgets/advanced_sensor_data_tile.dart';
 import 'about.dart';
 import 'advanced_sensor_page.dart';
 import 'logs.dart';
+import 'report.dart';
 import 'sensor_page.dart';
 
 class MainMenu extends StatefulWidget {
@@ -33,6 +34,7 @@ class _MainMenuState extends State<MainMenu> {
 
   final List<Widget> _screens = const [
     LogsRoute(),
+    ReportRoute(),
     AboutRoute(),
   ];
 
@@ -288,8 +290,12 @@ class _MainMenuState extends State<MainMenu> {
         bottomNavigationBar: BottomNavigationBar(
           items: const [
             BottomNavigationBarItem(
-              icon: Icon(Icons.info_outline),
+              icon: Icon(Icons.lightbulb_circle_rounded),
               label: 'Logs',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.receipt_long_outlined),
+              label: 'Report',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.info_outline),
