@@ -209,6 +209,21 @@ def sensors():
 
     return jsonify({'static':list_static, 'advanced':list_advanced})
 
+@sensor_view.route('/secure', methods=['GET', 'POST'])
+def secure():
+    if request.method == 'POST':
+        value = request.args.get('value')
+        if value is not None:
+            with open('secure_value', 'w') as file:
+                file.write(value)
+            return jsonify({'value':value})
+        else:
+            return jsonify({'value':'Error at setting the value'})
+    elif request.method == 'GET':
+        with open('secure_value', 'r') as file:
+            value = file.read()
+        return jsonify({'value':value})
+
 @sensor_view.route('/report', methods=['POST'])
 def get_report_information():
 
