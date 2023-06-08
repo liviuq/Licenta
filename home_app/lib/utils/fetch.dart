@@ -236,3 +236,23 @@ void makeGetRequest(String ip, String endpoint) async {
     print('Error: GET request failed with status code ${response.statusCode}');
   }
 }
+
+void setSecureMode({required secureMode}) async {
+  String url = 'https://andr3w.ddns.net/secure?value=$secureMode';
+
+  // Make the GET request
+  final response = await http.post(Uri.parse(url));
+
+  // Handle the response
+  if (response.statusCode == 200) {
+    // Successful GET request
+    // ignore: avoid_print
+    print('post request successful');
+    // ignore: avoid_print
+    print('Response body: ${response.body}');
+  } else {
+    // Error in GET request
+    // ignore: avoid_print
+    print('Error: post request failed with status code ${response.statusCode}');
+  }
+}
