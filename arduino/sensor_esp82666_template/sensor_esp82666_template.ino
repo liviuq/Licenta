@@ -18,12 +18,15 @@ const char* password = STAPSK;
 String base_url = "https://andr3w.ddns.net";
 
 // timed 5 second delay
-unsigned long lastTime = 0;
+unsigned long previousMillis = 0;
 unsigned long timerDelay = 5000;  //5 seconds
-unsigned long postDelay = 5000;   // replace with 300000 for 5 minutes
+unsigned long postDelay = 20000;  // replace with 300000 for 5 minutes
 
 // instance of webserver listening on port 80
 ESP8266WebServer server(80);
+
+// value for the secure mode
+bool secure;
 
 // data for identification
 String name = "Lamp controller";
@@ -37,6 +40,7 @@ DynamicJsonDocument doc(1024);  //allocates 1024 bytes of memory on the heap
 
 // array for the endpoints in the POSTed json
 JsonArray doc_endpoints = doc.createNestedArray("endpoints");
+char* json = (char*)malloc(1024);
 
 int bytesWritten = 0;
 
@@ -83,6 +87,8 @@ void setup(void) {
   server.on("/turnOnLamp", HTTP_GET, turnOnLamp);
   endpoints.push_back("turnOffLamp");
   server.on("/turnOffLamp", HTTP_GET, turnOffLamp);
+  endpoints.push_back("intruderLampAlert");
+  server.on("/intruderLampAlert", HTTP_GET, intruderLampAlert);
 
   server.onNotFound(handleNotFound);  // unknown uri
 
@@ -93,8 +99,8 @@ void setup(void) {
     doc_endpoints.add(endpoint);
   }
 
-  // creating the json string
-  char* json = (char*)malloc(1024);
+  // setting the json string to 0
+  memset(json, 0, 1024);
 
   // write to json the data structure
   bytesWritten = serializeJson(doc, json, 1024);
@@ -114,28 +120,102 @@ void setup(void) {
 
 void loop(void) {
   /*
-    At startup, while (!succesfull) post your {name, local_ip, [list of GET enpoint routes]}
+    DONE At startup, while (!succesfull) post your {name, local_ip, [list of GET enpoint routes]}
     
-    *on server* if local_ip exists in db, replace it with new data, else create new entry
+    DONE *on server* if local_ip exists in db, replace it with new data, else create new entry
 
-    After startup, wait for commands from outside
+    DONE After startup, wait for commands from outside
 
     ex. of POST packet to 
   */
-  // listen for http requests
+
+  // handle client even if not in 10 second period
   server.handleClient();
+
+  // get the current time
+  unsigned long currentMillis = millis();
+
+  // check if 10s have passed
+  if (currentMillis - previousMillis >= postDelay) {
+    // post data
+    postData();
+    secure = getSecureMode();
+
+    // Update the previousMillis variable to the current time
+    previousMillis = currentMillis;
+  }
 }
 
 void turnOnLamp() {
   digitalWrite(lampPin, HIGH);
+  server.send(200, "text/plain", "Lamp is on");
 }
 
 void turnOffLamp() {
   digitalWrite(lampPin, LOW);
-  server.send(200, "text/plain", "LED is off");
+  server.send(200, "text/plain", "Lamp is off");
+}
+
+void intruderLampAlert() {
+  server.send(200, "text/plain", "Intruder time!");
+  for (int i = 0; i < 100; i++) {
+    digitalWrite(lampPin, HIGH);
+    delay(50);
+    digitalWrite(lampPin, LOW);
+    delay(50);
+  }
 }
 
 // Handlers
 void handleNotFound() {
   server.send(404, "text/plain", "404: Not found");
+}
+
+void postData() {
+  // write to json the data structure
+  bytesWritten = serializeJson(doc, json, 1024);
+  //Serial.println("Final json: " + String(json));
+
+  // create a WifiClientSecure instance
+  std::unique_ptr<BearSSL::WiFiClientSecure> client(new BearSSL::WiFiClientSecure);
+  HTTPClient https;
+  client->setInsecure();
+  String sensors_path = base_url + "/advanced/";
+  if (https.begin(*client, sensors_path.c_str())) {
+    int httpCode = https.PUT(json);
+  }
+}
+
+bool getSecureMode() {
+  std::unique_ptr<BearSSL::WiFiClientSecure> client(new BearSSL::WiFiClientSecure);
+  HTTPClient https;
+  client->setInsecure();
+  String sensors_path = base_url + "/secure";
+  if (https.begin(*client, sensors_path.c_str())) {
+    int httpCode = https.GET();
+    if (httpCode > 0) {
+      String responseBody = https.getString();
+
+      // Parse the JSON response
+      StaticJsonDocument<200> doc;
+      DeserializationError error = deserializeJson(doc, responseBody);
+      if (error) {
+        Serial.print("Error parsing JSON: ");
+        Serial.println(error.c_str());
+      } else {
+        // Extract the value from the "value" field
+        const char* value = doc["value"];
+
+        // Print the extracted value
+        Serial.print("Value: ");
+        Serial.println(value);
+
+        if( strcmp_P(value, "true") == 0) return true;
+        else return false;
+      }
+    }
+    https.end();
+  }
+
+  return false;
 }
