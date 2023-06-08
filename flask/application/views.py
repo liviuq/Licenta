@@ -1,5 +1,6 @@
 import json
 import requests
+from datetime import datetime
 from . import app_reference, db_reference
 
 from sqlalchemy.sql import func 
@@ -207,3 +208,31 @@ def sensors():
         list_advanced.append(data_dict)
 
     return jsonify({'static':list_static, 'advanced':list_advanced})
+
+@sensor_view.route('/report', methods=['POST'])
+def get_report_information():
+
+    request_data = request.get_json()
+    start_date_str = request_data.get('start_date')
+    end_date_str = request_data.get('end_date')
+
+    # Convert the date strings to datetime objects
+    date_format = "%a, %d %b %Y %H:%M:%S %Z"
+    start_date = datetime.strptime(start_date_str, date_format)
+    end_date = datetime.strptime(end_date_str, date_format)
+
+    # Query the Sensor table for rows between the specified dates
+    query = Sensor.query.filter(Sensor.date.between(start_date, end_date)).order_by(Sensor.id.desc()).all()
+
+    data_list = []
+    for entry in query:
+        data_dict = {
+            'id': entry.id,
+            'address': entry.address,
+            'type': entry.type,
+            'value': entry.value,
+            'date': entry.date
+        }
+        data_list.append(data_dict)
+
+    return jsonify(data_list)
