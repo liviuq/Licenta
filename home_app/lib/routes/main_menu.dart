@@ -109,6 +109,11 @@ class _MainMenuState extends State<MainMenu> {
                         timeStamp: DateTime.now().toString(),
                         value: value,
                       );
+
+                      // let the server know the secure mode has changed
+                      setSecureMode(
+                        secureMode: value,
+                      );
                     });
                   },
                 ),
