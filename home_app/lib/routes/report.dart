@@ -169,7 +169,7 @@ class _ReportRouteState extends State<ReportRoute> {
                         // Get the current date and format it
                         final currentDate = DateTime.now();
                         final formattedDate =
-                            DateFormat('yyyy-MM-dd').format(currentDate);
+                            DateFormat('EEE, dd MMM yyyy').format(currentDate);
 
                         return pw.Container(
                           alignment: pw.Alignment.centerRight,
