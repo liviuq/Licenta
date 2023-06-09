@@ -137,6 +137,34 @@ Fiecare rută pe care o apelăm va instrui senzorul să execute diferite funcți
 
 \textbf{IntruderLampAlert} desemnează cum reacționează acest modul atunci când modul de securitate este activat și senzorul de mișcare emite un ”1” logic.
 
+\section{Pagina de Logs}
+
+Fiecare anomalie din sistem (orice senzor ce înregistrează o valoare care a scăzut sub limita impusă) va crea o notificare pe care utilizatorul o poate verifica în secțiunea de \textbf{Logs}. Aceasta poate fi accesată din bara de footer al meniului principal.
+
+Inițial, aplicația nu generează notificări dacă un senzor a înregistrat o abatere de la normal atunci când \textbf{Secure Mode} nu este activat deoarece se presupune că utilizatorul nu a plecat încă de acasă. Activarea modului de securitate va cauza afișarea anomaliilor pe ecran.
+
+Din figura 3.9.a se pot extrage anumite informații astfel: există trei puncte care se află sub bariera setată cu ajutorul butonului \textbf{Set threshold}, ceea ce înseamnă că utilizatorul și-a părăsit apartamentul, dar încă există activitate. 
+
+Aplicația va prelua ultimele înregistrări a fiecărui senzor pe care le compară cu limita (stocată în baza de date locală) și afișează cartonașele corespunzător. Se poate observa în figura 3.9.b. că ultima alertă este cea din figura anterioară.
+\pagebreak
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}{0.45\textwidth}
+		\includegraphics[width=\textwidth]{11}
+		\caption{Înregistrare ce generează warning}
+		\label{fig:11}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.45\textwidth}
+		\includegraphics[width=\textwidth]{12}
+		\caption{Warning generat}
+		\label{fig:12}
+	\end{subfigure}
+	\caption{}
+	\label{fig:all5}
+\end{figure}
+\break
+
 \section{Pagina de genereare de rapoarte}
 
 În cazul în care utilizatorul este o victimă a unui jaf sau unei intruziuni în casă, este important să acționeze în mod corespunzător. Primul pas este să își asigure siguranța personală și să sune imediat la serviciile de urgență sau la poliție, încercând să nu intre în contact cu posibilii infractori sau să manipuleze evidențele rămase la fața locului, pentru a nu distruge potențiale probe. După anunțarea autorităților, trebuie făcută o inventariere a obiectelor pierdute și să fie extrase cât mai multe informații din ziua respectivă legate de incident.
