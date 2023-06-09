@@ -20,7 +20,7 @@ String base_url = "https://andr3w.ddns.net";
 // timed 5 second delay
 unsigned long previousMillis = 0;
 unsigned long timerDelay = 5000;  //5 seconds
-unsigned long postDelay = 20000;  // replace with 300000 for 5 minutes
+unsigned long postDelay = 60000;  // replace with 300000 for 5 minutes
 
 // instance of webserver listening on port 80
 ESP8266WebServer server(80);
@@ -157,13 +157,13 @@ void turnOffLamp() {
 }
 
 void intruderLampAlert() {
-  server.send(200, "text/plain", "Intruder time!");
   for (int i = 0; i < 100; i++) {
     digitalWrite(lampPin, HIGH);
     delay(50);
     digitalWrite(lampPin, LOW);
     delay(50);
   }
+  server.send(200, "text/plain", "Intruder time!");
 }
 
 // Handlers
