@@ -78,6 +78,8 @@ Este recomandat ca, atunci când utilizatorul pleacă din incinta în care este 
 
 După ce este activat, utilizatorului îi este făcut prezent acest fapt prin schimbarea culorii de background. Valoarea acestui buton este salvată în baza de date Hive, împreună cu data și ora la care a fost schimbată. Aceasta din urmă va fi folosită la filtrarea alarmelor false.
 
+Senzorii dinamici pot fi configurați astfel încât să se folosească de această valoare și din acest motiv, la fiecare schimbare a acestui buton, valoarea va fi postată pe ruta \textbf{https://andr3w.ddns.net/secure}, urmând să fie disponibilă tuturor device-urilor pentru a o putea citi.
+
 \subsection{Butonul de refresh}
 
 Funcționalitatea sa este intuitivă, întrucât apăsarea lui rezultă în re-împrospătarea valorilor din aplicație cu cele mai recente citiri ale tuturor senzorilor sistemului. Deoarece tot backend-ul este hostat pe un procesor cu un singur nucleu, am decis să implementez o metodă de \emph{caching} a datelor pentru sesiunea curentă. În acest mod salvăm serverul de la multe request-uri și economisim datele mobile.
@@ -133,6 +135,39 @@ După cum se poate observa, avem afișate datele despre senzor într-o manieră 
 
 Fiecare rută pe care o apelăm va instrui senzorul să execute diferite funcționalități care pot fi deduse din numele afișat pe buton.
 
+\textbf{IntruderLampAlert} desemnează cum reacționează acest modul atunci când modul de securitate este activat și senzorul de mișcare emite un ”1” logic.
+
+\section{Pagina de genereare de rapoarte}
+
+În cazul în care utilizatorul este o victimă a unui jaf sau unei intruziuni în casă, este important să acționeze în mod corespunzător. Primul pas este să își asigure siguranța personală și să sune imediat la serviciile de urgență sau la poliție, încercând să nu intre în contact cu posibilii infractori sau să manipuleze evidențele rămase la fața locului, pentru a nu distruge potențiale probe. După anunțarea autorităților, trebuie făcută o inventariere a obiectelor pierdute și să fie extrase cât mai multe informații din ziua respectivă legate de incident.
+
+Aplicația din această soluție ajută utlizatorul în cazul unui astfel de eveniment prin colectarea tuturor datelor senzorilor din casă, expunându-le în formă de PDF gata să fie oferite autorităților. Trebuie menționat faptul că senzorii au fost plasați specific în holul de la intrarea în apartamentul meu, pozitionați astfel încât orice persoană care intră va modifica starea modulelor.
+
+Interfața (Figura 3.9.a) este alcătuită din cele două câmpuri ce permit introducerea timpului de început și cel de sfârșit. Acestea vor fi folosite de către server pentru a filtra toate înregistrările senzorilor, luându-le doar pe cele ce se încadrează în intervalul specificat. Cele două valori trebuie neapărat setate, întrucât butonul de \textbf{Generate report} nu va funcționa fiindcă nu știe unul din capetele intervalului sau chiar ambele. Odată apăsat, va trimite un POST request la stația de bază care îi va răspunde cu datele aferente. Utilizatorul este notificat de terminarea procesului printr-un pop-up în josul ecranului ce oferă și folderul în care a fost salvat.
+
+Cu ajutorul librăriei \textbf{pdf} din cadrul SDK-ului Flutter, am reușit generarea documentului (Figura 3.9.b). Pe post de header, am specificat intervalul din care au fost extrase informațiile senzorilor și data la care a fost creat acest document. Footer-ul conține numele aplicației și deținătorul drepturilor licenței. În centrul atenției este un tabel ce conține, în ordine, numărul curent al înregistrării, adresa, data, ID-ul, tipul și valoarea senzorului. Acesta este extins pe multiple foi, cifra din partea de jos al ecranului desemnând numărul curent al paginii. Pentru raportul acesta avem un număr de 300 de înregistrări preluate în decursul a 5 minute.
+
+Datele acestui document sunt valoroase și pot ajuta foarte mult investigatorii, crescând astfel șansele de a prinde intrușii. Asigurând proprietarii ce folosesc acest sistem cu un raport plin de informații, soluția de smart home propusă joacă un rol important în creșterea securității utilizatorului.
+
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}{0.43\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{9}
+		\caption{Interfața paginii}
+		\label{fig:9}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.43\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{10}
+		\caption{PDF-ul generat}
+		\label{fig:10}
+	\end{subfigure}
+	\caption{}
+	\label{fig:all4}
+\end{figure}
+\break
 
 \section{Senzori statici}
 

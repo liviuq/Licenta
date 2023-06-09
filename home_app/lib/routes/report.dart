@@ -48,7 +48,7 @@ class _ReportRouteState extends State<ReportRoute> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           centerTitle: true,
-          title: const Text('Generate report'),
+          title: const Text('Reports'),
         ),
         body: SingleChildScrollView(
           child: Column(

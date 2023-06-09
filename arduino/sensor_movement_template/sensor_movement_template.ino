@@ -64,7 +64,7 @@ void setup(void)
 void loop()
 {
   // value to be sent over the air
-  unsigned long isMoving = 0;
+  unsigned long isMoving = 1;
 
   // polling the network for updates
   network.update();
@@ -83,7 +83,7 @@ void loop()
     {
       // pin state change: LOW -> HIGH
       Serial.println("Motion detected!");
-      isMoving = 1;
+      isMoving = 0;
     }
     else
     {
@@ -91,7 +91,7 @@ void loop()
       {
         // pin state change: HIGH -> LOW
         Serial.println("Motion stopped!");
-        isMoving = 0;
+        isMoving = 1;
       }
     }
 
