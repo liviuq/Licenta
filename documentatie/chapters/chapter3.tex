@@ -141,28 +141,29 @@ Fiecare rută pe care o apelăm va instrui senzorul să execute diferite funcți
 
 Fiecare anomalie din sistem (orice senzor ce înregistrează o valoare care a scăzut sub limita impusă) va crea o notificare pe care utilizatorul o poate verifica în secțiunea de \textbf{Logs}. Aceasta poate fi accesată din bara de footer al meniului principal.
 
-Inițial, aplicația nu generează notificări dacă un senzor a înregistrat o abatere de la normal atunci când \textbf{Secure Mode} nu este activat deoarece se presupune că utilizatorul nu a plecat încă de acasă. Activarea modului de securitate va cauza afișarea anomaliilor pe ecran.
-
-Din figura 3.9.a se pot extrage anumite informații astfel: există trei puncte care se află sub bariera setată cu ajutorul butonului \textbf{Set threshold}, ceea ce înseamnă că utilizatorul și-a părăsit apartamentul, dar încă există activitate. 
-
-Aplicația va prelua ultimele înregistrări a fiecărui senzor pe care le compară cu limita (stocată în baza de date locală) și afișează cartonașele corespunzător. Se poate observa în figura 3.9.b. că ultima alertă este cea din figura anterioară.
-\pagebreak
 \begin{figure}[h]
 	\centering
 	\begin{subfigure}{0.45\textwidth}
 		\includegraphics[width=\textwidth]{11}
-		\caption{Înregistrare ce generează warning}
+		\caption{Valori ce vor genera erori}
 		\label{fig:11}
 	\end{subfigure}
 	\hfill
 	\begin{subfigure}{0.45\textwidth}
 		\includegraphics[width=\textwidth]{12}
-		\caption{Warning generat}
+		\caption{Pagina de logging}
 		\label{fig:12}
 	\end{subfigure}
 	\caption{}
 	\label{fig:all5}
 \end{figure}
+
+Inițial, aplicația nu generează notificări dacă un senzor a înregistrat o abatere de la normal atunci când \textbf{Secure Mode} nu este activat deoarece se presupune că utilizatorul nu a plecat încă de acasă. Activarea modului de securitate va cauza afișarea anomaliilor pe ecran.
+
+Din figura 3.9.a se pot extrage anumite informații astfel: există trei puncte care se află sub bariera setată cu ajutorul butonului \textbf{Set threshold}, ceea ce înseamnă că utilizatorul și-a părăsit apartamentul, dar încă există activitate. 
+
+Aplicația va prelua ultimele înregistrări a fiecărui senzor pe care le compară cu limita (stocată în baza de date locală) și afișează cartonașele corespunzător. Se poate observa în figura 3.9.b. că ultima alertă este cea din figura anterioară.
+
 \break
 
 \section{Pagina de genereare de rapoarte}
@@ -173,7 +174,7 @@ Aplicația din această soluție ajută utlizatorul în cazul unui astfel de eve
 
 Interfața (Figura 3.9.a) este alcătuită din cele două câmpuri ce permit introducerea timpului de început și cel de sfârșit. Acestea vor fi folosite de către server pentru a filtra toate înregistrările senzorilor, luându-le doar pe cele ce se încadrează în intervalul specificat. Cele două valori trebuie neapărat setate, întrucât butonul de \textbf{Generate report} nu va funcționa fiindcă nu știe unul din capetele intervalului sau chiar ambele. Odată apăsat, va trimite un POST request la stația de bază care îi va răspunde cu datele aferente. Utilizatorul este notificat de terminarea procesului printr-un pop-up în josul ecranului ce oferă și folderul în care a fost salvat.
 
-Cu ajutorul librăriei \textbf{pdf} din cadrul SDK-ului Flutter, am reușit generarea documentului (Figura 3.9.b). Pe post de header, am specificat intervalul din care au fost extrase informațiile senzorilor și data la care a fost creat acest document. Footer-ul conține numele aplicației și deținătorul drepturilor licenței. În centrul atenției este un tabel ce conține, în ordine, numărul curent al înregistrării, adresa, data, ID-ul, tipul și valoarea senzorului. Acesta este extins pe multiple foi, cifra din partea de jos al ecranului desemnând numărul curent al paginii. Pentru raportul acesta avem un număr de 300 de înregistrări preluate în decursul a 5 minute.
+Cu ajutorul librăriei \textbf{pdf} din cadrul SDK-ului Flutter, am reușit generarea documentului (Figura 3.9.b). Pe post de header, am specificat intervalul din care au fost extrase informațiile senzorilor și data la care a fost creat acest document. Footer-ul conține numele aplicației și deținătorul drepturilor licenței. În centrul atenției este un tabel ce conține, în ordine, numărul curent al înregistrării, adresa, data, ID-ul, tipul și valoarea senzorului. Acesta este extins pe multiple foi, cifra din partea de jos al ecranului desemnând numărul curent al paginii. Pentru raportul acesta avem un număr de 300 de înregistrări preluate în decursul a 5 minute. Stația de bază este responsabilă să recepționeze și să citească pachetele trimise de toți senzorii, lucru care devine destul de greu atunci când fiecare device transmite în aceeași secundă după cum se observă în PDF. Datorită librăriei \textbf{RF24Network} despre care vom vorbi în secțiunea senzorilor statici, toate pachetele vor fi decodate cu succes.
 
 Datele acestui document sunt valoroase și pot ajuta foarte mult investigatorii, crescând astfel șansele de a prinde intrușii. Asigurând proprietarii ce folosesc acest sistem cu un raport plin de informații, soluția de smart home propusă joacă un rol important în creșterea securității utilizatorului.
 
@@ -239,3 +240,23 @@ Senzorii dinamici dețin o complexitate mai ridicată față de tipul anterior p
 	\caption{ESP8266 + modul releu alimentat la 220V}
 	\label{fig:dinamic}
 \end{figure}
+
+\section{Modul debug}
+
+\textbf{Network\_rx.py} reprezintă modul de debug, fiind o unealtă care ajută utilizatorul la momentul instalării senzorilor sau atunci când unii nu mai funcționează corespunzător.
+
+În timpul execuției, acesta afișează în consolă (Figura \ref{fig:13}) toate pachetele pe care le primește în timp real. Acest lucru este util deoarece permite utilizatorului să confirme că senzorii funcționează corect și trimit datele corespunzătoare. Problemele de comunicare sunt depistate din timp, de obicei acestea se rezolvă cu o restartare a modulelor.
+
+Fiecare linie deține datele unei înregistrări: \textbf{payload len} reprezintă lungimea în octeți a pachetului, \textbf{sensor type} e tipul senzorului (distanță, temperatură, mișcare), \textbf{value} conține valoarea citită de device, iar \textbf{header} are date precum id-ul pachetului, emițătorul și receptorul, care în cazul acesta este stația de bază la adresa \textbf{00}.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1\textwidth]{13}
+	\caption{Detaliile senzorilor conectați la stația de bază}
+	\label{fig:13}
+\end{figure}
+
+Este important ca user-ul să aibă instalate toate librăriile de care acest script depinde, lucru despre care vom intra în detaliu la secțiunea backendului. Fiind un script scris în python aflat în folderul \textbf{debug\_scripts}, este executat prin introducerea comenzii \textbf{python3 Licenta/flask/debug\_scripts/network\_rx.py}. Fiindcă rulează la infinit, se poate ieși din el apăsând \textbf{Ctrl + C} sau urmând instrucțiunile de aici. \footnote{\url{https://github.com/hakluke/how-to-exit-vim\#the-hardware-way}.}
+
+\section{Componenta de server}
+
