@@ -237,7 +237,7 @@ Senzorii dinamici dețin o complexitate mai ridicată față de tipul anterior p
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=1\textwidth]{dinamic}
-	\caption{ESP8266 + modul releu alimentat la 220V}
+	\caption{ESP8266 cu modul releu alimentat la 220V}
 	\label{fig:dinamic}
 \end{figure}
 
@@ -258,5 +258,62 @@ Fiecare linie deține datele unei înregistrări: \textbf{payload len} reprezint
 
 Este important ca user-ul să aibă instalate toate librăriile de care acest script depinde, lucru despre care vom intra în detaliu la secțiunea backendului. Fiind un script scris în python aflat în folderul \textbf{debug\_scripts}, este executat prin introducerea comenzii \textbf{python3 Licenta/flask/debug\_scripts/network\_rx.py}. Fiindcă rulează la infinit, se poate ieși din el apăsând \textbf{Ctrl + C} sau urmând instrucțiunile de aici. \footnote{\url{https://github.com/hakluke/how-to-exit-vim\#the-hardware-way}.}
 
-\section{Componenta de server}
+\newpage
+
+\section{Componenta de backend}
+
+Backend-ul reprezintă partea aplicației responsabilă de logică și funcționalitate. În contextul acestei licențe, am decis să folosesc limbajul \textbf{Python} versiunea 3.10 cu microframework-ul \textbf{Flask} către care sunt trimise pachetele de la \textbf{gunicorn} și \textbf{nginx}.
+
+\subsection{Raspberry Pi}
+
+Pentru o productivitate crescută, am ales să instalez sistemul de operare \emph{Raspberry Pi OS Lite} deoarece este rapid, lucru datorat lipsei unei interfețe grafice și a programelor pre-instalate. Instalarea a fost foarte ușoară, urmând instrucțiunile din documentația lor\footnote{\url{https://www.raspberrypi.com/documentation/}}.
+
+Comunicarea cu placa a fost făcută doar prin \textbf{SSH} care a fost deschis din setările router-ului. Fiindcă această conexiune va fi publică, am instalat programul \textbf{ufw} (\emph{uncomplicated firewall}) ce mi-a ușurat securizarea host-ului, fiind o unealtă ce înlocuiește setările complicate ale \textbf{iptables}\footnote{\url{https://wiki.archlinux.org/title/iptables}.} cu comenzi simple: \emph{sudo ufw allow 22}. Astfel am limitat numărul de conexiuni la portul 22 și am permis accesul la portul 443, acestea fiind singurele  căi de acces.
+
+Criptarea traficului e realizată direct de către nginx, specificând locația certificatului și a cheii private cu ajutorul comenzilor \emph{ssl\_certificate} și \emph{ssl\_certificate\_key}. Am decis să îmi semnez propriul \textbf{certificat SSL} (Secure sockets layer) cu \textbf{openssl} executând comanda \emph{openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -sha256 -days 365}. 
+
+\subsection{DNS dinamic}
+
+Provider-ul de internet asignează dinamic adresele IP utilizatorilor conectați, motiv pentru care după o pană de curent, de obicei se resetează această adresă. Pentru a rezolva această problemă, am utilizat serviciul gratuit de \textbf{Dynamic DNS}\footnote{\url{https://www.noip.com/support/knowledgebase/geek-terms}} al companiei \textbf{No-IP}\footnote{\url{https://www.noip.com/}}. Setările au fost realizare direct pe router-ul personal, un \textbf{TP-Link WR740N}. Odată configurat, rețeaua locală poate fi accesată de la adresa \url{https://andr3w.ddns.net}.
+
+\subsection{REST API}
+
+Un \textbf{API} (\textbf{Application programming interface}) este un mecanism care permite unui serviciu să acceseze resursels unui alt serviciu. REST API se bazează pe principii precum utilizarea verbelor HTTP (GET, PUT, POST, DELETE) pentru transmiterea și manipularea datelor într-un format standardizat (XML, JSON), împreună cu ajutorul \textbf{URI} (uniform resource identifier) pentru specificarea resursei asupra cărei operațiile vor fi executate. Am creat astfel o arhitectură REST pentru a servi diferite informații către aplicația de mobil, afișându-le într-o manieră ușor de înțeles. \footnote{\url{https://www.ibm.com/topics/rest-apis}.}
+
+\subsection{SQLAlchemy}
+
+\textbf{SQLAlchemy} este o colecție de unelte ce ajută programatorul să acceseze și manipuleze baze de date SQL în limbajul Python. Se pot scrie query-uri în formă de \emph{string-uri} (raw sql) sau înlănțuind obiecte din python într-o manieră \textbf{ORM} (Object relational mapping)\footnote{\url{https://docs.sqlalchemy.org/en/20/orm/queryguide/index.html}.}. Motivele pentru care am folosit acest toolkit sunt simplicitatea creării interogărilor, rapiditarea codării și multitudinea tutorialelor valabile.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{14}
+	\caption{Informațiile oferite de DB Browser for SQLite} \footnote{\url{https://sqlitebrowser.org/}.}
+	\label{fig:14}
+\end{figure}
+
+Există două tabele definite în \textbf{/flask/application/models.py}: \textbf{Sensor} și \textbf{AdvancedSensor}, ambele stocând date precum id-ul, numele, valoarea și data la care a fost adăugată înregistrarea senzorului în baza de date.
+
+\subsection{Serverul Flask}
+
+Acesta rulează pe stația de bază (Raspberry Pi Zero W) pentru a satisface fiecare cerere a utilizatorului, fără a fi nevoit să își deschidă calculatorul personal pentru a putea interacționa cu dispozitivele sale. 
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.85\textwidth]{15}
+	\caption{Consola serverului}
+	\label{fig:15}
+\end{figure}
+
+Nginx este un \textbf{reverse proxy}\footnote{\url{https://www.nginx.com/resources/glossary/reverse-proxy-server/}.} care se află între client și backend. Acesta primește cererile din exterior pe care le redirecționează serverului de gunicorn după setările din figura \ref{fig:16}.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.85\textwidth]{16}
+	\caption{Configurare Nginx}
+	\label{fig:16}
+\end{figure}
+
+Prima componentă numită \emph{server} interceptează fiecare cerere HTTP pe care o redirecționează la ruta de HTTPS asignată portului 443, returnând astfel codul 301 ce notifică utilizatorul că a fost redirectat de la ruta \textbf{http://} la cea de \textbf{https://}.
+
+A doua componentă asultă la portul 443 (HTTPS) și, datorită blocului \textbf{location /}, orice cerere va fi redirecționată către serverul Flask, fiind configurat a primi request-uri la portul 8000. Trebuie menționat faptul că ambele aplicații rulează pe același host, ceea ce face posibilă trimiterea cu succes către adresa de \emph{loopback}\footnote{\url{https://study-ccna.com/loopback-interface-loopback-address/}}. Această utilizare este ideală deoarece ne aflăm la o scară de nivel de proiect personal. Pentru uz în producție se recomandă folosirea unui proxy server\footnote{\url{https://browserjet.com/blog/advantages-and-disadvantages-of-a-proxy-server}} pe un computer separat.
 
