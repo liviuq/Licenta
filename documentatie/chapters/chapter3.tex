@@ -4,13 +4,14 @@ Prin parcurgerea acestui capitol, cititorul va avea o imagine de ansamblu asupra
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=1\textwidth]{arhitectura}
+	\includegraphics[width=0.9\textwidth]{arhitectura}
 	\caption{Legătura dintre componentele soluției}
 	\label{fig:arhitectura}
 \end{figure}
 
 INSERT C4 diagram
 
+\newpage
 \section{Pagina principală}
 
 \begin{wrapfigure}{r}{0.4\textwidth}
@@ -149,7 +150,7 @@ Fiecare anomalie din sistem (orice senzor ce înregistrează o valoare care a sc
 		\label{fig:11}
 	\end{subfigure}
 	\hfill
-	\begin{subfigure}{0.45\textwidth}
+	\begin{subfigure}{0.35\textwidth}
 		\includegraphics[width=\textwidth]{12}
 		\caption{Pagina de logging}
 		\label{fig:12}
@@ -172,9 +173,9 @@ Aplicația va prelua ultimele înregistrări a fiecărui senzor pe care le compa
 
 Aplicația din această soluție ajută utlizatorul în cazul unui astfel de eveniment prin colectarea tuturor datelor senzorilor din casă, expunându-le în formă de PDF gata să fie oferite autorităților. Trebuie menționat faptul că senzorii au fost plasați specific în holul de la intrarea în apartamentul meu, pozitionați astfel încât orice persoană care intră va modifica starea modulelor.
 
-Interfața (Figura 3.9.a) este alcătuită din cele două câmpuri ce permit introducerea timpului de început și cel de sfârșit. Acestea vor fi folosite de către server pentru a filtra toate înregistrările senzorilor, luându-le doar pe cele ce se încadrează în intervalul specificat. Cele două valori trebuie neapărat setate, întrucât butonul de \textbf{Generate report} nu va funcționa fiindcă nu știe unul din capetele intervalului sau chiar ambele. Odată apăsat, va trimite un POST request la stația de bază care îi va răspunde cu datele aferente. Utilizatorul este notificat de terminarea procesului printr-un pop-up în josul ecranului ce oferă și folderul în care a fost salvat.
+Interfața (Figura \ref{fig:9}) este alcătuită din cele două câmpuri ce permit introducerea timpului de început și cel de sfârșit. Acestea vor fi folosite de către server pentru a filtra toate înregistrările senzorilor, luându-le doar pe cele ce se încadrează în intervalul specificat. Cele două valori trebuie neapărat setate, întrucât butonul de \textbf{Generate report} nu va funcționa fiindcă nu știe unul din capetele intervalului sau chiar ambele. Odată apăsat, va trimite un POST request la stația de bază care îi va răspunde cu datele aferente. Utilizatorul este notificat de terminarea procesului printr-un pop-up în josul ecranului ce oferă și folderul în care a fost salvat.
 
-Cu ajutorul librăriei \textbf{pdf} din cadrul SDK-ului Flutter, am reușit generarea documentului (Figura 3.9.b). Pe post de header, am specificat intervalul din care au fost extrase informațiile senzorilor și data la care a fost creat acest document. Footer-ul conține numele aplicației și deținătorul drepturilor licenței. În centrul atenției este un tabel ce conține, în ordine, numărul curent al înregistrării, adresa, data, ID-ul, tipul și valoarea senzorului. Acesta este extins pe multiple foi, cifra din partea de jos al ecranului desemnând numărul curent al paginii. Pentru raportul acesta avem un număr de 300 de înregistrări preluate în decursul a 5 minute. Stația de bază este responsabilă să recepționeze și să citească pachetele trimise de toți senzorii, lucru care devine destul de greu atunci când fiecare device transmite în aceeași secundă după cum se observă în PDF. Datorită librăriei \textbf{RF24Network} despre care vom vorbi în secțiunea senzorilor statici, toate pachetele vor fi decodate cu succes.
+Cu ajutorul librăriei \textbf{pdf} din cadrul SDK-ului Flutter, am reușit generarea documentului (Figura \ref{fig:10}). Pe post de header, am specificat intervalul din care au fost extrase informațiile senzorilor și data la care a fost creat acest document. Footer-ul conține numele aplicației și deținătorul drepturilor licenței. În centrul atenției este un tabel ce conține, în ordine, numărul curent al înregistrării, adresa, data, ID-ul, tipul și valoarea senzorului. Acesta este extins pe multiple foi, cifra din partea de jos al ecranului desemnând numărul curent al paginii. Pentru raportul acesta avem un număr de 300 de înregistrări preluate în decursul a 5 minute. Stația de bază este responsabilă să recepționeze și să citească pachetele trimise de toți senzorii, lucru care devine destul de greu atunci când fiecare device transmite în aceeași secundă după cum se observă în PDF. Datorită librăriei \textbf{RF24Network} despre care vom vorbi în secțiunea senzorilor statici, toate pachetele vor fi decodate cu succes.
 
 Datele acestui document sunt valoroase și pot ajuta foarte mult investigatorii, crescând astfel șansele de a prinde intrușii. Asigurând proprietarii ce folosesc acest sistem cu un raport plin de informații, soluția de smart home propusă joacă un rol important în creșterea securității utilizatorului.
 
@@ -251,7 +252,7 @@ Fiecare linie deține datele unei înregistrări: \textbf{payload len} reprezint
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=1\textwidth]{13}
+	\includegraphics[width=0.6\textwidth]{13}
 	\caption{Detaliile senzorilor conectați la stația de bază}
 	\label{fig:13}
 \end{figure}
@@ -270,7 +271,7 @@ Pentru o productivitate crescută, am ales să instalez sistemul de operare \emp
 
 Comunicarea cu placa a fost făcută doar prin \textbf{SSH} care a fost deschis din setările router-ului. Fiindcă această conexiune va fi publică, am instalat programul \textbf{ufw} (\emph{uncomplicated firewall}) ce mi-a ușurat securizarea host-ului, fiind o unealtă ce înlocuiește setările complicate ale \textbf{iptables}\footnote{\url{https://wiki.archlinux.org/title/iptables}.} cu comenzi simple: \emph{sudo ufw allow 22}. Astfel am limitat numărul de conexiuni la portul 22 și am permis accesul la portul 443, acestea fiind singurele  căi de acces.
 
-Criptarea traficului e realizată direct de către nginx, specificând locația certificatului și a cheii private cu ajutorul comenzilor \emph{ssl\_certificate} și \emph{ssl\_certificate\_key}. Am decis să îmi semnez propriul \textbf{certificat SSL} (Secure sockets layer) cu \textbf{openssl} executând comanda \emph{openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -sha256 -days 365}. 
+Criptarea traficului e realizată direct de către nginx, specificând locația certificatului și a cheii private cu ajutorul comenzilor \emph{ssl\_certificate} și \emph{ssl\_certificate\_key}. Am decis să îmi semnez propriul \textbf{certificat SSL} (Secure sockets layer) cu utilitarul \textbf{openssl}.
 
 \subsection{DNS dinamic}
 
@@ -299,7 +300,7 @@ Acesta rulează pe stația de bază (Raspberry Pi Zero W) pentru a satisface fie
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.85\textwidth]{15}
+	\includegraphics[width=0.75\textwidth]{15}
 	\caption{Consola serverului}
 	\label{fig:15}
 \end{figure}
@@ -308,7 +309,7 @@ Nginx este un \textbf{reverse proxy}\footnote{\url{https://www.nginx.com/resourc
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.85\textwidth]{16}
+	\includegraphics[width=0.75\textwidth]{16}
 	\caption{Configurare Nginx}
 	\label{fig:16}
 \end{figure}
@@ -317,3 +318,6 @@ Prima componentă numită \emph{server} interceptează fiecare cerere HTTP pe ca
 
 A doua componentă asultă la portul 443 (HTTPS) și, datorită blocului \textbf{location /}, orice cerere va fi redirecționată către serverul Flask, fiind configurat a primi request-uri la portul 8000. Trebuie menționat faptul că ambele aplicații rulează pe același host, ceea ce face posibilă trimiterea cu succes către adresa de \emph{loopback}\footnote{\url{https://study-ccna.com/loopback-interface-loopback-address/}}. Această utilizare este ideală deoarece ne aflăm la o scară de nivel de proiect personal. Pentru uz în producție se recomandă folosirea unui proxy server\footnote{\url{https://browserjet.com/blog/advantages-and-disadvantages-of-a-proxy-server}} pe un computer separat.
 
+\subsection{Versionarea}
+
+Câteva din caracteristicile licenței au solicitat folosirea metodologiei de \emph{branching}, schimbările codului fiind aplicate pe o copie a celui original. Am ales astfel să folosesc utilitarul \textbf{git}\footnote{\url{https://git-scm.com/}}, proiectul fiind postat pe \textbf{Github}\footnote{\url{https://github.com/}.} deoarece sunt familiar cu ambele tehnologii. Autentificarea bazată pe chei a fost folosită pentru a evita introducerea parolei contului la fiecare \emph{push} sau \textbf{pull}.
