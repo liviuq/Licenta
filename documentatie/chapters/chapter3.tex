@@ -260,17 +260,32 @@ Fiecare linie deține datele unei înregistrări: \textbf{payload len} reprezint
 	\label{fig:13}
 \end{figure}
 
-Este important ca user-ul să aibă instalate toate librăriile de care acest script depinde, lucru despre care vom intra în detaliu la secțiunea backendului. Fiind un script scris în python aflat în folderul \textbf{debug\_scripts}, este executat prin introducerea comenzii \textbf{python3 Licenta/flask/debug\_scripts/network\_rx.py}. Fiindcă rulează la infinit, se poate ieși din el apăsând \textbf{Ctrl + C} sau urmând instrucțiunile de aici. \footnote{\url{https://github.com/hakluke/how-to-exit-vim\#the-hardware-way}.}
+Este important ca user-ul să aibă instalate toate librăriile de care acest script depinde, lucru despre care vom intra în detaliu la secțiunea backendului. Fiind un script scris în python aflat în folderul \textbf{debug\_scripts}, este executat prin introducerea comenzii \textbf{python3 Licenta/flask/debug\_scripts/network\_rx.py}. Fiindcă rulează la infinit, se poate ieși din el apăsând \textbf{Ctrl + C} sau urmând instrucțiunile de aici. \footnote{\url{https://github.com/hakluke/how-to-exit-vim\#the-hardware-way}}
 
 \newpage
 
 \section{Frontend}
-ce ai folosit pe interfata cu liniuta(butoane, checkbox etc)
+
+Înainte de a intra în detaliu la fiecare element, este important de a înțelege că Flutter deține o gamă largă de elemente și componente care formează bazele unei interfețe grafice, noțiunile pe care le-am folosit în acest proiect fiind de dificultate medie.
+
+Printre aceste elemente, regăsim:
+\begin{itemize}
+	\item Scaffold: este unul din componentele fundamentale din acest \emph{SDK}, oferindu-ne o suprafață pe care o putem popula cu \textbf{AppBar} sau \textbf{BottomNavigationBar};
+	
+	\item Column și Row: sunt widget-uri pentru îmbunătățirea aspectului. Elementele ce vor fi poziționate în ele vor fi aranjate vertical, respectiv orizontal;
+	
+	\item FloatingActionButton: reprezintă un buton care, odată apăsat, va notifica sistemul să execute funcția sa asociată;
+	
+	\item AppBar: este elementul vizual care acționează pe post de Header al aplicației, se îmbină de obicei cu Scaffold;
+	
+	\item FutureBuilder: această componentă va construi în mod concurent elemente de interfață care sunt extrase de la API-uri.
+\end{itemize}
 
 \section{REST API}
-Conectiunea dintre FrontEnd si BackEnd este facuta printr-un Rest API - de completat / legat cu ce urmeaza
 
 Un \textbf{API} (\textbf{Application programming interface}) este un mecanism care permite unui serviciu să acceseze resursels unui alt serviciu. REST API se bazează pe principii precum utilizarea verbelor HTTP (GET, PUT, POST, DELETE) pentru transmiterea și manipularea datelor într-un format standardizat (XML, JSON), împreună cu ajutorul \textbf{URI} (uniform resource identifier) pentru specificarea resursei asupra cărei operațiile vor fi executate. Am creat astfel o arhitectură REST pentru a servi diferite informații către aplicația de mobil, afișându-le într-o manieră ușor de înțeles. \footnote{\url{https://www.ibm.com/topics/rest-apis}.}
+
+Serverul expune rute de accesare a informațiilor din baza de date pentru ambele tipuri de senzori: cei statici se află la adresa \textbf{https://andr3w.ddns.net/API}, iar cei dinamici la \textbf{https://andr3w.ddns.net/advanced/API}
 
 \subsection{DNS dinamic}
 
