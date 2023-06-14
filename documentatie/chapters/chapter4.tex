@@ -1,0 +1,31 @@
+\chapter{Scenarii de utilizare}
+
+În acest capitol vor fi prezentate 4 scenarii în care un utilizator ar putea folosi aplicația, oferind un ghid clar despre modul utilizării fiecărui procedeu.
+
+\section{Colectare de date și logging}
+
+Funcționalitatea de bază a acestei soluții este de a citi valorile curente ale fiecărui senzor pentru a fi stocate în baza locală de date.
+
+Utilizatorul dorește să verifice statutul fiecărui device din locuința sa. Acesta deschide aplicația de telefon, trece de splash-screen și îi sunt afișate toate cartonașele senzorilor conectați la stația de bază. La prima vedere, se poate observa doar ultima înregistrare, dar dacă user-ul dorește să vadă graficul ultimelor citiri, trebuie să apese pe cartonașul specific curiozității sale și să selecteze mărimea eșantionului dorit, astfel fiindu-i prezentate datele necesare. 
+
+\section{Comutarea luminilor din holul intrării}
+
+Înainte de a ajunge acasă, utilizatorul intră în aplicație și dezactivează modul de securitate. După ce acesta intră pe hol, luminile din încăpere se vor aprinde automat datorită senzorilor care au detectat mișcarea, rămânând aprinse pentru toată perioada cât utilizatorul nu a părăsit încăperea. 
+
+În cazul în care utilizatorul a configurat și alte comutatoare (lumini, jaluzele smart, termostat), acțiunile dorite pot fi accesate din pagina dedicată senzorului respectiv și apăsând pe butonul ce reprezintă cerințele persoanei.
+
+\section{Detectarea problemelor în comunicare}
+
+Fiind un proiect de tipul \emph{Do it yourself}, utilizatorul trebuie să își configureze fiecare senzor, de la programare până la alimentarea constantă. În timpul acestui proces, user-ul observă că unul din senzori nu apare pe interfața mobilă, așa că:
+\begin{itemize}
+	\item se loghează prin \emph{ssh} la stația de bază pentru a executa scriptul de debug și
+	\item deschide \emph{Serial Monitor} din \emph{Arduino IDE}.
+\end{itemize}
+
+Acesta citește erorile care sunt afișate la linia de comandă și remediază problema.
+
+\section{Generarea raportului}
+
+Utilizatorul este victima unei intruziuni în casă din cauza faptului că nu a verificat aplicația de telefon pentru eventualele anomalii semnalate de senzori în modul de securitate. 
+
+Persoana în cauză intră în aplicație, la secțiunea \textbf{Report} și introduce intervalul aproximativ al timpului intruziunii, urmând ca pe telefonul său să fie descărcat un fișier ce conține toate datele senzorilor: valoare și timpul ciritii, fișier ce ulterior va fi oferit investigatorilor și poliției.

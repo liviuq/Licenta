@@ -1,15 +1,19 @@
 \chapter{Implementarea soluției}
 
-Prin parcurgerea acestui capitol, cititorul va avea o imagine de ansamblu asupra modului în care senzorii sunt integrați în aplicație, cum este realizată comunicarea cu serverul și care sunt aspectele legate de programarea și funcționalitatea aplicației mobile. Aceste informații sunt esențiale pentru a înțelege arhitectura (Figura 3.1) și funcționalitatea aplicației în cadrul sistemului smart home propus.
+Prin parcurgerea acestui capitol, cititorul va avea o imagine de ansamblu asupra modului în care senzorii sunt integrați în aplicație, cum este realizată comunicarea cu serverul și care sunt aspectele legate de programarea și funcționalitatea aplicației mobile. Aceste informații sunt esențiale pentru a înțelege arhitectura (Figura \ref{fig:arhitectura}) și funcționalitatea aplicației în cadrul sistemului smart home propus.
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.9\textwidth]{arhitectura}
+	\includegraphics[width=0.7\textwidth]{arhitectura}
 	\caption{Legătura dintre componentele soluției}
 	\label{fig:arhitectura}
 \end{figure}
 
-INSERT C4 diagram
+In imaginea prezentata anterior putem observa un exemplu al arhitecturii aplicatiei si cum sunt legate componentele intre ele. Aceasta aplicatie poate fi utilizata pe platformele: Windows/Mac/Linux/iOS/Android. Ele sunt conectate la senzorii casei prin intermediul serverului care ruleaza pe un Raspberry Pi cu ajutorul API-urilor.
+
+>>>>>>>>>>>>>>>>>>>>INSERT C4 diagram<<<<<<<<<<<<<<<<<<<<<
+
+>>>>>>>>>>>>>>>>>>>>text despre C4<<<<<<<<<<<<<<<<<<<< 
 
 \newpage
 \section{Pagina principală}
@@ -20,9 +24,9 @@ INSERT C4 diagram
 	\label{fig:1}
 \end{wrapfigure}
 
-Primul punct de contact dintre un utilizator și acest proiect este aplicația de telefon (Figura 3.2). Odată lansată, va prezenta un splash screen, urmat de pagina principală. Aici se regăsesc toți senzorii conectați la sistem, împreună cu id-ul, valoarea cu timpul la care au fost înregistrate și locația din casă a senzorului. 
+Primul punct de contact dintre un utilizator și acest proiect este aplicația de telefon (Figura \ref{fig:1}). Odată lansată, va prezenta un splash screen, urmat de pagina principală. Aici se regăsesc toți senzorii conectați la sistem, împreună cu id-ul, valoarea cu timpul la care au fost înregistrate și locația din casă a senzorului. 
 
-Aceștia sunt sortați după parametrul pe care îl colectează, fie detectarea mișcării, calcularea distanței, a temperaturii sau a umidității, lucru care se observă din titlurile situate deasupra fiecărui cartonaș. Aceste device-uri se numesc \emph{senzori statici}, care sunt folosiți doar pentru colectare de informații. Mai există alt tip de senzor numit \emph{dinamic} a cărui caracteristici seamănă cu a celor statici, singura diferență fiind posibilitatea de comunicare bidirecțională. În cazul acestui proiect, singurul senzor de acest tip va închide și deschide o lampă în circumstanțele prezentate la secțiunea proprie.
+Aceștia sunt sortați după parametrul pe care îl colectează, fie detectarea mișcării, calcularea distanței, a temperaturii sau a umidității, lucru care se observă din titlurile situate deasupra fiecărui cartonaș. Aceste device-uri se numesc \emph{senzori statici}, care sunt folosiți doar pentru colectare de informații. Mai există alt tip de senzor numit \emph{dinamic} a cărui caracteristici seamănă cu a celor statici, singura diferență fiind posibilitatea de comunicare bidirecțională. În cazul acestui proiect, singurul senzor de acest tip va închide și deschide o lampă.
 
 În partea de sus se află două butoane, unul de activare/ dezactivare a \emph{modului de securitate} alături de cel de refresh care preia cele mai recente valori ale senzorilor, fiecare având o secțiune dedicată funcționalității și a modului de utilizare.
 
@@ -48,7 +52,7 @@ După, putem observa valoarea primită de către aplicație la data și ora resp
 
 Când vine vorba despre device-urile dinamice, au o interfață asemănătoare, singura diferență fiind câmpul de adresă care deține IP-ul local al senzorului.
 
-Atunci când acest widget este apăsat, utilizatorul va intra pe pagina senzorului respectiv, detaliile căreia vor fi prezentate ADAUGA REFERINTA.
+Atunci când acest widget este apăsat, utilizatorul va intra pe pagina senzorului respectiv, detaliile căreia vor fi prezentate în secțiunea \ref{section:static}.
 
 \subsection{Locația senzorului}
 
@@ -57,13 +61,13 @@ Atunci când acest widget este apăsat, utilizatorul va intra pe pagina senzorul
 	\caption{Pop-up pentru locație}
 	\label{fig:2}
 \end{wrapfigure}
-
 Cu un suport larg de diferite gesturi cu ajutorul clasei GestureDetector din Flutter, avem acces la o suită de detectări a mișcărilor degetetului care pot executa anumite funcții. În cazul aplicației, odată ce se ține apăsat pe un cartonaș, va apărea un dialog în care putem introduce locația fizică a senzorului.
-
+\hfill
 Aceasta este salvată în memoria locală a telefonului cu ajutorul bibliotecii de gestionare a bazelor de date NoSQL (non-relaționale). Am ales biblioteca respectivă datorită performanței ridicate, simplitatea oferită și compatibilitatea cross-platform care este critică deoarece aplicația aceasta poate fi compilată pentru majoritatea device-urilor populare. 
 \break
 
 \subsection{Modul de securitate} 
+\label{section:securitate}
 
 \begin{wrapfigure}{r}{0.4\textwidth}
 	\includegraphics[width=0.45\textwidth]{4}
@@ -90,6 +94,7 @@ Una din limitările sistemului este că informațiile afișate nu sunt actualiza
 \break
 
 \section{Pagina senzorului static}
+\label{section:static}
 
 \begin{wrapfigure}{r}{0.3\textwidth}
 	\includegraphics[width=0.4\textwidth]{5}
@@ -99,11 +104,11 @@ Una din limitările sistemului este că informațiile afișate nu sunt actualiza
 
 Pe această rută se află informații și setări care contribuie la sensul de Smart home: componente ce lucrează împreună pentru a aduce utilizatorului un aport esențial de securitate.
 
-AppBar-ul este populat cu un buton de setare a unei limite, valoare despre care am vorbit în secțiunea aceasta(ADAUGA SECUTIUNE MOD DE DECURITAET). Odată ce \emph{threshold} este setat (Figura 3.7.b), va fi salvată în baza de date locală, astfel ea persistând chiar și când restartăm aplicația. Ca să fie vizibilă utilizatorului, pe graficul de mai jos se va trasa o linie roșie (care nu există dacă nu avem o limită). Ca utilizare, limita va fi folosită la notificările de pe pagina de \emph{Logs} pentru a determina dacă o înregistrare trebuie arătată utilizatorului în caz că valoarea ei scade sub limita asignată.
+AppBar-ul este populat cu un buton de setare a unei limite, valoare despre care am vorbit în secțiunea \ref{section:securitate}. Odată ce \emph{threshold} este setat (Figura \ref{fig:5}), va fi salvată în baza de date locală, astfel ea persistând chiar și când restartăm aplicația. Ca să fie vizibilă utilizatorului, pe graficul de mai jos se va trasa o linie roșie (care nu există dacă nu avem o limită). Ca utilizare, limita va fi folosită la notificările de pe pagina de \emph{Logs} pentru a determina dacă o înregistrare trebuie arătată utilizatorului în caz că valoarea ei scade sub limita asignată.
 
-În prim plan se află graficul care afișează evoluția ultimelor N înregistrări ale senzorului respectiv în funcție de data la care au fost colectate individual. Fiindcă sunt foarte multe puncte afișate, nu am putut include vizual și valorile lor, dar, utilizatorul o poate vedea, împreună cu data aferentă dacă apasă pe oricare punct (Figura 3.7.a). Pentru construcția sa, am decis să folosesc librăria \textbf{fl\_chart} datorită popularității și a documentației excelente. Este un grafic fluid deoarece odată ce se modifică valorile afișate, motorul fl\_chart creează o animație de tranziție de la informațiile vechi la cele noi.
+În prim plan se află graficul care afișează evoluția ultimelor N înregistrări ale senzorului respectiv în funcție de data la care au fost colectate individual. Fiindcă sunt foarte multe puncte afișate, nu am putut include vizual și valorile lor, dar, utilizatorul o poate vedea, împreună cu data aferentă dacă apasă pe oricare punct (Figura \ref{fig:6}). Pentru construcția sa, am decis să folosesc librăria \textbf{fl\_chart} datorită popularității și a documentației excelente. Este un grafic fluid deoarece odată ce se modifică valorile afișate, motorul fl\_chart creează o animație de tranziție de la informațiile vechi la cele noi.
 
-Dedesubtul figurii apare un slider care setează numărul de puncte extrase de la server. A existat o problemă aici care îmi făcea un API call la fiecare schimbare de valoare, adică dacă de la 39 de puncte doresc să îmi afișeze 200, va face 200-39 = 161 request-uri către backend. Remediul a fost ca reîmprosătarea să fie făcută în funcția \textbf{onChangeEnd} care îmi dă libertatea să aleg orice valoare din interval atât timp cât degetul încă face contact cu ecranul. Atunci când am luat degetul de pe ecran, Flutter va face request-ul, evitând astfel un semi \emph{Denial of Service} pentru server.
+Dedesubtul figurii apare un slider care setează numărul de puncte extrase de la server. A existat o problemă aici care îmi făcea un API call la fiecare schimbare de valoare, adică dacă de la 39 de puncte doresc să îmi afișeze 200, va face 200-39 = 161 request-uri către backend. Remediul a fost ca reîmprosătarea să fie făcută în funcția \textbf{onChangeEnd} care va trimite cererea către server atunci când s-a terminat de ales cantitatea de informații, evitând astfel un \emph{Denial of Service} pentru server.
 
 \begin{figure}[h]
 	\centering
@@ -138,7 +143,7 @@ Fiecare rută pe care o apelăm va instrui senzorul să execute diferite funcți
 
 \textbf{IntruderLampAlert} desemnează cum reacționează acest modul atunci când modul de securitate este activat și senzorul de mișcare emite un ”1” logic.
 
-\section{Pagina de Logs}
+\section{Pagina de informații}
 
 Fiecare anomalie din sistem (orice senzor ce înregistrează o valoare care a scăzut sub limita impusă) va crea o notificare pe care utilizatorul o poate verifica în secțiunea de \textbf{Logs}. Aceasta poate fi accesată din bara de footer al meniului principal.
 
@@ -161,9 +166,9 @@ Fiecare anomalie din sistem (orice senzor ce înregistrează o valoare care a sc
 
 Inițial, aplicația nu generează notificări dacă un senzor a înregistrat o abatere de la normal atunci când \textbf{Secure Mode} nu este activat deoarece se presupune că utilizatorul nu a plecat încă de acasă. Activarea modului de securitate va cauza afișarea anomaliilor pe ecran.
 
-Din figura 3.9.a se pot extrage anumite informații astfel: există trei puncte care se află sub bariera setată cu ajutorul butonului \textbf{Set threshold}, ceea ce înseamnă că utilizatorul și-a părăsit apartamentul, dar încă există activitate. 
+Din figura \ref{fig:11} se pot extrage anumite informații astfel: există trei puncte care se află sub bariera setată cu ajutorul butonului \textbf{Set threshold}, ceea ce înseamnă că utilizatorul și-a părăsit apartamentul, dar încă există activitate. 
 
-Aplicația va prelua ultimele înregistrări a fiecărui senzor pe care le compară cu limita (stocată în baza de date locală) și afișează cartonașele corespunzător. Se poate observa în figura 3.9.b. că ultima alertă este cea din figura anterioară.
+Aplicația va prelua ultimele înregistrări a fiecărui senzor pe care le compară cu limita (stocată în baza de date locală) și afișează cartonașele corespunzător. Se poate observa în figura \ref{fig:12}. că ultima alertă este cea din figura anterioară.
 
 \break
 
@@ -203,37 +208,35 @@ Datele acestui document sunt valoroase și pot ajuta foarte mult investigatorii,
 
 Acest tip de device-uri stă la baza metodei de coletare a informațiilor despre casa respectivă și cea de generare a unui raport cu toate valorile din baza de date în intervalul cerut.
 
-Figura 3.3.a ne prezintă cum a fost creat un senzor static: un Arduino Nano care este cablat la senzorul de detectare a mișcării și modulul de transmitere a datelor. 
+Figura \ref{fig:static} ne prezintă cum a fost creat un senzor static: un Arduino Nano care este cablat la senzorul de detectare a mișcării și modulul de transmitere a datelor. 
 
-Senzorul are 3 pini care trebuie conectați la placa de dezvoltare: Ground (împământare), Vcc (+5V) și Out. Ultimul pin emite un 0 logic dacă nu a detectat niciun obiect și 1 logic dacă a detectat o persoană sau un animal. Acest lucru este posibil datorită faptului că este emisă căldură în formă de radiații infra-roșii care alimentează componenta \emph{piroelectrică} (Figura 3.3.b) amplasată dedesubtul unei lentile Fresnel ce ajută focusarea acestor raze pe lentila senzorului. Modulul are încorporat două potențiometre: unul pentru reglarea razei de acțiune (până în 5 metri), iar celălalt pentru reglarea timpului de schimbare a valorii detectate (între 0.3 - 300 secunde). 
+Senzorul are 3 pini care trebuie conectați la placa de dezvoltare: împământarea, 5V și ieșirea. Ultimul pin emite un 0 logic dacă nu a detectat niciun obiect și 1 logic dacă a detectat o persoană sau un animal. Acest lucru este posibil datorită faptului că este emisă căldură în formă de radiații infra-roșii care alimentează componenta \emph{piroelectrică} (Figura \ref{fig:pir}) amplasată dedesubtul unei lentile Fresnel ce ajută focusarea acestor raze pe lentila senzorului. Modulul are încorporat două potențiometre: unul pentru reglarea razei de acțiune (până în 5 metri), iar celălalt pentru reglarea timpului de schimbare a valorii detectate (între 0.3 - 300 secunde). 
 
-Odată alimentat la 5V, microcontroller-ul începe colectarea de date odată la două secunde. După ce acest interval a trecut, va fi creat un pachet ce conține ID-ul și tipul modulului, valoarea și data la care a fost făcută măsurătoarea. 
+Odată alimentat la 5V, microcontroller-ul începe colectarea de date la un interval setat în faza configurării de către utilizator. În cazul meu, acesta este de două secunde. După ce acest interval a trecut, va fi creat un pachet ce conține ID-ul și tipul modulului, valoarea și data la care a fost făcută măsurătoarea. 
 
 \begin{figure}[h]
 	\centering
-	\begin{subfigure}{0.85\textwidth}
+	\begin{subfigure}{0.45\textwidth}
 		\centering
-		\includegraphics[width=0.8\textwidth]{static}
+		\includegraphics[width=\textwidth]{static}
 		\caption{Arduino Nano + senzor de mișcare + modul transmisie}
 		\label{fig:static}
 	\end{subfigure}
 	\hfill
-	\begin{subfigure}{0.8\textwidth}
+	\begin{subfigure}{0.45\textwidth}
 		\centering
-		\includegraphics[width=0.8\textwidth]{pir}
+		\includegraphics[width=\textwidth]{pir}
 		\caption{Componenta piroelectrică}
 		\label{fig:pir}
 	\end{subfigure}
-	\caption{}
+	\caption{Descrierea figurilor}
 	\label{fig:all2}
 \end{figure}
 \break
 
-Transmiterea și primirea acestor pachete va fi detaliată în secțiunea despre placa NRF24L01 unde vom vorbi de banda 2.4GHz, structura unui pachet de date și RF24Network. 
-
 \section{Senzori dinamici}
 
-Senzorii dinamici dețin o complexitate mai ridicată față de tipul anterior prezentat datorită faptului că pot trimite și primi date simultan de la server, făcându-i să pară că folosesc o conexiune \emph{full duplex}. Din cauza faptului că legătura dintre server și senzor se face prin intermediul protocolului Wifi, înseamnă că această legătură este mai degrabă \emph{half duplex}, schimbul de date realizându-se prin alternarea transmițătorului și receptorului, iar dispozitivele trebuie să respecte un anumit protocol de acces pentru evitarea coliziunilor și interferențelor cu alte dispozitive. CITAT
+Senzorii dinamici dețin o complexitate mai ridicată față de tipul anterior prezentat datorită faptului că pot trimite și primi date simultan de la server, făcându-i să pară că folosesc o conexiune \emph{full duplex}. Din cauza faptului că legătura dintre server și senzor se face prin intermediul protocolului Wifi, înseamnă că această legătură este mai degrabă \emph{half duplex}, schimbul de date realizându-se prin alternarea transmițătorului și receptorului, iar dispozitivele trebuie să respecte un anumit protocol de acces pentru evitarea coliziunilor și interferențelor cu alte dispozitive\footnote{\url{https://community.cisco.com/t5/wireless/is-wireless-half-duplex-or-full-duplex/td-p/2733098}.}
 
 \begin{figure}[h]
 	\centering
@@ -261,63 +264,100 @@ Este important ca user-ul să aibă instalate toate librăriile de care acest sc
 
 \newpage
 
-\section{Componenta de backend}
+\section{Frontend}
+ce ai folosit pe interfata cu liniuta(butoane, checkbox etc)
 
-Backend-ul reprezintă partea aplicației responsabilă de logică și funcționalitate. În contextul acestei licențe, am decis să folosesc limbajul \textbf{Python} versiunea 3.10 cu microframework-ul \textbf{Flask} către care sunt trimise pachetele de la \textbf{gunicorn} și \textbf{nginx}.
+\section{REST API}
+Conectiunea dintre FrontEnd si BackEnd este facuta printr-un Rest API - de completat / legat cu ce urmeaza
 
-\subsection{Raspberry Pi}
-
-Pentru o productivitate crescută, am ales să instalez sistemul de operare \emph{Raspberry Pi OS Lite} deoarece este rapid, lucru datorat lipsei unei interfețe grafice și a programelor pre-instalate. Instalarea a fost foarte ușoară, urmând instrucțiunile din documentația lor\footnote{\url{https://www.raspberrypi.com/documentation/}}.
-
-Comunicarea cu placa a fost făcută doar prin \textbf{SSH} care a fost deschis din setările router-ului. Fiindcă această conexiune va fi publică, am instalat programul \textbf{ufw} (\emph{uncomplicated firewall}) ce mi-a ușurat securizarea host-ului, fiind o unealtă ce înlocuiește setările complicate ale \textbf{iptables}\footnote{\url{https://wiki.archlinux.org/title/iptables}.} cu comenzi simple: \emph{sudo ufw allow 22}. Astfel am limitat numărul de conexiuni la portul 22 și am permis accesul la portul 443, acestea fiind singurele  căi de acces.
-
-Criptarea traficului e realizată direct de către nginx, specificând locația certificatului și a cheii private cu ajutorul comenzilor \emph{ssl\_certificate} și \emph{ssl\_certificate\_key}. Am decis să îmi semnez propriul \textbf{certificat SSL} (Secure sockets layer) cu utilitarul \textbf{openssl}.
+Un \textbf{API} (\textbf{Application programming interface}) este un mecanism care permite unui serviciu să acceseze resursels unui alt serviciu. REST API se bazează pe principii precum utilizarea verbelor HTTP (GET, PUT, POST, DELETE) pentru transmiterea și manipularea datelor într-un format standardizat (XML, JSON), împreună cu ajutorul \textbf{URI} (uniform resource identifier) pentru specificarea resursei asupra cărei operațiile vor fi executate. Am creat astfel o arhitectură REST pentru a servi diferite informații către aplicația de mobil, afișându-le într-o manieră ușor de înțeles. \footnote{\url{https://www.ibm.com/topics/rest-apis}.}
 
 \subsection{DNS dinamic}
 
 Provider-ul de internet asignează dinamic adresele IP utilizatorilor conectați, motiv pentru care după o pană de curent, de obicei se resetează această adresă. Pentru a rezolva această problemă, am utilizat serviciul gratuit de \textbf{Dynamic DNS}\footnote{\url{https://www.noip.com/support/knowledgebase/geek-terms}} al companiei \textbf{No-IP}\footnote{\url{https://www.noip.com/}}. Setările au fost realizare direct pe router-ul personal, un \textbf{TP-Link WR740N}. Odată configurat, rețeaua locală poate fi accesată de la adresa \url{https://andr3w.ddns.net}.
 
-\subsection{REST API}
+\section{Backend}
 
-Un \textbf{API} (\textbf{Application programming interface}) este un mecanism care permite unui serviciu să acceseze resursels unui alt serviciu. REST API se bazează pe principii precum utilizarea verbelor HTTP (GET, PUT, POST, DELETE) pentru transmiterea și manipularea datelor într-un format standardizat (XML, JSON), împreună cu ajutorul \textbf{URI} (uniform resource identifier) pentru specificarea resursei asupra cărei operațiile vor fi executate. Am creat astfel o arhitectură REST pentru a servi diferite informații către aplicația de mobil, afișându-le într-o manieră ușor de înțeles. \footnote{\url{https://www.ibm.com/topics/rest-apis}.}
+Backend-ul reprezintă partea aplicației responsabilă de logică și funcționalitate. În contextul acestei licențe, am decis să folosesc limbajul \textbf{Python} versiunea 3.10 cu microframework-ul \textbf{Flask} către care sunt trimise pachetele de la \textbf{gunicorn} și \textbf{nginx}.
 
-\subsection{SQLAlchemy}
+\section{Server}
 
-\textbf{SQLAlchemy} este o colecție de unelte ce ajută programatorul să acceseze și manipuleze baze de date SQL în limbajul Python. Se pot scrie query-uri în formă de \emph{string-uri} (raw sql) sau înlănțuind obiecte din python într-o manieră \textbf{ORM} (Object relational mapping)\footnote{\url{https://docs.sqlalchemy.org/en/20/orm/queryguide/index.html}.}. Motivele pentru care am folosit acest toolkit sunt simplicitatea creării interogărilor, rapiditarea codării și multitudinea tutorialelor valabile.
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.8\textwidth]{14}
-	\caption{Informațiile oferite de DB Browser for SQLite} \footnote{\url{https://sqlitebrowser.org/}.}
-	\label{fig:14}
-\end{figure}
-
-Există două tabele definite în \textbf{/flask/application/models.py}: \textbf{Sensor} și \textbf{AdvancedSensor}, ambele stocând date precum id-ul, numele, valoarea și data la care a fost adăugată înregistrarea senzorului în baza de date.
-
-\subsection{Serverul Flask}
+>>>>>>>>>>>intro server<<<<<<<<<<<
 
 Acesta rulează pe stația de bază (Raspberry Pi Zero W) pentru a satisface fiecare cerere a utilizatorului, fără a fi nevoit să își deschidă calculatorul personal pentru a putea interacționa cu dispozitivele sale. 
 
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.75\textwidth]{15}
-	\caption{Consola serverului}
-	\label{fig:15}
-\end{figure}
+Pentru o productivitate crescută, am ales să instalez sistemul de operare \emph{Raspberry Pi OS Lite} deoarece este rapid, lucru datorat lipsei unei interfețe grafice și a programelor pre-instalate. Instalarea a fost foarte ușoară, urmând instrucțiunile din documentația lor\footnote{\url{https://www.raspberrypi.com/documentation/}}.
+
+Comunicarea cu placa a fost făcută doar prin \textbf{SSH} care a fost deschis din setările router-ului. Fiindcă această conexiune va fi publică, am instalat programul \textbf{ufw} (\emph{uncomplicated firewall}) ce mi-a ușurat securizarea host-ului, fiind o unealtă ce înlocuiește setările complicate ale \textbf{iptables}\footnote{\url{https://wiki.archlinux.org/title/iptables}.} cu comenzi simple: \emph{sudo ufw allow 22}. Astfel am limitat numărul de conexiuni la portul 22 și am permis accesul la portul 443, acestea fiind singurele  căi de acces.
 
 Nginx este un \textbf{reverse proxy}\footnote{\url{https://www.nginx.com/resources/glossary/reverse-proxy-server/}.} care se află între client și backend. Acesta primește cererile din exterior pe care le redirecționează serverului de gunicorn după setările din figura \ref{fig:16}.
 
+Criptarea traficului e realizată direct de către nginx, specificând locația certificatului și a cheii private cu ajutorul comenzilor \emph{ssl\_certificate} și \emph{ssl\_certificate\_key}. Am decis să îmi semnez propriul \textbf{certificat SSL} (Secure sockets layer) cu utilitarul \textbf{openssl}.
+
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.75\textwidth]{16}
-	\caption{Configurare Nginx}
-	\label{fig:16}
+	\begin{minipage}{0.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{16}
+		\caption{Configurare Nginx}
+		\label{fig:16}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{0.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{15}
+		\caption{Consola serverului}
+		\label{fig:15}
+	\end{minipage}
 \end{figure}
 
 Prima componentă numită \emph{server} interceptează fiecare cerere HTTP pe care o redirecționează la ruta de HTTPS asignată portului 443, returnând astfel codul 301 ce notifică utilizatorul că a fost redirectat de la ruta \textbf{http://} la cea de \textbf{https://}.
 
 A doua componentă asultă la portul 443 (HTTPS) și, datorită blocului \textbf{location /}, orice cerere va fi redirecționată către serverul Flask, fiind configurat a primi request-uri la portul 8000. Trebuie menționat faptul că ambele aplicații rulează pe același host, ceea ce face posibilă trimiterea cu succes către adresa de \emph{loopback}\footnote{\url{https://study-ccna.com/loopback-interface-loopback-address/}}. Această utilizare este ideală deoarece ne aflăm la o scară de nivel de proiect personal. Pentru uz în producție se recomandă folosirea unui proxy server\footnote{\url{https://browserjet.com/blog/advantages-and-disadvantages-of-a-proxy-server}} pe un computer separat.
 
-\subsection{Versionarea}
+\subsection{Stocarea datelor}
+
+\textbf{SQLAlchemy} este o colecție de unelte ce ajută programatorul să acceseze și manipuleze baze de date SQL în limbajul Python. Se pot scrie query-uri în formă de \emph{string-uri} (raw sql) sau înlănțuind obiecte din python într-o manieră \textbf{ORM} (Object relational mapping)\footnote{\url{https://docs.sqlalchemy.org/en/20/orm/queryguide/index.html}.}. Motivele pentru care am folosit acest toolkit sunt simplicitatea creării interogărilor, rapiditarea codării și multitudinea tutorialelor valabile.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.75\textwidth]{14}
+	\caption{Informațiile oferite de DB Browser for SQLite}
+	\label{fig:14}
+\end{figure}
+
+Există două tabele în \textbf{/flask/application/models.py}: \textbf{Sensor} și \textbf{AdvancedSensor}, ambele stocând date (figura \ref{fig:14}) precum id-ul, numele, valoarea și data la care a fost adăugată înregistrarea senzorului în baza de date.
+
+\break
+
+Senzorii emit date odată la două secunde care trebuie stocate. Pentru acest lucru, am creat un fir de execuție nou care inserează fiecare citire pe care serverul o primește folosindu-se de codul din figura de mai jos.
+
+\begin{lstlisting}[style=python, label=code:db]
+EXPECTED_SIZE = struct.calcsize("<16sL")
+def update_database(app, db):
+	try:
+		while True:
+			network.update()
+			while network.available():
+				header, payload = network.read()
+				sensor_type, value = struct.unpack("<16sL", payload[:EXPECTED_SIZE])
+				sensor_type = sensor_type.decode('utf-8')
+				sensor_type_clean = ''.join(letter for letter in sensor_type if letter.isalnum())
+				address = header.to_string().split(' ')[3]
+				
+				with app.app_context()
+					sensor_db_entry = Sensor(address=address, type=sensor_type_clean, value=value)
+					db.session.add(sensor_db_entry)
+					db.session.commit()
+	except KeyboardInterrupt:
+		print("powering down radio and exiting.")
+		radio.power = False
+\end{lstlisting}
+
+În primă fază este calculată lungimea pachetelor transmise de senzori, aceștia conținând un cuvânt de 16 caractere și un număr întreg. Cât timp serverul este deschis, se vor citi aceste pachete, vor fi sanitizate și de-serializate, operații ce vor rezulta în obținerea valorilor trimise de la senzor.
+La final va fi creat un obiect de tipul \emph{Sensor} care va fi introdus în baza de date locală.
+
+
+\section{Versionarea}
 
 Câteva din caracteristicile licenței au solicitat folosirea metodologiei de \emph{branching}, schimbările codului fiind aplicate pe o copie a celui original. Am ales astfel să folosesc utilitarul \textbf{git}\footnote{\url{https://git-scm.com/}}, proiectul fiind postat pe \textbf{Github}\footnote{\url{https://github.com/}.} deoarece sunt familiar cu ambele tehnologii. Autentificarea bazată pe chei a fost folosită pentru a evita introducerea parolei contului la fiecare \emph{push} sau \textbf{pull}.

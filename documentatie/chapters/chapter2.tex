@@ -47,17 +47,16 @@ Aspectul special al acestor computere constă în cei 40 pini \textbf{GPIO} (\em
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=1\textwidth]{raspberrypi}
-	\caption{Fața și spatele plăcii Raspberri Pi Zero W
-		Credits: RPISpy @ \url{https://www.raspberrypi-spy.co.uk/}}
+	\includegraphics[width=0.65\textwidth]{raspberrypi}
+	\caption{Fața și spatele plăcii Raspberri Pi Zero W}\url{https://www.raspberrypi-spy.co.uk/}
 	\label{fig:raspberrypi}
 \end{figure}
-
-\break
 
 \section{Microcontrollere folosite}
 
 Un microcontroller (abreviat \emph{MCU}) este un circuit integrat care combină funcționalitate microporcesorului (de obicei aflat sub un radiator de aluminiu pentru disiparea căldurii) cu componentele periferice: module \emph{Input/output}, memorie și interfețe de comunicare cu alte module. Dețin mai mulți pini de tip analog, digital și \textbf{PWM} (\emph{Pulse Width Modulation}) pentru conectarea cu alte module
+
+\break
 
 \subsection{Arduino Nano}
 
@@ -66,7 +65,7 @@ Arduino Nano (Figura 2.2) este fratele mai mic al plăcii Uno cu care împărtă
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.4\textwidth]{arduino}
-	\caption{Arduino Nano \newline\url{https://www.amazon.com/Arduino-A000005-ARDUINO-Nano/dp/B0097AU5OU}}
+	\caption{Arduino Nano}\url{https://store.arduino.cc/collections/boards/products/arduino-nano}
 	\label{fig:arduino}
 \end{figure}
 
@@ -80,8 +79,8 @@ La început, nu existau documentații în limba engleză. Dat fiind faptul că S
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=1\textwidth]{esp8266}
-	\caption{Microcontroller-ul ESP8266 (chip-ul argintiu) pe o placă de tipul \emph{Breakout} \newline\url{https://www.teachmemicro.com/esp8266-spiffs-web-server-nodemcu/}}
+	\includegraphics[width=0.5\textwidth]{esp8266}
+	\caption{ESP8266 pe o placă \emph{Breakout}}\url{https://www.teachmemicro.com/esp8266-spiffs-web-server-nodemcu/}
 	\label{fig:esp8266}
 \end{figure}
 
@@ -99,35 +98,39 @@ Placa HC-SR04 (Figura \ref{fig:distance}) deține un emițător și un receptor 
 
 \begin{figure}[h]
 	\centering
-	\begin{subfigure}{0.45\textwidth}
+	\begin{subfigure}{0.3\textwidth}
+		\centering
 		\includegraphics[width=\linewidth]{relay}
 		\caption{Placă cu două relee pentru comutarea tensiunii prizei}
 		\label{fig:relay}
 	\end{subfigure}
 	\hfill
-	\begin{subfigure}{0.45\textwidth}
+	\begin{subfigure}{0.3\textwidth}
+		\centering
 		\includegraphics[width=\linewidth]{temperature}
 		\caption{Senzor de temperatură și umiditate}
 		\label{fig:temperature}
 	\end{subfigure}
-	\begin{subfigure}{0.45\textwidth}
+	
+	\begin{subfigure}{0.3\textwidth}
+		\centering
 		\includegraphics[width=\linewidth]{motion}
-		\caption{Senzor de detectarea mișcării}
+		\caption{Senzor de detectare a mișcării}
 		\label{fig:motion}
 	\end{subfigure}
 	\hfill
-		\begin{subfigure}{0.45\textwidth}
+	\begin{subfigure}{0.3\textwidth}
+		\centering
 		\includegraphics[width=\linewidth]{distance}
 		\caption{Senzor de măsurare a distanței}
 		\label{fig:distance}
 	\end{subfigure}
-	\hfill
+	
 	\caption{Senzorii folosiți în acest proiect}
 	\label{fig:all}
 \end{figure}
-
-\section{Concluzii}
+\section{Motivatia tehnologiilor folosite}
 
 Domeniul Smart Home este foarte vast și oferă o gamă largă de oportunități creative. Tehnologia a evoluat rapid, permițând controlul și automatizarea diverselor aspecte ale locuinței, de la iluminat și securitate la gestionarea energiei și confortul locatarilor. 
 
-Moduluele și plăcile folosite se pliază destul de bine pentru aplicările descrise în viitorul capitol, dar întotdeauna acestea vor fi actualizate cu noi funcționalități. Prin urmare, în domeniul caselor inteligente, nu există limite, iar utilizatorii sunt încurajați să-și folosească imaginația și să exploreze noi soluții ce se pliază vieții personale.
+Modulele și plăcile utilizate se pliază pe arhitectura aplicatiei implementate, dar cum tehnologia avanseaza pe zi ce trece, va exista posibilitatea ca in viitor sa apara device-uri care pot creste performanta. Prin urmare, în domeniul caselor inteligente, nu există limite, iar utilizatorii sunt încurajați să-și folosească imaginația și să exploreze noi soluții ce se pliază vieții personale.
