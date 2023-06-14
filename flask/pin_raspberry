@@ -1,0 +1,7 @@
+gnd - gnd
+vcc - 3.3v
+CE - gpio 22
+CSN - gopi08
+sck  - gpio11
+mosi - gpio10
+miso - gpio09
