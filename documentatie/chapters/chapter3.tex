@@ -11,11 +11,6 @@ Prin parcurgerea acestui capitol, cititorul va avea o imagine de ansamblu asupra
 
 In imaginea prezentata anterior putem observa un exemplu al arhitecturii aplicatiei si cum sunt legate componentele intre ele. Aceasta aplicatie poate fi utilizata pe platformele: Windows/Mac/Linux/iOS/Android. Ele sunt conectate la senzorii casei prin intermediul serverului care ruleaza pe un Raspberry Pi cu ajutorul API-urilor.
 
->>>>>>>>>>>>>>>>>>>>INSERT C4 diagram<<<<<<<<<<<<<<<<<<<<<
-
->>>>>>>>>>>>>>>>>>>>text despre C4<<<<<<<<<<<<<<<<<<<< 
-::::::::::ȘȘȘȘȘȘȘ spune despre 220v ca e periculosȚȚȚȚȚȚȚȚȚȚ
-
 \newpage
 \section{Pagina principală}
 
@@ -205,46 +200,6 @@ Datele acestui document sunt valoroase și pot ajuta foarte mult investigatorii,
 \end{figure}
 \break
 
-\section{Senzori statici}
-
-Acest tip de device-uri stă la baza metodei de coletare a informațiilor despre casa respectivă și cea de generare a unui raport cu toate valorile din baza de date în intervalul cerut.
-
-Figura \ref{fig:static} ne prezintă cum a fost creat un senzor static: un Arduino Nano care este cablat la senzorul de detectare a mișcării și modulul de transmitere a datelor. 
-
-Senzorul are 3 pini care trebuie conectați la placa de dezvoltare: împământarea, 5V și ieșirea. Ultimul pin emite un 0 logic dacă nu a detectat niciun obiect și 1 logic dacă a detectat o persoană sau un animal. Acest lucru este posibil datorită faptului că este emisă căldură în formă de radiații infra-roșii care alimentează componenta \emph{piroelectrică} (Figura \ref{fig:pir}) amplasată dedesubtul unei lentile Fresnel ce ajută focusarea acestor raze pe lentila senzorului. Modulul are încorporat două potențiometre: unul pentru reglarea razei de acțiune (până în 5 metri), iar celălalt pentru reglarea timpului de schimbare a valorii detectate (între 0.3 - 300 secunde). 
-
-Odată alimentat la 5V, microcontroller-ul începe colectarea de date la un interval setat în faza configurării de către utilizator. În cazul meu, acesta este de două secunde. După ce acest interval a trecut, va fi creat un pachet ce conține ID-ul și tipul modulului, valoarea și data la care a fost făcută măsurătoarea. 
-
-\begin{figure}[h]
-	\centering
-	\begin{subfigure}{0.45\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{static}
-		\caption{Arduino Nano + senzor de mișcare + modul transmisie}
-		\label{fig:static}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}{0.45\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{pir}
-		\caption{Componenta piroelectrică}
-		\label{fig:pir}
-	\end{subfigure}
-	\caption{Descrierea figurilor}
-	\label{fig:all2}
-\end{figure}
-\break
-
-\section{Senzori dinamici}
-
-Senzorii dinamici dețin o complexitate mai ridicată față de tipul anterior prezentat datorită faptului că pot trimite și primi date simultan de la server, făcându-i să pară că folosesc o conexiune \emph{full duplex}. Din cauza faptului că legătura dintre server și senzor se face prin intermediul protocolului Wifi, înseamnă că această legătură este mai degrabă \emph{half duplex}, schimbul de date realizându-se prin alternarea transmițătorului și receptorului, iar dispozitivele trebuie să respecte un anumit protocol de acces pentru evitarea coliziunilor și interferențelor cu alte dispozitive\footnote{\url{https://community.cisco.com/t5/wireless/is-wireless-half-duplex-or-full-duplex/td-p/2733098}.}
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=1\textwidth]{dinamic}
-	\caption{ESP8266 cu modul releu alimentat la 220V}
-	\label{fig:dinamic}
-\end{figure}
 
 \section{Modul debug}
 
@@ -296,7 +251,14 @@ Provider-ul de internet asignează dinamic adresele IP utilizatorilor conectați
 
 Backend-ul reprezintă partea aplicației responsabilă de logică și funcționalitate. În contextul acestei licențe, am decis să folosesc limbajul \textbf{Python} versiunea 3.10 cu microframework-ul \textbf{Flask} către care sunt trimise pachetele de la \textbf{gunicorn} și \textbf{nginx}.
 
-Acesta rulează pe stația de bază (Raspberry Pi Zero W) pentru a satisface fiecare cerere a utilizatorului, fără a fi nevoit să își deschidă calculatorul personal pentru a putea interacționa cu dispozitivele sale. 
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.65\linewidth]{17}
+	\caption{Placa Raspberry ce găzduiește serverul}
+	\label{fig:17}
+\end{figure}
+
+Acesta rulează pe stația de bază (Figura \ref{fig:17}) pentru a satisface fiecare cerere a utilizatorului, fără a fi nevoit să își deschidă calculatorul personal pentru a putea interacționa cu dispozitivele sale. 
 
 Pentru o productivitate crescută, am ales să instalez sistemul de operare \emph{Raspberry Pi OS Lite} deoarece este rapid, lucru datorat lipsei unei interfețe grafice și a programelor pre-instalate. Instalarea a fost foarte ușoară, urmând instrucțiunile din documentația lor\footnote{\url{https://www.raspberrypi.com/documentation/}}.
 
@@ -308,19 +270,9 @@ Criptarea traficului e realizată direct de către nginx, specificând locația 
 
 \begin{figure}[h]
 	\centering
-	\begin{minipage}{0.45\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{16}
-		\caption{Configurare Nginx}
-		\label{fig:16}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{0.45\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{15}
-		\caption{Consola serverului}
-		\label{fig:15}
-	\end{minipage}
+	\includegraphics[width=0.65\linewidth]{16}
+	\caption{Configurare Nginx}
+	\label{fig:16}
 \end{figure}
 
 Prima componentă numită \emph{server} interceptează fiecare cerere HTTP pe care o redirecționează la ruta de HTTPS asignată portului 443, returnând astfel codul 301 ce notifică utilizatorul că a fost redirectat de la ruta \textbf{http://} la cea de \textbf{https://}.
@@ -333,7 +285,7 @@ A doua componentă asultă la portul 443 (HTTPS) și, datorită blocului \textbf
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.75\textwidth]{14}
+	\includegraphics[width=0.7\textwidth]{14}
 	\caption{Informațiile oferite de DB Browser for SQLite}
 	\label{fig:14}
 \end{figure}
@@ -369,6 +321,50 @@ def update_database(app, db):
 În primă fază este calculată lungimea pachetelor transmise de senzori, aceștia conținând un cuvânt de 16 caractere și un număr întreg. Cât timp serverul este deschis, se vor citi aceste pachete, vor fi sanitizate și de-serializate, operații ce vor rezulta în obținerea valorilor trimise de la senzor.
 La final va fi creat un obiect de tipul \emph{Sensor} care va fi introdus în baza de date locală.
 
+
+\section{Senzori statici}
+
+Acest tip de device-uri stă la baza metodei de coletare a informațiilor despre casa respectivă și cea de generare a unui raport cu toate valorile din baza de date în intervalul cerut.
+
+Figura \ref{fig:static} ne prezintă cum a fost creat un senzor static: un Arduino Nano care este cablat la senzorul de detectare a mișcării și modulul de transmitere a datelor. 
+
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{static}
+		\caption{Arduino Nano cablat la senzorul de mișcare și modulul transmisie}
+		\label{fig:static}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{pir}
+		\caption{Componenta piroelectrică}
+		\label{fig:pir}
+	\end{subfigure}
+	\caption{Arduino și demonstrație}
+	\label{fig:all2}
+\end{figure}
+
+Senzorul are 3 pini care trebuie conectați la placa de dezvoltare: împământarea, 5V și ieșirea. Ultimul pin emite un 0 logic dacă nu a detectat niciun obiect și 1 logic dacă a detectat o persoană sau un animal. Acest lucru este posibil datorită faptului că este emisă căldură în formă de radiații infra-roșii care alimentează componenta \emph{piroelectrică} (Figura \ref{fig:pir}) amplasată dedesubtul unei lentile Fresnel ce ajută focusarea acestor raze pe lentila senzorului. Modulul are încorporat două potențiometre: unul pentru reglarea razei de acțiune (până în 5 metri), iar celălalt pentru reglarea timpului de schimbare a valorii detectate (între 0.3 - 300 secunde). 
+
+Odată alimentat la 5V, microcontroller-ul începe colectarea de date la un interval setat în faza configurării de către utilizator. În cazul meu, acesta este de două secunde. După ce acest interval a trecut, va fi creat un pachet ce conține ID-ul și tipul modulului, valoarea și data la care a fost făcută măsurătoarea. 
+
+\section{Senzori dinamici}
+
+Senzorii dinamici dețin o complexitate mai ridicată față de tipul anterior prezentat datorită faptului că pot trimite și primi date simultan de la server.
+
+Imaginea \ref{fig:dinamic} demonstrează o utilitate simplă a modulului albastru care comută orice consumator ce poate fi alimentat de la priză. Fiecare componentă albastră acționează asemănător unui întrerupător care este controlat apăsând unul din butoanele prezente în interfața aplicației de telefon (Figura \ref{fig:8}). Ruta apelată este predefinită de către utilizator în faza de configurare a senzorului.
+
+Pentru ca persoana ce deține soluția Smart Home să aibă cele mai recente funcționalități, senzorii își vor trimite toate informațiile serverului, acesta ulterior modificându-le în baza de date.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\textwidth]{dinamic}
+	\caption{ESP8266 cu modul releu alimentat la 220V}
+	\label{fig:dinamic}
+\end{figure}
 
 \section{Versionarea}
 
