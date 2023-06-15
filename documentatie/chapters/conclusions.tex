@@ -1,16 +1,22 @@
-\chapter*{Concluzii finale} 
+\chapter*{Încheiere} 
 \addcontentsline{toc}{chapter}{Concluzii}
 
-Lucrarea "Home Smartify - soluție pentru controlul dispozitivelor și securitatea casei" încearcă să ușureze modul de viață al utilizatorului, reușind să minimizeze legătura dintre acesta și dispozitivele pe care le are în casă. Aceasta este posibilă datorită aplicației de mobil pe care o poate folosi să își controleze senzorii din orice parte a lumii. Peste 6 miliarde de persoane folosesc un telefon mobil\footnote{\url{https://www.oberlo.com/statistics/how-many-people-have-smartphones}}, făcându-l un prim candidat când vine vorba despre modul în care utilizatorul să își controleze casa.
+\section*{Direcții pe viitor}
 
-Cererea de soluții de tipul Smart Home este în continuă creștere. În anul 2022 numărul de case smart a crescut cu 14\%\footnote{\url{https://todayshomeowner.com/smart-home/guides/smart-home-facts-and-statistics/}} datorită 
+Consider că proiectul poate fi îmbunătățit în mai multe arii. O primă remediere ar fi \textbf{înlocuirea plăcii Raspberry Pi Zero W} cu placa Raspberry Pi 4 deoarece procesorul cu un singur nucleu al primei plăci nu poate face față unui val de cereri API. Nucleele adiționare vor crește viteza de procesare a datelor care sunt citite de la senzori și vor scădea timpul de așteptare între cererile făcute de către telefonul consumatorului.
 
-\section{Direcții pe viitor}
+\textbf{Stabilitatea conexiunii} dintre senzorii statici și stația de bază poate fi întreruptă temporar din cauza altor dispozitive care transmit pachete de date în același moment, remediul fiind un mecanism de sincronizare între toți senzorii la momentul comunicării. În alte cuvinte, varianta actuală de comunicare poate urma un proces în care fiecare senzor trimite pe rând mesajele fără a întrerupe sau a fi întrerupt de interferențele altei trimiteri.
 
-Consider că proiectul poate fi îmbunătățit în mai multe arii. O primă remediere ar fi înlocuirea plăcii Raspberry Pi Zero W cu placa Raspberry Pi 4 deoarece procesorul cu un singur nucleu al primei plăci nu poate face față unui val de cereri API. Nucleele adiționare vor crește viteza de procesare a datelor care sunt citite de la senzori și vor scădea timpul de așteptare între cererile făcute de către telefonul utilizatorului.
+Un alt punct ce ar putea fi corectat ar fi \textbf{afișarea celor mai recente informații} din baza de date fără ca utilizatorul să fie nevoit să apese pe butonul de reîmprospătare. Acest lucru este posibil ca la fiecare citire recent introdusă în baza de date, serverul să notifice fiecare telefon de acest lucru și să trimită informațiile actualizate, metodă ce este restricționată momentan de puterea de calcul disponibilă.
 
-Un alt punct de îmbunătățire ar fi modulul de transmitere al datelor senzorilor statici.
+Nu în ultimul rând, \textbf{stația de bază reprezintă un cost adițional} atunci când o persoană dorește să își instaleze sistemul smart. Pentru remedierea acestui lucru, hostarea în cloud ar fi cea mai bună soluție pentru a servi mai mulți utilizatori, scăpându-i astfel și de prețul relativ mare al acestor plăci.
 
-Un alt punct ce ar putea fi corectat ar fi afișarea celor mai recente informații din baza de date fără ca utilizatorul să fie nevoit să apese pe butonul de reîmprospătare. Acest lucru este posibil ca la fiecare citire recent introdusă în baza de date, serverul să notifice fiecare telefon de acest lucru și să trimită informațiile actualizate.
+\section*{Concluziile lucrării}
 
-Nu în ultimul rând, aș hosta serverul în cloud pentru ca alți utilizatori să poată folosi această tehnologie smart.
+Lucrarea "Home Smartify - soluție pentru controlul dispozitivelor și securitatea casei" propune o abordare inovatoare pentru a simplifica modul de viață al utilizatorului, oferindu-i controlul complet asupra dispozitivelor din propria casă. 
+
+Prin intermediul aplicației mobile integrate, utilizatorul poate gestiona senzorii și dispozitivele de la distanță, indiferent de locația sa. Această soluție permite minimizarea legăturii fizice și facilitează adaptarea la un stil de viață modern și dinamic. În plus, abordarea orientată spre securitate asigură confidențialitatea și protecția datelor utilizatorului, oferind o experiență Smart Home sigură. Lucrarea reprezintă o contribuție valoroasă în domeniul tehnologiei Smart Home, oferind o soluție inovatoare și accesibilă pentru îmbunătățirea confortului și securității în mediul locuinței.
+
+%Peste 6 miliarde de persoane folosesc un telefon mobil\footnote{\url{https://www.oberlo.com/statistics/how-many-people-have-smartphones}}, făcându-l un prim candidat când vine vorba despre modul în care utilizatorul să își controleze casa.
+%
+%Cererea de soluții de tipul Smart Home este în continuă creștere. În anul 2022 numărul de case smart a crescut cu 14\%\footnote{\url{https://todayshomeowner.com/smart-home/guides/smart-home-facts-and-statistics/}} datorită 
