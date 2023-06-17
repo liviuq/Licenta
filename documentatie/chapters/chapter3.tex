@@ -15,7 +15,7 @@ In imaginea prezentata anterior putem observa un exemplu al arhitecturii aplicat
 \section{Pagina principală}
 
 \begin{wrapfigure}{r}{0.4\textwidth}
-	\includegraphics[width=1\linewidth]{1}
+	\includegraphics[width=1\linewidth]{1a}
 	\caption{Pagina principală}
 	\label{fig:1}
 \end{wrapfigure}
@@ -26,7 +26,7 @@ Aceștia sunt sortați după parametrul pe care îl colectează, fie detectarea 
 
 În partea de sus se află două butoane, unul de activare/ dezactivare a \emph{modului de securitate} alături de cel de refresh care preia cele mai recente valori ale senzorilor, fiecare având o secțiune dedicată funcționalității și a modului de utilizare.
 
-Pe post de footer sunt alte două butoane care servesc pe post de notificări atunci când valoarea unui senzor scade sub o anumită limită, respectiv cel de informații personale ale creatorului licenței.
+În partea inferioară a ecranului există alte trei butoane care servesc, în ordine, pe post de \textbf{centru de notificări}, \textbf{generare de rapoarte} și \textbf{informații despre autor}, funcționalitățile fiecăruia fiind detaliate în secțiunile aferente: \ref{section:logs} și \ref{section:report}.
 
 \subsection{Cărțile senzorilor}
 
@@ -44,12 +44,12 @@ Cărțile reprezintă principala sursă de informații pe care un utilizator o r
 
 După, putem observa valoarea primită de către aplicație la data și ora respectivă. Odată ce este reîmprospătată pagina, dacă device-ul este conectat la rețea, telefonul va primi cea mai recentă măsurătoare din baza de date care primește informații noi odată la două secunde.
 
-Și nu în ultimul rând, apare și locul fizic exact al senzorului, el fiind setat de către utilizator în aplicație. Inițial, acest câmp nu este vizibil deoarece senzorii nu au atașați un loc stabil, atașarea și schimbarea lui fiind făcute de către utilizator.
+Și nu în ultimul rând, apare și locul fizic exact al senzorului, el fiind setat de către utilizator în aplicație. Inițial, acest câmp nu este vizibil deoarece senzorii nu au atașați un loc predefinit, atașarea și schimbarea lui fiind făcute de către utilizator.
 
 Când vine vorba despre device-urile dinamice, au o interfață asemănătoare, singura diferență fiind câmpul de adresă care deține IP-ul local al senzorului.
 
 Atunci când acest widget este apăsat, utilizatorul va intra pe pagina senzorului respectiv, detaliile căreia vor fi prezentate în secțiunea \ref{section:static}.
-
+\newpage
 \subsection{Locația senzorului}
 
 \begin{wrapfigure}{r}{0.4\textwidth}
@@ -60,13 +60,13 @@ Atunci când acest widget este apăsat, utilizatorul va intra pe pagina senzorul
 Cu un suport larg de diferite gesturi cu ajutorul clasei GestureDetector din Flutter, avem acces la o suită de detectări a mișcărilor degetetului care pot executa anumite funcții. În cazul aplicației, odată ce se ține apăsat pe un cartonaș, va apărea un dialog în care putem introduce locația fizică a senzorului.
 \hfill
 Aceasta este salvată în memoria locală a telefonului cu ajutorul bibliotecii de gestionare a bazelor de date NoSQL (non-relaționale). Am ales biblioteca respectivă datorită performanței ridicate, simplitatea oferită și compatibilitatea cross-platform care este critică deoarece aplicația aceasta poate fi compilată pentru majoritatea device-urilor populare. 
-\break
+
 
 \subsection{Modul de securitate} 
 \label{section:securitate}
 
 \begin{wrapfigure}{r}{0.4\textwidth}
-	\includegraphics[width=0.45\textwidth]{4}
+	\includegraphics[width=0.3\textwidth]{4}
 	\caption{Interfață secure mode}
 	\label{fig:4}
 \end{wrapfigure}
@@ -108,13 +108,13 @@ Dedesubtul figurii apare un slider care setează numărul de puncte extrase de l
 
 \begin{figure}[h]
 	\centering
-	\begin{subfigure}{0.45\textwidth}
+	\begin{subfigure}{0.4\textwidth}
 		\includegraphics[width=\textwidth]{6}
 		\caption{Grafic}
 		\label{fig:6}
 	\end{subfigure}
 	\hfill
-	\begin{subfigure}{0.45\textwidth}
+	\begin{subfigure}{0.4\textwidth}
 		\includegraphics[width=\textwidth]{7}
 		\caption{Dialog limită}
 		\label{fig:7}
@@ -131,15 +131,12 @@ Dedesubtul figurii apare un slider care setează numărul de puncte extrase de l
 	\label{fig:8}
 \end{wrapfigure}
 
-Modulele dinamice sunt destul de diferite față de cele statice, întrucât se conectează direct la rețeaua locală de Wi-Fi (fiindu-le asignat o adresă IP) și pot primi sau trimite comenzi la server sau la alte module dinamice. M-am decis să adaug acest tip de senzori datorită recomandării îndrumătorului licenței, domnul profesor Vidrașcu, o adiție ce se pliază perfect pe subiectul abordat în această teză: o soluție smart home.
+Modulele dinamice sunt destul de diferite față de cele statice, întrucât se conectează direct la rețeaua locală de Wi-Fi (fiindu-le asignat o adresă IP) și pot primi sau trimite comenzi la server sau la alte module dinamice. M-am decis să adaug acest tip de senzori datorită recomandării îndrumătorului licenței, domnul profesor Vidrașcu, o adiție ce se pliază perfect pe subiectul abordat în această teză: \textbf{o soluție smart home orientată pe confidențialitate}.
 
-După cum se poate observa, avem afișate datele despre senzor într-o manieră similară cu cea de la cei statici, diferența fiind IP-ul. Senzorii dinamici pot fi controlați de către utilizator și, în acest caz, este prin intermediul butoanelor ce apelează \emph{endpoint-urile} hostate pe ESP8266. Un endpoint reprezintă o locație specifică către care se pot face cereri HTTP (GET, POST, PUT, DELETE) pentru a accesa și manipula resursele unui serviciu. Serverul de pe ESP8266 își publică endpoint-urile la stația de bază care arată astfel: \textbf{http://192.168.0.101/turnOffLamp}.
-
-Fiecare rută pe care o apelăm va instrui senzorul să execute diferite funcționalități care pot fi deduse din numele afișat pe buton.
-
-\textbf{IntruderLampAlert} desemnează cum reacționează acest modul atunci când modul de securitate este activat și senzorul de mișcare emite un ”1” logic.
+După cum se poate observa, avem afișate datele despre senzor într-o manieră similară cu cea de la cei statici, diferența fiind IP-ul. Senzorii dinamici pot fi controlați de către utilizator și, în acest caz, este prin intermediul butoanelor ce apelează \emph{endpoint-urile} hostate pe ESP8266. Un endpoint reprezintă o locație către care se pot face cereri HTTP (GET, POST, PUT, DELETE) pentru a manipula resursele unui serviciu. Serverul de pe ESP8266 își publică endpoint-urile la stația de bază care arată astfel: \textbf{http://192.168.0.101/turnOffLamp}. Fiecare rută pe care o apelăm va instrui senzorul să execute diferite funcționalități care pot fi deduse din numele afișat pe buton. \textbf{IntruderLampAlert} desemnează cum reacționează acest modul atunci când modul de securitate este activat și senzorul de mișcare emite un ”1” logic.
 
 \section{Pagina de informații}
+\label{section:logs}
 
 Fiecare anomalie din sistem (orice senzor ce înregistrează o valoare care a scăzut sub limita impusă) va crea o notificare pe care utilizatorul o poate verifica în secțiunea de \textbf{Logs}. Aceasta poate fi accesată din bara de footer al meniului principal.
 
@@ -168,7 +165,8 @@ Aplicația va prelua ultimele înregistrări a fiecărui senzor pe care le compa
 
 \break
 
-\section{Pagina de genereare de rapoarte}
+\section{Pagina de generare de rapoarte}
+\label{section:report}
 
 În cazul în care utilizatorul este o victimă a unui jaf sau unei intruziuni în casă, este important să acționeze în mod corespunzător. Primul pas este să își asigure siguranța personală și să sune imediat la serviciile de urgență sau la poliție, încercând să nu intre în contact cu posibilii infractori sau să manipuleze evidențele rămase la fața locului, pentru a nu distruge potențiale probe. După anunțarea autorităților, trebuie făcută o inventariere a obiectelor pierdute și să fie extrase cât mai multe informații din ziua respectivă legate de incident.
 
@@ -239,13 +237,13 @@ Printre aceste elemente, regăsim:
 
 \section{REST API}
 
-Un \textbf{API} (\textbf{Application programming interface}) este un mecanism care permite unui serviciu să acceseze resursels unui alt serviciu. REST API se bazează pe principii precum utilizarea verbelor HTTP (GET, PUT, POST, DELETE) pentru transmiterea și manipularea datelor într-un format standardizat (XML, JSON), împreună cu ajutorul \textbf{URI} (uniform resource identifier) pentru specificarea resursei asupra cărei operațiile vor fi executate. Am creat astfel o arhitectură REST pentru a servi diferite informații către aplicația de mobil, afișându-le într-o manieră ușor de înțeles. \footnote{\url{https://www.ibm.com/topics/rest-apis}.}
+Un \textbf{API} (\textbf{Application programming interface}) este un mecanism care permite unui serviciu să acceseze resursels unui alt serviciu. REST API se bazează pe principii precum utilizarea verbelor HTTP (GET, PUT, POST, DELETE) pentru transmiterea și manipularea datelor într-un format standardizat (XML, JSON), împreună cu ajutorul \textbf{URI} (uniform resource identifier) pentru specificarea resursei asupra cărei operațiile vor fi executate. Am creat astfel o arhitectură REST pentru a servi diferite informații către aplicația de mobil, afișându-le într-o manieră ușor de înțeles \cite{rest}.
 
-Serverul expune rute de accesare a informațiilor din baza de date pentru ambele tipuri de senzori: cei statici se află la adresa \textbf{https://andr3w.ddns.net/API}, iar cei dinamici la \textbf{https://andr3w.ddns.net/advanced/API}
+Serverul expune rute de accesare a informațiilor din baza de date pentru ambele tipuri de senzori: cei statici se află la adresa \textbf{https://andr3w.ddns.net/ $<$rută$>$}, iar cei dinamici la \textbf{https://andr3w.ddns.net/advanced/$<$rută$>$}
 
 \subsection{DNS dinamic}
 
-Provider-ul de internet asignează dinamic adresele IP utilizatorilor conectați, motiv pentru care după o pană de curent, de obicei se resetează această adresă. Pentru a rezolva această problemă, am utilizat serviciul gratuit de \textbf{Dynamic DNS}\footnote{\url{https://www.noip.com/support/knowledgebase/geek-terms}} al companiei \textbf{No-IP}\footnote{\url{https://www.noip.com/}}. Setările au fost realizare direct pe router-ul personal, un \textbf{TP-Link WR740N}. Odată configurat, rețeaua locală poate fi accesată de la adresa \url{https://andr3w.ddns.net}.
+Provider-ul de internet asignează dinamic adresele IP utilizatorilor conectați, motiv pentru care după o pană de curent, de obicei se resetează această adresă. Pentru a rezolva această problemă, am utilizat serviciul gratuit de \textbf{Dynamic DNS}\cite{noip} al companiei \textbf{No-IP}\footnote{\url{https://www.noip.com/}}. Setările au fost realizare direct pe router-ul personal, un \textbf{TP-Link WR740N}. Odată configurat, rețeaua locală poate fi accesată de la adresa \url{https://andr3w.ddns.net}.
 
 \section{Backend}
 
@@ -262,9 +260,9 @@ Acesta rulează pe stația de bază (Figura \ref{fig:17}) pentru a satisface fie
 
 Pentru o productivitate crescută, am ales să instalez sistemul de operare \emph{Raspberry Pi OS Lite} deoarece este rapid, lucru datorat lipsei unei interfețe grafice și a programelor pre-instalate. Instalarea a fost foarte ușoară, urmând instrucțiunile din documentația lor\footnote{\url{https://www.raspberrypi.com/documentation/}}.
 
-Comunicarea cu placa a fost făcută doar prin \textbf{SSH} care a fost deschis din setările router-ului. Fiindcă această conexiune va fi publică, am instalat programul \textbf{ufw} (\emph{uncomplicated firewall}) ce mi-a ușurat securizarea host-ului, fiind o unealtă ce înlocuiește setările complicate ale \textbf{iptables}\footnote{\url{https://wiki.archlinux.org/title/iptables}.} cu comenzi simple: \emph{sudo ufw allow 22}. Astfel am limitat numărul de conexiuni la portul 22 și am permis accesul la portul 443, acestea fiind singurele  căi de acces.
+Comunicarea cu placa a fost făcută doar prin \textbf{SSH} care a fost deschis din setările router-ului. Fiindcă această conexiune va fi publică, am instalat programul \textbf{ufw} (\emph{uncomplicated firewall}) ce mi-a ușurat securizarea host-ului, fiind o unealtă ce înlocuiește setările complicate ale \textbf{iptables} \cite{iptables} cu comenzi simple: \emph{sudo ufw allow 22}. Astfel am limitat numărul de conexiuni la portul 22 și am permis accesul la portul 443, acestea fiind singurele  căi de acces.
 
-Nginx este un \textbf{reverse proxy}\footnote{\url{https://www.nginx.com/resources/glossary/reverse-proxy-server/}.} care se află între client și backend. Acesta primește cererile din exterior pe care le redirecționează serverului de gunicorn după setările din figura \ref{fig:16}.
+Nginx este un \textbf{reverse proxy} \cite{nginx} care se află între client și backend. Acesta primește cererile din exterior pe care le redirecționează serverului de gunicorn după setările din figura \ref{fig:16}.
 
 Criptarea traficului e realizată direct de către nginx, specificând locația certificatului și a cheii private cu ajutorul comenzilor \emph{ssl\_certificate} și \emph{ssl\_certificate\_key}. Am decis să îmi semnez propriul \textbf{certificat SSL} (Secure sockets layer) cu utilitarul \textbf{openssl}.
 
@@ -281,7 +279,7 @@ A doua componentă asultă la portul 443 (HTTPS) și, datorită blocului \textbf
 
 \subsection{Stocarea datelor}
 
-\textbf{SQLAlchemy} este o colecție de unelte ce ajută programatorul să acceseze și manipuleze baze de date SQL în limbajul Python. Se pot scrie query-uri în formă de \emph{string-uri} (raw sql) sau înlănțuind obiecte din python într-o manieră \textbf{ORM} (Object relational mapping)\footnote{\url{https://docs.sqlalchemy.org/en/20/orm/queryguide/index.html}.}. Motivele pentru care am folosit acest toolkit sunt simplicitatea creării interogărilor, rapiditarea codării și multitudinea tutorialelor valabile.
+\textbf{SQLAlchemy} este o colecție de unelte ce ajută programatorul să acceseze și manipuleze baze de date SQL în limbajul Python. Se pot scrie query-uri în formă de \emph{string-uri} (raw sql) sau înlănțuind obiecte din python într-o manieră \textbf{ORM} (Object relational mapping) \cite{sql}. Motivele pentru care am folosit acest toolkit sunt simplicitatea creării interogărilor, rapiditarea codării și multitudinea tutorialelor valabile.
 
 \begin{figure}[h]
 	\centering
