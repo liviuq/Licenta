@@ -367,3 +367,33 @@ Pentru ca persoana ce deține soluția Smart Home să aibă cele mai recente fun
 \section{Versionarea}
 
 Câteva din caracteristicile licenței au solicitat folosirea metodologiei de \emph{branching}, schimbările codului fiind aplicate pe o copie a celui original. Am ales astfel să folosesc utilitarul \textbf{git}\footnote{\url{https://git-scm.com/}}, proiectul fiind postat pe \textbf{Github}\footnote{\url{https://github.com/}.} deoarece sunt familiar cu ambele tehnologii. Autentificarea bazată pe chei a fost folosită pentru a evita introducerea parolei contului la fiecare \emph{push} sau \textbf{pull}.
+
+\newpage
+
+\section{Fiabilitatea transmisiei datelor}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1\textwidth]{apartament}
+	\caption{Scema apartamentului unde au fost pozitionați senzorii}
+	\label{fig:apartament}
+\end{figure}
+
+O conexiune stabilă este necesară pentru ca stația de bază (serverul) să primească pachetele de date de la toți senzorii. Distanța dintre cele două joacă un rol important în asigurarea trimiterii corecte a pachetelor.
+
+Fiind folosită banda de 2.4GHz pentru comunicare, există multipli factori ce pot afecta transmisia informațiilor între module:
+\begin{itemize}
+	\item Puterea semnalului: aceasta scade pe măsură ce distanța dintre senzori și stația de bază crește.
+	
+	\item Obstacole: pereții și mobila diminuează semnificativ semnalul
+	
+	\item Interferența: alte dispozitive ce folosesc aceeași bandă de comunicare pot corupe pachetele trimise (cuptorul cu microunde, stații Wi-Fi)
+\end{itemize}
+
+Pentru a spori fiabilitate transmisiei, putem aplica următoarele  remedii: poziționarea stației de bază în centrul senzorilor, utilizarea extensiilor de semnal și deconectarea surselor de interferență.
+
+Figura \ref{fig:apartament} reprezintă planul apartamentului în care este instalată soluția "Home Smartify". Pentru acest test, toți senzorii (distanță, mișcare și comutatorul) au fost amplasați în \emph{Camera 1}, iar stația de bază în \emph{Camera 2}. Din cauza pereților tuturor camerelor ce se află între dispozitive și stație, am obținut că senzorii statici (care nu au un mecanism de confirmare pentru primirea pachetelor) au avut \textbf{4} din cele 10 pachete emise cu succes, iar cei dinamici au avut 100\% rata de succes.
+
+Testul a fost condus și cu stația de bază mai aproape de senzori (Camera 1), și anume în \emph{Sufragerie}. Fiindcă există o cale directă între aceste două încăperi, toți senzorii au avut o rată de transmisie de 100\%, chiar și cu ușile intermediare închise.
+
+Bazându-ne pe rezultatele de mai sus, putem concluziona că proximitatea dintre senzori și stație afectează semnificativ rata de succes a transmisiei, fiind necesară o distanță optimă între toți senzorii și server.
