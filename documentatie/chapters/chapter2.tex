@@ -54,13 +54,13 @@ Aspectul special al acestor computere constă în cei 40 pini \textbf{GPIO} (\em
 
 \section{Microcontrollere folosite}
 
-Un microcontroller (abreviat \emph{MCU}) este un circuit integrat care combină funcționalitate microporcesorului (de obicei aflat sub un radiator de aluminiu pentru disiparea căldurii) cu componentele periferice: module \emph{Input/output}, memorie și interfețe de comunicare cu alte module. Dețin mai mulți pini de tip analog, digital și \textbf{PWM} (\emph{Pulse Width Modulation}) pentru conectarea cu alte module
+Un microcontroller (abreviat \emph{MCU}) este un circuit integrat care combină funcționalitatea microprocesorului (de obicei aflat sub un radiator de aluminiu pentru disiparea căldurii) cu componentele periferice: module \emph{Input/output}, memorie și interfețe de comunicare cu alte module. Dețin mai mulți pini de tip analog, digital și \textbf{PWM} (\emph{Pulse Width Modulation}) pentru conectarea cu alte module.
 
 \break
 
 \subsection{Arduino Nano}
 
-Arduino Nano (Figura 2.2) este fratele mai mic al plăcii Uno cu care împărtășește majoritatea funcționalității: microcontroller ATmega328, 32KB memorie flash, viteză de 16MHz și 22 pini I/O.  Singurele diferențe sunt mărimea redusă și portul de USB mini. Este perfect pentru persoanele care doersc să învețe tainele electronicii și a programării, fiind potrivit pentru proiecte ce au constrângeri legate de spațiul disponibil.
+Arduino Nano (Figura 2.2) este fratele mai mic al plăcii Uno cu care împărtășește majoritatea funcționalității: microcontroller ATmega328, 32KB memorie flash, viteză de 16MHz și 22 pini I/O.  Singurele diferențe sunt mărimea redusă și portul de USB mini. Este perfect pentru persoanele care doresc să învețe tainele electronicii și a programării, fiind potrivit pentru proiecte ce au constrângeri legate de spațiul disponibil.
 
 \begin{figure}[h]
 	\centering
@@ -92,9 +92,9 @@ Modulul de comutare este echipat cu 2 relee (Figura \ref{fig:relay}) controlate 
 
 Senzorul DHT22 (Figura \ref{fig:temperature}) este un senzor de umiditate și temperatură mic, ieftin și la îndemână. Folosește un senzor capacitiv de umiditate și un termistor pentru a măsura aerul din jur. Acesta oferă semnal digital pe pinul de date. Este ușor de folosit, dar este nevoie de atenție pentru citirea datelor la momentul potrivit.
 
-Senzorul infraroșu HC-SR501 (Figura \ref{fig:motion}) este folosit pentru a detecta prezența oamenilor. Este des utilizat în aprinderea sau stingerea automată a luminii într-o încăpere atunci când o persoană ajunge sau părăsește o incintă. Suportă o tensiune de alimentare mai ridicată (5 – 20 V ) și are un consum mai mare. Are o rază de sensibilitate de 110\textdegree și detectează obiecte până la o distanță de 7m.
+Senzorul infraroșu HC-SR501 (Figura \ref{fig:motion}) este folosit pentru a detecta prezența oamenilor. Este des utilizat în aprinderea sau stingerea automată a luminii într-o încăpere atunci când o persoană ajunge sau părăsește o incintă. Suportă o tensiune de alimentare mai ridicată (5 – 20 V ) și are un consum mai mare. Are o rază de sensibilitate de 110\textdegree\ și detectează obiecte până la o distanță de 7m.
 
-Placa HC-SR04 (Figura \ref{fig:distance}) deține un emițător și un receptor ultrasonic ce ne pot oferi distanșa până la cel mai apropiat obstacol într-un mod ușor de programat. E compatibilă cu o gamă variată de plăci de dezvoltare, având unele avantaje față de senzorii de distanță de tip analog: are nevoie doar de pini I/O digitali, are toleranță mai mare la zgomotul din circuit și precizie de până la 4.5 metri, toate la un consum continuu de maxim 2mA.
+Placa HC-SR04 (Figura \ref{fig:distance}) deține un emițător și un receptor ultrasonic ce ne pot oferi distanța până la cel mai apropiat obstacol într-un mod ușor de programat. E compatibilă cu o gamă variată de plăci de dezvoltare, având unele avantaje față de senzorii de distanță de tip analog: are nevoie doar de pini I/O digitali, are toleranță mai mare la zgomotul din circuit și precizie de până la 4.5 metri, toate la un consum continuu de maxim 2mA.
 
 \begin{figure}[h]
 	\centering
@@ -129,8 +129,8 @@ Placa HC-SR04 (Figura \ref{fig:distance}) deține un emițător și un receptor 
 	\caption{Senzorii folosiți în acest proiect}
 	\label{fig:all}
 \end{figure}
-\section{Motivatia tehnologiilor folosite}
+\section{Motivația tehnologiilor folosite}
 
-Domeniul Smart Home este foarte vast și oferă o gamă largă de oportunități creative. Tehnologia a evoluat rapid, permițând controlul și automatizarea diverselor aspecte ale locuinței, de la iluminat și securitate la gestionarea energiei și confortul locatarilor. 
+Domeniul Smart Home este foarte vast și oferă o gamă largă de oportunități creative. Tehnologia a evoluat rapid, permițând controlul și automatizarea diverselor aspecte ale locuinței, de la iluminat și securitate, la gestionarea energiei și confortul locatarilor. 
 
-Modulele și plăcile utilizate se pliază pe arhitectura aplicatiei implementate, dar cum tehnologia avanseaza pe zi ce trece, va exista posibilitatea ca in viitor sa apara device-uri care pot creste performanta. Prin urmare, în domeniul caselor inteligente, nu există limite, iar utilizatorii sunt încurajați să-și folosească imaginația și să exploreze noi soluții ce se pliază vieții personale.
+Modulele și plăcile utilizate se pliază pe arhitectura aplicației implementate, dar cum tehnologia avansează pe zi ce trece, va exista posibilitatea ca, în viitor, să apară device-uri care pot crește performanța. Prin urmare, în domeniul caselor inteligente, nu există limite, iar utilizatorii sunt încurajați să-și folosească imaginația și să exploreze noi soluții ce se pliază vieții personale.

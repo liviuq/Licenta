@@ -3,9 +3,9 @@
 
 \section*{Direcții pe viitor}
 
-Consider că proiectul poate fi îmbunătățit în mai multe arii. O primă remediere ar fi \textbf{înlocuirea plăcii Raspberry Pi Zero W} cu placa Raspberry Pi 4 deoarece procesorul cu un singur nucleu al primei plăci nu poate face față unui val de cereri API. Nucleele adiționare vor crește viteza de procesare a datelor care sunt citite de la senzori și vor scădea timpul de așteptare între cererile făcute de către telefonul consumatorului.
+Consider că proiectul poate fi îmbunătățit în mai multe arii. O primă remediere ar fi \textbf{înlocuirea plăcii Raspberry Pi Zero W} cu placa Raspberry Pi 4 deoarece procesorul cu un singur nucleu al primei plăci nu poate face față unui val de cereri API. Nucleele suplimentare vor crește viteza de procesare a datelor care sunt citite de la senzori și vor scădea timpul de așteptare între cererile făcute de către telefonul consumatorului.
 
-\textbf{Stabilitatea conexiunii} dintre senzorii statici și stația de bază poate fi întreruptă temporar din cauza altor dispozitive care transmit pachete de date în același moment, remediul fiind un mecanism de sincronizare între toți senzorii la momentul comunicării. În alte cuvinte, varianta actuală de comunicare poate urma un proces în care fiecare senzor trimite pe rând mesajele fără a întrerupe sau a fi întrerupt de interferențele altei trimiteri.
+\textbf{Stabilitatea conexiunii} dintre senzorii statici și stația de bază poate fi întreruptă temporar din cauza altor dispozitive care transmit pachete de date în același moment, remediul fiind un mecanism de sincronizare între toți senzorii la momentul comunicării. În alte cuvinte, varianta actuală de comunicare dintre senzorii statici și stația de bază poate fi îmbunătățită adăugând un protocol în care fiecare senzor trimite pe rând mesajele, fără a întrerupe sau a fi întrerupt de interferențele altei comunicări.
 
 Un alt punct ce ar putea fi corectat ar fi \textbf{afișarea celor mai recente informații} din baza de date fără ca utilizatorul să fie nevoit să apese pe butonul de reîmprospătare. Acest lucru este posibil ca la fiecare citire recent introdusă în baza de date, serverul să notifice fiecare telefon de acest lucru și să trimită informațiile actualizate, metodă ce este restricționată momentan de puterea de calcul disponibilă.
 
