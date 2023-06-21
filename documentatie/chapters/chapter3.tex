@@ -9,7 +9,7 @@ Prin parcurgerea acestui capitol, cititorul va avea o imagine de ansamblu asupra
 	\label{fig:arhitectura}
 \end{figure}
 
-In imaginea prezentata anterior putem observa un exemplu al arhitecturii aplicatiei si cum sunt legate componentele intre ele. Aceasta aplicatie poate fi utilizata pe platformele: Windows/Mac/Linux/iOS/Android. Ele sunt conectate la senzorii casei prin intermediul serverului care ruleaza pe un Raspberry Pi cu ajutorul API-urilor.
+În imaginea prezentată anterior putem observa un exemplu al arhitecturii aplicației și cum sunt asociate componentele între ele. Această aplicație poate fi utilizată pe platformele: Windows/Mac/Linux/iOS/Android. Ele sunt conectate la senzorii casei prin intermediul serverului care rulează pe un Raspberry Pi cu ajutorul API-urilor.
 
 \newpage
 \section{Pagina principală}
@@ -30,7 +30,7 @@ Aceștia sunt sortați după parametrul pe care îl colectează, fie detectarea 
 
 \subsection{Cărțile senzorilor}
 
-Cărțile reprezintă principala sursă de informații pe care un utilizator o regăsește instant când accesează aplicația. Ele oferă date importante despre senzorul respectiv într-o formă ușor de înțeles și de citit rapid.
+Cărțile reprezintă principala sursă de informații pe care un utilizator o regăsește la prima vedere când accesează aplicația. Ele oferă date importante despre senzorul respectiv într-o formă ușor de înțeles și de citit rapid.
 
 În prima parte putem observa numele de identificare a senzorului. Acesta îi este asignat manual atunci când placa Arduino este programată și trebuie neapărat să fie unic în toată rețeaua. 
 
@@ -59,7 +59,7 @@ Atunci când acest widget este apăsat, utilizatorul va intra pe pagina senzorul
 \end{wrapfigure}
 Cu un suport larg de diferite gesturi cu ajutorul clasei GestureDetector din Flutter, avem acces la o suită de detectări a mișcărilor degetetului care pot executa anumite funcții. În cazul aplicației, odată ce se ține apăsat pe un cartonaș, va apărea un dialog în care putem introduce locația fizică a senzorului.
 \hfill
-Aceasta este salvată în memoria locală a telefonului cu ajutorul bibliotecii de gestionare a bazelor de date NoSQL (non-relaționale). Am ales biblioteca respectivă datorită performanței ridicate, simplitatea oferită și compatibilitatea cross-platform care este critică deoarece aplicația aceasta poate fi compilată pentru majoritatea device-urilor populare. 
+Aceasta este salvată în memoria locală a telefonului cu ajutorul bibliotecii \textbf{Hive} de gestionare a bazelor de date NoSQL (non-relaționale). Am ales biblioteca respectivă datorită performanței ridicate, simplitatea oferită și compatibilitatea cross-platform care este critică deoarece aplicația aceasta poate fi compilată pentru majoritatea device-urilor populare. 
 
 
 \subsection{Modul de securitate} 
@@ -83,7 +83,7 @@ Senzorii dinamici pot fi configurați astfel încât să se folosească de aceas
 
 \subsection{Butonul de refresh}
 
-Funcționalitatea sa este intuitivă, întrucât apăsarea lui rezultă în re-împrospătarea valorilor din aplicație cu cele mai recente citiri ale tuturor senzorilor sistemului. Deoarece tot backend-ul este hostat pe un procesor cu un singur nucleu, am decis să implementez o metodă de \emph{caching} a datelor pentru sesiunea curentă. În acest mod salvăm serverul de la multe request-uri și economisim datele mobile.
+Funcționalitatea sa este intuitivă, întrucât apăsarea lui rezultă în reîmprospătarea valorilor din aplicație cu cele mai recente citiri ale tuturor senzorilor sistemului. Deoarece tot backend-ul este hostat pe un procesor cu un singur nucleu, am decis să implementez o metodă de \emph{caching} a datelor pentru sesiunea curentă. În acest mod salvăm serverul de la multe request-uri și economisim datele mobile.
 
 Una din limitările sistemului este că informațiile afișate nu sunt actualizate constant. Acest lucru duce la discrepanțe între valorile pe care utilizatorul le vede și cele pe care senzorii le trimit. Vom vorbi despre aceasta în capitolul dedicat viziunii pe viitor.
 
@@ -100,9 +100,9 @@ Una din limitările sistemului este că informațiile afișate nu sunt actualiza
 
 Pe această rută se află informații și setări care contribuie la sensul de Smart home: componente ce lucrează împreună pentru a aduce utilizatorului un aport esențial de securitate.
 
-AppBar-ul este populat cu un buton de setare a unei limite, valoare despre care am vorbit în secțiunea \ref{section:securitate}. Odată ce \emph{threshold} este setat (Figura \ref{fig:5}), va fi salvată în baza de date locală, astfel ea persistând chiar și când restartăm aplicația. Ca să fie vizibilă utilizatorului, pe graficul de mai jos se va trasa o linie roșie (care nu există dacă nu avem o limită). Ca utilizare, limita va fi folosită la notificările de pe pagina de \emph{Logs} pentru a determina dacă o înregistrare trebuie arătată utilizatorului în caz că valoarea ei scade sub limita asignată.
+AppBar-ul este populat cu un buton de setare a unei limite, valoare despre care am vorbit în secțiunea \ref{section:securitate}. Odată ce \emph{threshold} este setat (Figura \ref{fig:5}), va fi salvată în baza de date locală, ea persistând chiar și când restartăm aplicația. Ca să fie vizibilă utilizatorului, pe graficul de mai jos se va trasa o linie roșie (care nu este desenată dacă nu am fi avut o limită). Ca utilizare, limita va fi folosită la notificările de pe pagina de \emph{Logs} pentru a determina dacă o înregistrare trebuie arătată utilizatorului în caz că valoarea ei scade sub limita asignată.
 
-În prim plan se află graficul care afișează evoluția ultimelor N înregistrări ale senzorului respectiv în funcție de data la care au fost colectate individual. Fiindcă sunt foarte multe puncte afișate, nu am putut include vizual și valorile lor, dar, utilizatorul o poate vedea, împreună cu data aferentă dacă apasă pe oricare punct (Figura \ref{fig:6}). Pentru construcția sa, am decis să folosesc librăria \textbf{fl\_chart} datorită popularității și a documentației excelente. Este un grafic fluid deoarece odată ce se modifică valorile afișate, motorul fl\_chart creează o animație de tranziție de la informațiile vechi la cele noi.
+În prim plan se află graficul care afișează evoluția ultimelor N înregistrări ale senzorului respectiv în funcție de data la care au fost colectate individual. Fiindcă sunt foarte multe puncte afișate, nu am putut include vizual și valorile lor, dar, utilizatorul le poate vedea, împreună cu data aferentă dacă apasă pe oricare punct (Figura \ref{fig:6}). Pentru construcția sa, am decis să folosesc librăria \textbf{fl\_chart} datorită popularității și a documentației excelente. Este un grafic fluid deoarece odată ce se modifică valorile afișate, motorul fl\_chart creează o animație de tranziție de la informațiile vechi la cele noi.
 
 Dedesubtul figurii apare un slider care setează numărul de puncte extrase de la server. A existat o problemă aici care îmi făcea un API call la fiecare schimbare de valoare, adică dacă de la 39 de puncte doresc să îmi afișeze 200, va face 200-39 = 161 request-uri către backend. Remediul a fost ca reîmprosătarea să fie făcută în funcția \textbf{onChangeEnd} care va trimite cererea către server atunci când s-a terminat de ales cantitatea de informații, evitând astfel un \emph{Denial of Service} pentru server.
 
@@ -133,7 +133,7 @@ Dedesubtul figurii apare un slider care setează numărul de puncte extrase de l
 
 Modulele dinamice sunt destul de diferite față de cele statice, întrucât se conectează direct la rețeaua locală de Wi-Fi (fiindu-le asignat o adresă IP) și pot primi sau trimite comenzi la server sau la alte module dinamice. M-am decis să adaug acest tip de senzori datorită recomandării îndrumătorului licenței, domnul profesor Vidrașcu, o adiție ce se pliază perfect pe subiectul abordat în această teză: \textbf{o soluție smart home orientată pe confidențialitate}.
 
-După cum se poate observa, avem afișate datele despre senzor într-o manieră similară cu cea de la cei statici, diferența fiind IP-ul. Senzorii dinamici pot fi controlați de către utilizator și, în acest caz, este prin intermediul butoanelor ce apelează \emph{endpoint-urile} hostate pe ESP8266. Un endpoint reprezintă o locație către care se pot face cereri HTTP (GET, POST, PUT, DELETE) pentru a manipula resursele unui serviciu. Serverul de pe ESP8266 își publică endpoint-urile la stația de bază care arată astfel: \textbf{http://192.168.0.101/turnOffLamp}. Fiecare rută pe care o apelăm va instrui senzorul să execute diferite funcționalități care pot fi deduse din numele afișat pe buton. \textbf{IntruderLampAlert} desemnează cum reacționează acest modul atunci când modul de securitate este activat și senzorul de mișcare emite un ”1” logic.
+După cum se poate observa, avem afișate datele despre senzor într-o manieră similară cu cea de la cei statici, diferența fiind IP-ul. Senzorii dinamici pot fi controlați de către utilizator și, în acest caz, este prin intermediul butoanelor ce apelează \emph{endpoint-urile} hostate pe ESP8266. Un endpoint reprezintă o locație către care se pot face cereri HTTP (GET, POST, PUT, DELETE) pentru a manipula resursele unui serviciu. Serverul de pe ESP8266 își publică endpoint-urile la stația de bază care arată astfel: \textbf{http://192.168.0.101/turnOffLamp}. Fiecare rută pe care o apelăm va instrui senzorul să execute diferite funcționalități care pot fi deduse din numele afișat pe buton. \textbf{IntruderLampAlert} desemnează cum reacționează acest modul atunci când modul de securitate este activat și senzorul de mișcare emite un ”0” logic.
 
 \section{Pagina de informații}
 \label{section:logs}
@@ -168,15 +168,15 @@ Aplicația va prelua ultimele înregistrări a fiecărui senzor pe care le compa
 \section{Pagina de generare de rapoarte}
 \label{section:report}
 
-În cazul în care utilizatorul este o victimă a unui jaf sau unei intruziuni în casă, este important să acționeze în mod corespunzător. Primul pas este să își asigure siguranța personală și să sune imediat la serviciile de urgență sau la poliție, încercând să nu intre în contact cu posibilii infractori sau să manipuleze evidențele rămase la fața locului, pentru a nu distruge potențiale probe. După anunțarea autorităților, trebuie făcută o inventariere a obiectelor pierdute și să fie extrase cât mai multe informații din ziua respectivă legate de incident.
+În cazul în care utilizatorul este o victimă a unui jaf sau unei intruziuni în casă, este important să acționeze în mod corespunzător. Primul pas este să își asigure siguranța personală și să sune imediat la serviciile de urgență sau la poliție, încercând să nu intre în contact cu posibilii infractori sau să manipuleze evidențele rămase la fața locului, pentru a nu distruge potențialele probe. După anunțarea autorităților, trebuie făcută o inventariere a obiectelor pierdute și să fie extrase cât mai multe informații din ziua respectivă legate de incident.
 
 Aplicația din această soluție ajută utlizatorul în cazul unui astfel de eveniment prin colectarea tuturor datelor senzorilor din casă, expunându-le în formă de PDF gata să fie oferite autorităților. Trebuie menționat faptul că senzorii au fost plasați specific în holul de la intrarea în apartamentul meu, pozitionați astfel încât orice persoană care intră va modifica starea modulelor.
 
-Interfața (Figura \ref{fig:9}) este alcătuită din cele două câmpuri ce permit introducerea timpului de început și cel de sfârșit. Acestea vor fi folosite de către server pentru a filtra toate înregistrările senzorilor, luându-le doar pe cele ce se încadrează în intervalul specificat. Cele două valori trebuie neapărat setate, întrucât butonul de \textbf{Generate report} nu va funcționa fiindcă nu știe unul din capetele intervalului sau chiar ambele. Odată apăsat, va trimite un POST request la stația de bază care îi va răspunde cu datele aferente. Utilizatorul este notificat de terminarea procesului printr-un pop-up în josul ecranului ce oferă și folderul în care a fost salvat.
+Interfața (Figura \ref{fig:9}) este alcătuită din cele două câmpuri ce permit introducerea timpului de început și cel de sfârșit. Acestea vor fi folosite de către server pentru a filtra toate înregistrările senzorilor, luându-le doar pe cele ce se încadrează în intervalul specificat. Cele două valori trebuie neapărat setate, întrucât butonul de \textbf{Generate report} nu va funcționa până când ambele capete ale intervalului sunt configurate. Odată apăsat, va trimite un POST request la stația de bază care îi va răspunde cu datele aferente. Utilizatorul este notificat de terminarea procesului printr-un pop-up în josul ecranului ce oferă și folderul în care a fost salvat.
 
-Cu ajutorul librăriei \textbf{pdf} din cadrul SDK-ului Flutter, am reușit generarea documentului (Figura \ref{fig:10}). Pe post de header, am specificat intervalul din care au fost extrase informațiile senzorilor și data la care a fost creat acest document. Footer-ul conține numele aplicației și deținătorul drepturilor licenței. În centrul atenției este un tabel ce conține, în ordine, numărul curent al înregistrării, adresa, data, ID-ul, tipul și valoarea senzorului. Acesta este extins pe multiple foi, cifra din partea de jos al ecranului desemnând numărul curent al paginii. Pentru raportul acesta avem un număr de 300 de înregistrări preluate în decursul a 5 minute. Stația de bază este responsabilă să recepționeze și să citească pachetele trimise de toți senzorii, lucru care devine destul de greu atunci când fiecare device transmite în aceeași secundă după cum se observă în PDF. Datorită librăriei \textbf{RF24Network} despre care vom vorbi în secțiunea senzorilor statici, toate pachetele vor fi decodate cu succes.
+Cu ajutorul librăriei \textbf{pdf} din cadrul SDK-ului Flutter, am reușit generarea documentului (Figura \ref{fig:10}). Pe post de header, am specificat intervalul din care au fost extrase informațiile senzorilor și data la care a fost creat acest document. Footer-ul conține numele aplicației și deținătorul drepturilor licenței. În centrul atenției este un tabel ce conține, în ordine, numărul curent al înregistrării, adresa, data, ID-ul, tipul și valoarea senzorului. Acesta este extins pe multiple foi, cifra din partea de jos al ecranului desemnând numărul curent al paginii. Pentru raportul acesta avem un număr de 300 de înregistrări preluate în decursul a 5 minute. Stația de bază este responsabilă să recepționeze și să citească pachetele trimise de toți senzorii, lucru care devine destul de greu atunci când fiecare device transmite în aceeași secundă după cum se observă în PDF.
 
-Datele acestui document sunt valoroase și pot ajuta foarte mult investigatorii, crescând astfel șansele de a prinde intrușii. Asigurând proprietarii ce folosesc acest sistem cu un raport plin de informații, soluția de smart home propusă joacă un rol important în creșterea securității utilizatorului.
+Datele acestui document sunt valoroase și pot ajuta foarte mult investigatorii, crescând astfel șansele de a prinde intrușii.
 
 \begin{figure}[h]
 	\centering
@@ -205,7 +205,7 @@ Datele acestui document sunt valoroase și pot ajuta foarte mult investigatorii,
 
 În timpul execuției, acesta afișează în consolă (Figura \ref{fig:13}) toate pachetele pe care le primește în timp real. Acest lucru este util deoarece permite utilizatorului să confirme că senzorii funcționează corect și trimit datele corespunzătoare. Problemele de comunicare sunt depistate din timp, de obicei acestea se rezolvă cu o restartare a modulelor.
 
-Fiecare linie deține datele unei înregistrări: \textbf{payload len} reprezintă lungimea în octeți a pachetului, \textbf{sensor type} e tipul senzorului (distanță, temperatură, mișcare), \textbf{value} conține valoarea citită de device, iar \textbf{header} are date precum id-ul pachetului, emițătorul și receptorul, care în cazul acesta este stația de bază la adresa \textbf{00}.
+Fiecare linie deține datele unei înregistrări: \textbf{payload len} reprezintă lungimea în octeți a pachetului, \textbf{sensor type} e tipul senzorului (distanță, temperatură, mișcare), \textbf{value} conține valoarea citită de device, iar \textbf{header} are date precum id-ul pachetului, emițătorul (\textbf{00}) și receptorul (stația de bază).
 
 \begin{figure}[h]
 	\centering
@@ -237,9 +237,9 @@ Printre aceste elemente, regăsim:
 
 \section{REST API}
 
-Un \textbf{API} (\textbf{Application programming interface}) este un mecanism care permite unui serviciu să acceseze resursels unui alt serviciu. REST API se bazează pe principii precum utilizarea verbelor HTTP (GET, PUT, POST, DELETE) pentru transmiterea și manipularea datelor într-un format standardizat (XML, JSON), împreună cu ajutorul \textbf{URI} (uniform resource identifier) pentru specificarea resursei asupra cărei operațiile vor fi executate. Am creat astfel o arhitectură REST pentru a servi diferite informații către aplicația de mobil, afișându-le într-o manieră ușor de înțeles \cite{rest}.
+Un \textbf{API} (\textbf{Application programming interface}) este un mecanism care permite unui serviciu să acceseze resursele altui serviciu. REST API se bazează pe principii precum utilizarea verbelor HTTP (GET, PUT, POST, DELETE) pentru transmiterea și manipularea datelor într-un format standardizat (XML, JSON), împreună cu ajutorul \textbf{URI} (uniform resource identifier) pentru specificarea resursei asupra cărei operațiile vor fi executate. Am creat astfel o arhitectură REST pentru a servi diferite informații către aplicația de mobil, afișându-le într-o manieră ușor de înțeles \cite{rest}.
 
-Serverul expune rute de accesare a informațiilor din baza de date pentru ambele tipuri de senzori: cei statici se află la adresa \textbf{https://andr3w.ddns.net/ $<$rută$>$}, iar cei dinamici la \textbf{https://andr3w.ddns.net/advanced/$<$rută$>$}
+Serverul expune rute de accesare a informațiilor din baza de date pentru ambele tipuri de senzori: cei statici se află la adresa \textbf{https://andr3w.ddns.net/ $<$rută$>$}, iar cei dinamici la \textbf{https://andr3w.ddns.net/advanced/$<$rută$>$}.
 
 \subsection{DNS dinamic}
 
@@ -260,11 +260,11 @@ Acesta rulează pe stația de bază (Figura \ref{fig:17}) pentru a satisface fie
 
 Pentru o productivitate crescută, am ales să instalez sistemul de operare \emph{Raspberry Pi OS Lite} deoarece este rapid, lucru datorat lipsei unei interfețe grafice și a programelor pre-instalate. Instalarea a fost foarte ușoară, urmând instrucțiunile din documentația lor\footnote{\url{https://www.raspberrypi.com/documentation/}}.
 
-Comunicarea cu placa a fost făcută doar prin \textbf{SSH} care a fost deschis din setările router-ului. Fiindcă această conexiune va fi publică, am instalat programul \textbf{ufw} (\emph{uncomplicated firewall}) ce mi-a ușurat securizarea host-ului, fiind o unealtă ce înlocuiește setările complicate ale \textbf{iptables} \cite{iptables} cu comenzi simple: \emph{sudo ufw allow 22}. Astfel am limitat numărul de conexiuni la portul 22 și am permis accesul la portul 443, acestea fiind singurele  căi de acces.
+Comunicarea cu placa a fost făcută doar prin \textbf{SSH}, port care a fost deschis din setările router-ului. Fiindcă această conexiune va fi publică, am instalat programul \textbf{ufw} (\emph{uncomplicated firewall}) ce mi-a ușurat securizarea host-ului, fiind o unealtă ce înlocuiește setările complicate ale \textbf{iptables} \cite{iptables} cu comenzi simple: \emph{sudo ufw allow 22}. Astfel am limitat numărul de conexiuni la portul 22 și am permis accesul la portul 443, acestea fiind singurele  căi de acces.
 
 Nginx este un \textbf{reverse proxy} \cite{nginx} care se află între client și backend. Acesta primește cererile din exterior pe care le redirecționează serverului de gunicorn după setările din figura \ref{fig:16}.
 
-Criptarea traficului e realizată direct de către nginx, specificând locația certificatului și a cheii private cu ajutorul comenzilor \emph{ssl\_certificate} și \emph{ssl\_certificate\_key}. Am decis să îmi semnez propriul \textbf{certificat SSL} (Secure sockets layer) cu utilitarul \textbf{openssl}.
+Criptarea traficului este realizată direct de către nginx, specificând locația certificatului și a cheii private cu ajutorul comenzilor \emph{ssl\_certificate} și \emph{ssl\_certificate\_key}. Am decis să îmi semnez propriul \textbf{certificat SSL} (Secure sockets layer) cu utilitarul \textbf{openssl}.
 
 \begin{figure}[h]
 	\centering
@@ -273,13 +273,13 @@ Criptarea traficului e realizată direct de către nginx, specificând locația 
 	\label{fig:16}
 \end{figure}
 
-Prima componentă numită \emph{server} interceptează fiecare cerere HTTP pe care o redirecționează la ruta de HTTPS asignată portului 443, returnând astfel codul 301 ce notifică utilizatorul că a fost redirectat de la ruta \textbf{http://} la cea de \textbf{https://}.
+Prima componentă numită \emph{server} interceptează fiecare cerere HTTP pe care o redirecționează la ruta de HTTPS asignată portului 443, returnând astfel codul 301 ce notifică utilizatorul că a fost redirecționat de la ruta \textbf{http://} la cea de \textbf{https://}.
 
-A doua componentă asultă la portul 443 (HTTPS) și, datorită blocului \textbf{location /}, orice cerere va fi redirecționată către serverul Flask, fiind configurat a primi request-uri la portul 8000. Trebuie menționat faptul că ambele aplicații rulează pe același host, ceea ce face posibilă trimiterea cu succes către adresa de \emph{loopback}\footnote{\url{https://study-ccna.com/loopback-interface-loopback-address/}}. Această utilizare este ideală deoarece ne aflăm la o scară de nivel de proiect personal. Pentru uz în producție se recomandă folosirea unui proxy server\footnote{\url{https://browserjet.com/blog/advantages-and-disadvantages-of-a-proxy-server}} pe un computer separat.
+A doua componentă asultă portul 443 (HTTPS) și, datorită blocului \textbf{location /}, orice cerere va fi redirecționată către serverul Flask, fiind configurat pentru a primi request-uri la portul 8000. Trebuie menționat faptul că ambele aplicații rulează pe același host, ceea ce face posibilă trimiterea cu succes către adresa de \emph{loopback}\footnote{\url{https://study-ccna.com/loopback-interface-loopback-address/}}. Această utilizare este ideală deoarece ne aflăm la o scară de nivel de proiect personal. Pentru uz în producție se recomandă folosirea unui proxy server\footnote{\url{https://browserjet.com/blog/advantages-and-disadvantages-of-a-proxy-server}} pe un computer separat.
 
 \subsection{Stocarea datelor}
 
-\textbf{SQLAlchemy} este o colecție de unelte ce ajută programatorul să acceseze și manipuleze baze de date SQL în limbajul Python. Se pot scrie query-uri în formă de \emph{string-uri} (raw sql) sau înlănțuind obiecte din python într-o manieră \textbf{ORM} (Object relational mapping) \cite{sql}. Motivele pentru care am folosit acest toolkit sunt simplicitatea creării interogărilor, rapiditarea codării și multitudinea tutorialelor valabile.
+\textbf{SQLAlchemy} este o colecție de unelte ce ajută programatorul să acceseze și manipuleze baze de date SQL în limbajul Python. Se pot scrie query-uri în formă de \emph{string-uri} (raw sql) sau înlănțuind obiecte din python într-o manieră \textbf{ORM} (Object relational mapping) \cite{sql}. Motivele pentru care am folosit acest toolkit sunt simplicitatea creării interogărilor și rapiditarea codării.
 
 \begin{figure}[h]
 	\centering
@@ -324,7 +324,7 @@ La final va fi creat un obiect de tipul \emph{Sensor} care va fi introdus în ba
 
 Acest tip de device-uri stă la baza metodei de coletare a informațiilor despre casa respectivă și cea de generare a unui raport cu toate valorile din baza de date în intervalul cerut.
 
-Figura \ref{fig:static} ne prezintă cum a fost creat un senzor static: un Arduino Nano care este cablat la senzorul de detectare a mișcării și modulul de transmitere a datelor. 
+Figura \ref{fig:static} ne prezintă cum a fost creat un senzor static: un Arduino Nano (dreapta) care este cablat la senzorul de detectare a mișcării (mijloc) și modulul de transmitere a datelor (stânga). 
 
 \begin{figure}[h]
 	\centering
@@ -345,17 +345,17 @@ Figura \ref{fig:static} ne prezintă cum a fost creat un senzor static: un Ardui
 	\label{fig:all2}
 \end{figure}
 
-Senzorul are 3 pini care trebuie conectați la placa de dezvoltare: împământarea, 5V și ieșirea. Ultimul pin emite un 0 logic dacă nu a detectat niciun obiect și 1 logic dacă a detectat o persoană sau un animal. Acest lucru este posibil datorită faptului că este emisă căldură în formă de radiații infra-roșii care alimentează componenta \emph{piroelectrică} (Figura \ref{fig:pir}) amplasată dedesubtul unei lentile Fresnel ce ajută focusarea acestor raze pe lentila senzorului. Modulul are încorporat două potențiometre: unul pentru reglarea razei de acțiune (până în 5 metri), iar celălalt pentru reglarea timpului de schimbare a valorii detectate (între 0.3 - 300 secunde). 
+Senzorul are 3 pini care trebuie conectați la placa de dezvoltare: împământarea, 5V și ieșirea. Ultimul pin emite un 0 logic dacă nu a detectat niciun obiect și 1 logic dacă a detectat o persoană sau un animal. Acest lucru este posibil datorită faptului că este emisă căldură în formă de radiații infra-roșii care alimentează componenta \emph{piroelectrică} (Figura \ref{fig:pir}) amplasată dedesubtul unei lentile Fresnel ce ajută focusarea acestor raze pe lentila senzorului. Modulul are încorporat două potențiometre: unul pentru reglarea razei de acțiune (până în 5 metri), respectiv, pentru reglarea timpului de schimbare a valorii detectate (între 0.3 - 300 secunde). 
 
-Odată alimentat la 5V, microcontroller-ul începe colectarea de date la un interval setat în faza configurării de către utilizator. În cazul meu, acesta este de două secunde. După ce acest interval a trecut, va fi creat un pachet ce conține ID-ul și tipul modulului, valoarea și data la care a fost făcută măsurătoarea. 
+Odată alimentat la 5V, microcontroller-ul începe colectarea de date la un interval setat în faza configurării de către utilizator. În cazul meu, acesta este de două secunde. După ce acest interval a trecut, va fi trimis un pachet ce conține ID-ul și tipul modulului, valoarea și data la care a fost făcută măsurătoarea. 
 
 \section{Senzori dinamici}
 
 Senzorii dinamici dețin o complexitate mai ridicată față de tipul anterior prezentat datorită faptului că pot trimite și primi date simultan de la server.
 
-Imaginea \ref{fig:dinamic} demonstrează o utilitate simplă a modulului albastru care comută orice consumator ce poate fi alimentat de la priză. Fiecare componentă albastră acționează asemănător unui întrerupător care este controlat apăsând unul din butoanele prezente în interfața aplicației de telefon (Figura \ref{fig:8}). Ruta apelată este predefinită de către utilizator în faza de configurare a senzorului.
+Imaginea \ref{fig:dinamic} demonstrează o utilitate simplă a modulului albastru care comută orice consumator ce poate fi alimentat de la priză. Fiecare componentă albastră acționează asemenea unui întrerupător care este controlat apăsând unul din butoanele prezente în interfața aplicației de telefon (Figura \ref{fig:8}). Ruta apelată este predefinită de către utilizator în faza de configurare a senzorului.
 
-Pentru ca persoana ce deține soluția Smart Home să aibă cele mai recente funcționalități, senzorii își vor trimite toate informațiile serverului, acesta ulterior modificându-le în baza de date.
+Pentru ca persoana ce deține soluția smart home să aibă cele mai recente funcționalități, senzorii își vor trimite toate informațiile de identificare serverului, acesta ulterior adăugându-le în baza de date.
 
 \begin{figure}[h]
 	\centering
@@ -375,7 +375,7 @@ Câteva din caracteristicile licenței au solicitat folosirea metodologiei de \e
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=1\textwidth]{apartament}
-	\caption{Scema apartamentului unde au fost pozitionați senzorii}
+	\caption{Schema apartamentului unde au fost pozitionați senzorii}
 	\label{fig:apartament}
 \end{figure}
 
@@ -383,17 +383,17 @@ O conexiune stabilă este necesară pentru ca stația de bază (serverul) să pr
 
 Fiind folosită banda de 2.4GHz pentru comunicare, există multipli factori ce pot afecta transmisia informațiilor între module:
 \begin{itemize}
-	\item Puterea semnalului: aceasta scade pe măsură ce distanța dintre senzori și stația de bază crește.
+	\item Puterea semnalului: aceasta scade pe măsură ce distanța dintre senzori și stația de bază crește;
 	
-	\item Obstacole: pereții și mobila diminuează semnificativ semnalul
+	\item Obstacole: pereții și mobila diminuează semnificativ semnalul;
 	
-	\item Interferența: alte dispozitive ce folosesc aceeași bandă de comunicare pot corupe pachetele trimise (cuptorul cu microunde, stații Wi-Fi)
+	\item Interferența: alte dispozitive ce folosesc aceeași bandă de comunicare pot corupe pachetele trimise (cuptorul cu microunde, stații Wi-Fi);
 \end{itemize}
 
 Pentru a spori fiabilitate transmisiei, putem aplica următoarele  remedii: poziționarea stației de bază în centrul senzorilor, utilizarea extensiilor de semnal și deconectarea surselor de interferență.
 
-Figura \ref{fig:apartament} reprezintă planul apartamentului în care este instalată soluția "Home Smartify". Pentru acest test, toți senzorii (distanță, mișcare și comutatorul) au fost amplasați în \emph{Camera 1}, iar stația de bază în \emph{Camera 2}. Din cauza pereților tuturor camerelor ce se află între dispozitive și stație, am obținut că senzorii statici (care nu au un mecanism de confirmare pentru primirea pachetelor) au avut \textbf{4} din cele 10 pachete emise cu succes, iar cei dinamici au avut 100\% rata de succes.
+Figura \ref{fig:apartament} reprezintă planul apartamentului în care este instalată soluția "Home Smartify". Pentru primul test, toți senzorii (distanță, mișcare și comutatorul) au fost amplasați în \emph{Camera 1}, iar stația de bază în \emph{Camera 2}. Din cauza pereților camerelor ce se află între dispozitive și stație, am obținut că senzorii statici (care nu au un mecanism de confirmare pentru primirea pachetelor) au avut \textbf{4} din cele 10 pachete emise cu succes, iar cei dinamici au avut rata de succes de 100\%.
 
-Testul a fost condus și cu stația de bază mai aproape de senzori (Camera 1), și anume în \emph{Sufragerie}. Fiindcă există o cale directă între aceste două încăperi, toți senzorii au avut o rată de transmisie de 100\%, chiar și cu ușile intermediare închise.
+Al doilea test a fost condus cu stația de bază mai aproape de senzori (Camera 1), și anume în \emph{Sufragerie}. Fiindcă există o cale directă între aceste două încăperi, toți senzorii au avut o rată de transmisie de 100\%, chiar și cu ușile intermediare închise.
 
 Bazându-ne pe rezultatele de mai sus, putem concluziona că proximitatea dintre senzori și stație afectează semnificativ rata de succes a transmisiei, fiind necesară o distanță optimă între toți senzorii și server.
